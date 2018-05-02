@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition">
+  <DataSet Name="">
+    <Query>
+      <DataSourceReference>DWHCOPNIA</DataSourceReference>
+      <CommandText>SELECT  TOP(100)  IDMATRICULA, NUMMATRICULA, FECHAMATRICULA, IDPERSONA, IDPROFESION, IDPRERESNACIONAL, RNNUMERO, RNANIO, RNTIPO, RSNUMERO, RSANIO, RSSECCIONAL, IDUNIVERSIDAD
+FROM            dwh.FACTMATRICULA 
+WHERE RNANIO = 2014</CommandText>
+    </Query>
+    <Fields>
+      <Field Name="IDMATRICULA">
+        <DataField>IDMATRICULA</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="NUMMATRICULA">
+        <DataField>NUMMATRICULA</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="FECHAMATRICULA">
+        <DataField>FECHAMATRICULA</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="IDPERSONA">
+        <DataField>IDPERSONA</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="IDPROFESION">
+        <DataField>IDPROFESION</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="IDPRERESNACIONAL">
+        <DataField>IDPRERESNACIONAL</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="RNNUMERO">
+        <DataField>RNNUMERO</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="RNANIO">
+        <DataField>RNANIO</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="RNTIPO">
+        <DataField>RNTIPO</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="RSNUMERO">
+        <DataField>RSNUMERO</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="RSANIO">
+        <DataField>RSANIO</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="RSSECCIONAL">
+        <DataField>RSSECCIONAL</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="IDUNIVERSIDAD">
+        <DataField>IDUNIVERSIDAD</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>

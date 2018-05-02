@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="connect-Web.config Connection String" description="connect Connection String used in web.config by the application to access the database." defaultValue=" Data Source=DESKTOP-S4TACA3\SQLEXPRESS;Initial Catalog=Tutelas;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\ProyectosJulian\\Tuto2\.0\\CSJ_TUTELAS\\Web\\Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='connect']/@connectionString" />
+  </parameter>
+  <parameter name="BdJ21Web-Web.config Connection String" description="BdJ21Web Connection String used in web.config by the application to access the database." defaultValue="Data Source=DESKTOP-S4TACA3\SQLEXPRESS;Initial Catalog=CorteConst;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\ProyectosJulian\\Tuto2\.0\\CSJ_TUTELAS\\Web\\Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BdJ21Web']/@connectionString" />
+  </parameter>
+  <parameter name="ComprobarFirmaElectronica-Web.config Connection String" description="ComprobarFirmaElectronica Connection String used in web.config by the application to access the database." defaultValue="Data Source=192.168.213.127\TYBA2,1486;Initial Catalog=CSJ_Justicia21;Integrated Security=False;User Id=usr_archivos;Password=Archivos2018;MultipleActiveResultSets=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\ProyectosJulian\\Tuto2\.0\\CSJ_TUTELAS\\Web\\Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ComprobarFirmaElectronica']/@connectionString" />
+  </parameter>
+</parameters>

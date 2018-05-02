@@ -1,0 +1,316 @@
+﻿@{
+    ViewBag.Title = "Parámetros Generales";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 id="PageTitle" class="page-header">Parámetros Generales</h3>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="accionestabla">
+        <div>
+            <a href="javascript:void(0);" onclick="AbrirModal(1,'');">
+                <input type="button" class="btn btn-default" value="+ Nuevo Parámetro" />
+            </a>
+        </div>
+    </div>
+    <br />
+    <div>
+        <div style="width:10%; display:inline-block">
+            @Html.Label("Parámetro Padre")
+        </div>
+        <div style="width:30%; display:inline-block">
+            <select name="ppadre" id="ppadre" class="form-control">
+                <option value="">Seleccione...</option>
+            </select>
+        </div>
+        <div style="display:inline-block">
+            <a title="Seleccionar aqui uno de los parámetros padres de la lista para mostrar los parámetros hijos en la tabla y poder crear parámetros nuevos para el padre seleccionado"><img src="~/Content/Images/Info.png" /></a>
+        </div>
+    </div>
+    <br />
+    <div class="userscontent">
+        <table name="t_uni" id="t_uni" width="100%">
+            <thead>
+                <tr>
+                    <th>Código Parametro</th>
+                    <th>Parámetro</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="ModalEditAndNew" style="display:none;">
+    <fieldset>
+        <form id="CreateAndEdit">
+            <div class="row">
+                <div class="panel-body">
+                    <div>
+                        <div class="row" id="Param">
+                            @Html.Label("Código Parámetro", new { @class = "col-md-3 control-label" })
+                            <div class="col-md-8">
+                                @Html.TextBox("idParametro", "", new { @class = "form-control", @MaxLength = "9", @onkeypress = "return ValidaSoloNumeros(event)" })
+                            </div>
+                            <div class="col-md-1">
+                                <a title="Código del parámetro a modificar"><img src="~/Content/Images/Info.png" /></a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            @Html.Label("Parámetro", new { @class = "col-md-3 control-label" })
+                            <div class="col-md-8">
+                                @Html.TextBox("Parametro", "", new { @class = "form-control", @MaxLength = "150" })
+                            </div>
+                            <div class="col-md-1">
+                                <a title="Nombre con el que quedará creado/modificado el parámetro"><img src="~/Content/Images/Info.png" /></a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            @Html.Label("Descripción", new { @class = "col-md-3 control-label" })
+                            <div class="col-md-8">
+                                @Html.TextBox("Descripcion", "", new { @class = "form-control", @MaxLength = "50" })
+                            </div>
+                            <div class="col-md-1">
+                                <a title="Descripción con el que quedará creado/modificado el parámetro"><img src="~/Content/Images/Info.png" /></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+        <input id="saveCreate" type="button" class="btn btn-default" value="Guardar" onclick="Guardar(1);">
+        <input id="saveEdit" type="button" class="btn btn-default" value="Guardar" onclick="Guardar(2);">
+        <input id="cancel" type="button" class="btn btn-default" value="Cancelar" onclick="Cancelar();">
+    </fieldset>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+
+    <script type="text/javascript">
+        var table = null;
+        $(document).ready(function () {
+            Permisos();
+
+            getAllPparametros();
+            $('#scNombre').hide();
+            $('#trNombre').hide();
+
+            if (consultar) {
+                var columns = [
+                                { "mData": "idParametro" },
+                                { "mData": "Parametro" },
+                                { "mData": "Descripcion" },
+                                { "mData": "idParametro", "bSortable": false }
+                ];
+
+                var arrayrender = ["idParametro", "Parametro"];
+
+                table = CargarDataTable("t_uni", '@Url.Action("getParametrosGenerales", "Administracion")?ppadre=' + $('#ppadre').val(), columns, 3, arrayrender);
+            }
+        });
+
+        $('#ppadre').change(function () {
+
+            table.ajax.url("/Administracion/getParametrosGenerales?ppadre=" + $(this).val()).load();
+
+        });
+
+        function getAllPparametros() {
+            $.ajax({
+                url: "@Url.Action("getDataDdl", "Administracion")",
+                type: "POST",
+                data: {
+                    tabla: "ParametrosGenerales",
+                    id: "idParametro",
+                    valor: "Parametro",
+                    wherecolumn: "idTipoParametro",
+                    wherevalue: 0
+                },
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+
+                        var $option = $('<option>');
+                        $option.val(item.N_ID);
+                        $option.html(item.N_VALOR);
+                        $('#ppadre').append($option);
+
+                    });
+                }
+            });
+        }
+
+        function ValidarCampos() {
+            var Mensaje = '';
+
+            var Parametro = $('#Parametro').val();
+            var Descripcion = $('#Descripcion').val();
+            var Tipo = $('#idTipoParametro').val();
+
+            if (Parametro.trim() == '') {
+                if (Mensaje == '') {
+                    Mensaje = "El nombre del parámetro no puede estar vacío";
+                }
+                else {
+                    Mensaje += "<br>" + "El nombre del parámetro no puede estar vacío";
+                }
+            }
+            if (Descripcion.trim() == '') {
+                if (Mensaje == '') {
+                    Mensaje = "La descripción del parámetro no puede estar vacía";
+                }
+                else {
+                    Mensaje += "<br>" + "La descripción del parámetro no puede estar vacía";
+                }
+            }
+            if (Tipo == '') {
+                if (Mensaje == '') {
+                    Mensaje = "Debe seleccionar un parámetro padre";
+                }
+                else {
+                    Mensaje += "<br>" + "Debe seleccionar un parámetro padre";
+                }
+            }
+
+            return Mensaje;
+        }
+
+        function Guardar(numb) {
+
+            var valid = ValidarCampos();
+
+            if (valid != '') {
+                $("#ModalEditAndNew").dialog("close");
+                AbrirMensajeModal("adver", valid, function () { CerrarMensajeModal(); $("#ModalEditAndNew").dialog("open"); });
+            }
+            else {
+
+                if (numb == 1) {
+                    $.ajax({
+                        url: "/Administracion/saveParamGrales?ppadre=" + $('#ppadre').val(),
+                        type: "POST",
+                        data: $("#CreateAndEdit").serialize(),
+                        success: function (data) {
+                            if (data.data == false) {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", data.msgError, function () { table.ajax.reload(); $("#ModalEditAndNew").dialog("open"); });
+                                $("#saveEdit").hide();
+                            }
+                            else {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", "El parámetro <b>" + $("#Parametro").val() + "</b> ha sido creado correctamente", function () { table.ajax.reload(); });
+                                $("#saveEdit").hide();
+                            }
+                        }
+                    });
+                }
+                else if (numb == 2) {
+
+                    $.ajax({
+                        url: "@Url.Action("updParamGrales", "Administracion")",
+                        type: "POST",
+                        data: $("#CreateAndEdit").serialize(),
+                        success: function (data) {
+                            if (data.data == false) {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", data.msgError, function () { table.ajax.reload(); $("#ModalEditAndNew").dialog("open"); });
+                                $("#saveCreate").hide();
+                            }
+                            else {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", "El parámetro <b>" + $("#Parametro").val() + "</b> ha sido modificado correctamente", function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                        }
+                    });
+
+                }
+            }
+
+
+        }
+
+        /*Cancela la operación acual (Crear o editar nacionalidad)*/
+        function Cancelar() {
+            $("#ModalEditAndNew").dialog("close");
+        }
+
+        /*Abrir pop-up de creación o modificación de nacionalidad*/
+        function AbrirModal(param, id) {
+            document.getElementById("CreateAndEdit").reset();
+
+            /*Abrir pop-up de creación*/
+            if (param == 1) {
+
+                var padre = $("#ppadre").val();
+                if (padre == '') {
+                    AbrirMensajeModal("info", "Debe seleccionar un parámetro padre para poder crear un nuevo parámetro");
+                }
+                else {
+                    $("#saveEdit").hide();
+                    $("#saveCreate").show();
+                    $("#Param").hide();
+                    $("#ModalEditAndNew").dialog({
+                        modal: true, resizable: false, closeText: "", width: 400, title: "Nuevo Parámetro", height: 800
+                    });
+                }
+
+            }
+                /*Abrir pop-up de modificación*/
+            else if (param == 2) {
+
+                $("#saveCreate").hide();
+                $("#saveEdit").show();
+                $("#Param").show();
+
+                CargarRegistro("@Url.Action("getParametrosGeneralesById", "Administracion")", { id: id }, function (data) {
+                    $("#idParametro").attr("ReadOnly", true);
+                    $("#ModalEditAndNew").dialog({
+                        modal: true, resizable: false, closeText: "", width: 400, title: "Editar Parámetro"
+                    });
+                });
+            }
+
+        }
+
+        /*Eliminar (actualizar estado en la bd) la nacionalidad*/
+        function del_Row(id, name) {
+            AbrirMensajeModal("confir", "¿Está seguro que quiere eliminar el parámetro <b>" + name + "</b>?", function () {
+                setTimeout(function () {
+                    $.ajax({
+                        url: "@Url.Action("delParamGrales", "Administracion")",
+                        type: "POST",
+                        data: { idParametro: id },
+                        success: function (data) {
+                            if (data.data == false) {
+                                AbrirMensajeModal("adver", data.msgError, function () { table.ajax.reload(); });
+                            }
+                            else {
+                                AbrirMensajeModal("info", "El parámetro <b>" + name + "</b> se ha eliminado satisfactoriamente", function () { table.ajax.reload(); });
+                            }
+                        }
+                    });
+                }, 500);
+            });
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+

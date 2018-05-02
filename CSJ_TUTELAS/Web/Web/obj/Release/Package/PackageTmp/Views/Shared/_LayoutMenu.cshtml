@@ -1,0 +1,268 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="~/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/dist/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="~/vendor/morrisjs/morris.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="~/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Jquery UI CSS -->
+    <link href="~/Content/jquery-ui.css" rel="stylesheet">
+    <!-- select multiple-->
+    <link href="~/Content/sol.css" rel="stylesheet" />
+    <!-- Style CSS -->
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <!-- Style DataTable JQuery CSS -->
+    <link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
+    <!-- Style CSS -->
+    <link href="~/vendor/multiple-select/multiple-select.css" rel="stylesheet" />
+    <!-- JsTree CSS -->
+    <link href="~/vendor/jstree/themes/default/style.min.css" rel="stylesheet" />
+    <meta name="description" content="The description of my page" />
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top barratop" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"></a>
+            </div>
+            <!-- /.navbar-header -->
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="nombreusuario">
+                    <a href="javascript:void(0);">@Session["nombreUsuario"]</a>
+                </li>
+
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle user" data-toggle="dropdown" href="" onclick="mostrarPanel('.dropdown-user');">
+                        U
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <strong>@Html.Partial("_LoginPartial")</strong>
+                        </li>
+                        @*<li class="divider"></li>*@
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- fin comm -->
+            <!-- /.navbar-top-links -->
+        </nav>
+        <!-- Header Search -->
+        @*<div id="headersearch" class="headersearch">
+                @Html.Action("BusquedaConcepto","Home")
+            </div>*@
+        <!-- ./#Header Search -->
+
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <div class="logo">
+                    <a href="~/Home/Index"><img src="~/Content/Images/corte-logo.png" /></a>
+                </div>
+                <ul id="side-menu" class="navigation">
+                    @*<li>
+                        <a href="#">Seguridad</a>
+                        <ul>
+                            <li><a href="~/Account/ManageUsers">Usuarios</a></li>
+                            <li><a href="~/Account/ManageUsers">Roles</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="~/Home/EscenarioVariable"><span class="">Auditoria</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="">Administrativo</span></a>
+                        <ul>
+                            <li><a href="~/Administracion/Nacionalidades">Nacionalidades</a></li>
+                            <li><a href="~/Administracion/Profesiones">Profesiones</a></li>
+                            <li><a href="~/Administracion/Universidades">Universidades</a></li>
+                            <li><a href="~/Administracion/GrupoProfesiones">Grupo Profesiones</a></li>
+                            <li><a href="~/Administracion/GrupoUniversidades">Grupo Universidades</a></li>
+                            <li><a href="~/Administracion/TipoResoluciones">Tipo Resoluciones</a></li>
+                            <li><a href="~/Administracion/ResSeccionales">Resoluciones Seccionales</a></li>
+                            <li><a href="~/Administracion/PreResolucionesNal">Pre-Resoluciones Nacionales</a></li>
+                            <li><a href="~/Administracion/Metas">Metas</a></li>
+                            <li><a href="~/Administracion/Paises">Paises</a></li>
+                            <li><a href="~/Administracion/Ciudades">Ciudades</a></li>
+                            <li><a href="~/Administracion/Seccionales">Seccionales</a></li>
+                            <li><a href="~/Administracion/ParametrosGenerales">Parametros Generales</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="~/Cargue/Index"><span class="">Cargue</span></a>
+                    </li>
+                    <li>
+                        <a href="~/Reportes/Main_Reportes"><span class="">Estadísticas</span> </a>
+                        <ul>
+                            <li><a href="~/Administracion/ParametrosGenerales">Parametros Generales</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="~/Message/Main_Message"><span class="">Salir</span> </a>
+                    </li>*@
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+        <!--</nav>-->
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- Modal -->
+    <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 id="HeaderMensaje"></h3>
+                </div>
+                <div id="BodyMensaje" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <div id="divbtnAceptar" style="display: inline-block;">
+                        <a href="javascript:void(0);" id="btnAceptarMensaje" data-dismiss="modal" onclick="CerrarMensajeModal(); return false;" class="btn btn-default">Aceptar</a>
+                    </div>
+                    <div id="divbtnCancelar" style="display: inline-block;">
+                        <a href="javascript:void(0);" id="btnCancelarMensaje" data-dismiss="modal" onclick="CerrarMensajeModal(); return false;" class="btn btn-default" style="display:none;">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#Modal -->
+    <!-- jQuery -->
+    <script src="~/vendor/jquery/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/dist/js/sb-admin-2.js"></script>
+    <!-- jquery block UI JS -->
+    <script src="~/vendor/blockui/jquery.blockUI.js"></script>
+    <!-- Init JS -->
+    <script src="~/js/Init.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="~/vendor/raphael/raphael.min.js"></script>
+    <script src="~/vendor/morrisjs/morris.min.js"></script>
+    <!-- Jquery UI JS -->
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <!-- js select multiple  ususarios   -->
+    <script src="~/js/sol.js"></script>
+    <!-- multiple-select JavaScript -->
+    <script src="~/vendor/multiple-select/multiple-select.js"></script>
+    <!-- Flot Charts JavaScript -->
+    <script src="~/vendor/flot/jquery.flot.js"></script>
+    <script src="~/vendor/flot/jquery.flot.pie.js"></script>
+    <script src="~/vendor/flot/jquery.flot.resize.js"></script>
+    <script src="~/vendor/flot/jquery.flot.time.js"></script>
+    <!-- JsTree -->
+    <script src="~/vendor/jstree/jstree.min.js"></script>
+    <!--JsPdf-->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    <!-- Utils -->
+    <script src="~/js/Utils.js"></script>
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+    <div id="page-wrapper">
+        <input hidden="hidden" id="Permisos" value="@ViewBag.Permisos"/>
+        <input hidden="hidden" id="USecc" value="@Session["SeccionalUsuario"]" />
+        <div style="width:100%;display:inline-block;">
+            @RenderBody()
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $.ajax({
+                url: "@Url.Content("~/Account/getMenu")",
+                type: "GET",
+                data: { idRol : '@Session["Rol"]'},
+                success: function (response, status, xhr) {
+                    var nvContainer = $('#side-menu');
+                    var htmlTree = '';
+                    var padre = 0, con = 0, hijo = 0;
+
+                    $.each(response, function (i, item) {
+
+                        if (item.idPadre != padre && padre != 0) {
+                            con = 0;
+                            if (hijo != 0) {
+                                htmlTree = htmlTree + '</ul></li>';
+                                hijo = 0;
+                            }
+                            else {
+                                htmlTree = htmlTree + '</li>';
+                            }
+                        }
+
+                        if (item.idPadre == "0") {
+                            htmlTree = htmlTree + '<li><a href="' + item.rutaMenu + '" title="' + item.Nombre + '">' + item.Nombre + '</a>';
+                            padre = item.idMenu;
+                        }
+                        else {
+                            hijo = item.idMenu;
+                            if (con == 0) {
+                                htmlTree = htmlTree + '<ul>';
+                                con = 1;
+                            }
+                            htmlTree = htmlTree + '<li title="' + item.Nombre + '"><a href="' + item.rutaMenu + '">' + item.Nombre + '</a></li>';
+                        }
+                    });
+
+                    menuLoaded = true;
+                    nvContainer.html(htmlTree);
+
+                    $('ul.navigation li a').click(
+                       function (e) {
+                           $(this).closest('ul').find('.select').removeClass('select');
+                           $(this).parent().addClass('select');
+                       });
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    var nvContainer = $('#navcontainer');
+                    nvContainer.html(errorThrown);
+                }
+            });
+
+            var sucess = '@Session["tienepermisos"]';
+            if (sucess != '')
+            {
+                if (sucess == 'False') {
+                    AbrirMensajeModal("adver", "Acceso denegado, por favor comuniquese con el administrador");
+                }
+            }
+
+
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

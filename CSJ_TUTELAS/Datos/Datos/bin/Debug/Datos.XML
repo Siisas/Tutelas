@@ -1,0 +1,681 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Datos</name>
+    </assembly>
+    <members>
+        <member name="T:Datos.Conexion">
+            <summary>
+            Clase que permite la conexión a la base de datos
+            </summary>
+            <seealso cref="T:System.IDisposable" />
+        </member>
+        <member name="M:Datos.Conexion.#ctor">
+            <summary>
+            Initializa una nueva instancia de la clase <see cref="T:Datos.Conexion"/> .
+            </summary>
+        </member>
+        <member name="M:Datos.Conexion._cnnT">
+            <summary>
+            Valida si esta establecida la conexión.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.Conexion.Dispose">
+            <summary>
+            Realiza tareas definidas por la aplicación asociadas con la liberación, liberación o restablecimiento de recursos no administrados.
+            </summary>
+        </member>
+        <member name="T:Datos.DAL">
+            <summary>
+            Clase de la capa de datos (Direct Access Layer)
+            </summary>
+        </member>
+        <member name="M:Datos.DAL.getParametrosGeneralesByTipo(System.Int32)">
+            <summary>
+            Gets the parametros generales by tipo.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.getValParamGrales(System.Int32)">
+            <summary>
+            Gets the value parameter grales.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.getDataDdl(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets the data DDL.
+            </summary>
+            <param name="tabla">The tabla.</param>
+            <param name="id">The identifier.</param>
+            <param name="valor">The valor.</param>
+            <param name="iddefault">The iddefault.</param>
+            <param name="valordefault">The valordefault.</param>
+            <param name="wherecolumn">The wherecolumn.</param>
+            <param name="wherevalue">The wherevalue.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.getParametrosGenerales(System.Int32)">
+            <summary>
+            Gets the parametros generales.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.getParamGralesById(System.Int32)">
+            <summary>
+            Gets the parameter grales by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.delParamGrales(System.String,System.Int32)">
+            <summary>
+            Deletes the parameter grales.
+            </summary>
+            <param name="idUsuario">The identifier usuario.</param>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.Ejecutar(System.String,System.String@,System.String,System.Collections.Generic.List{Datos.Modelo.mDataDdl})">
+            <summary>
+            Ejecuta el query especificado.
+            </summary>
+            <param name="query">El query.</param>
+            <param name="mensajeDeError">El mensaje de error.</param>
+            <param name="tipo">El tipo.</param>
+            <param name="lstparametros">La Lista de parametros.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.Insert_usuario_rol_new(System.String,System.String)">
+            <summary>
+             Metodo: Insert_usuario_rol_new : .
+             <Author>Dennys Lopez</Author>
+             <date>2016-11-11</date>
+            </summary>
+            <remarks>
+             Metodo de Crear nueva usuario rol.
+            </remarks>
+        </member>
+        <member name="M:Datos.DAL.get_all_menu(System.String)">
+            <summary>
+            Gets all menu.
+            </summary>
+            <param name="idRol">The identifier rol.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.get_permissions_by_role(System.String,System.Int32)">
+            <summary>
+            Gets the permissions by role.
+            </summary>
+            <param name="idrol">The idrol.</param>
+            <param name="idmenu">The idmenu.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.add_permissions_by_role(System.String,System.String)">
+            <summary>
+             Metodo: add_permissions_by_role : .
+             <Author>Josser Ortega</Author>
+             <date>2017-06-14</date>
+            </summary>
+            <remarks>
+             Metodo de Asignar permisos al rol.
+            </remarks>
+        </member>
+        <member name="M:Datos.DAL.get_auditoria_all">
+            <summary>
+            Gets the auditoria all.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.get_AuditoriaById(System.Int32)">
+            <summary>
+            Gets the auditoria by identifier.
+            </summary>
+            <param name="idAuditoria">The identifier auditoria.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.get_auditoriaDetalleById(System.Int32)">
+            <summary>
+            Gets the auditoria detalle by identifier.
+            </summary>
+            <param name="idAuditoria">The identifier auditoria.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Datos.DAL.getAllConsulta(System.String)">
+            <summary>
+            Metodo getAllConsulta
+            </summary>
+            <param name="IdRol"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Datos.Modelo.mAuditoria">
+            <summary>
+            Clase de la capa de datos para la entidad de las auditorias
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoria.IdAuditoria">
+            <summary>
+            Gets or sets the identifier auditoria.
+            </summary>
+            <value>
+            The identifier auditoria.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoria.IdUsuario">
+            <summary>
+            Gets or sets the identifier usuario.
+            </summary>
+            <value>
+            The identifier usuario.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoria.Tabla">
+            <summary>
+            Gets or sets the tabla.
+            </summary>
+            <value>
+            The tabla.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoria.IdRegistro">
+            <summary>
+            Gets or sets the identifier registro.
+            </summary>
+            <value>
+            The identifier registro.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoria.FechaAccion">
+            <summary>
+            Gets or sets the fecha accion.
+            </summary>
+            <value>
+            The fecha accion.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoria.Accion">
+            <summary>
+            Gets or sets the accion.
+            </summary>
+            <value>
+            The accion.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.mAuditoriaDetalle">
+            <summary>
+            Clase de la capa de datos para la entidad del detalle las auditorias
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoriaDetalle.Campo">
+            <summary>
+            Gets or sets the campo.
+            </summary>
+            <value>
+            The campo.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoriaDetalle.ValorAnterior">
+            <summary>
+            Gets or sets the valor anterior.
+            </summary>
+            <value>
+            The valor anterior.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mAuditoriaDetalle.ValorNuevo">
+            <summary>
+            Gets or sets the valor nuevo.
+            </summary>
+            <value>
+            The valor nuevo.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.mConsulta">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.numeroRadicado">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.fechaRadicacion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.NumeroProceso">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.Accion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Datos.Modelo.mDataDdl">
+            <summary>
+            Clase de la capa de datos que utilizan los listados genericos
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mDataDdl.N_ID">
+            <summary>
+            Gets or sets the n identifier.
+            </summary>
+            <value>
+            The n identifier.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mDataDdl.N_VALOR">
+            <summary>
+            Gets or sets the n valor.
+            </summary>
+            <value>
+            The n valor.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.mArchivosActuacionesProceso">
+            <summary>
+            Clase de la capa de datos para la entidad de Menus
+            </summary>
+        </member>
+        <member name="T:Datos.Modelo.mResena">
+            <summary>
+            Clase de la capa de datos para la entidad de Menus
+            </summary>
+        </member>
+        <member name="T:Datos.Modelo.mPartesProcesales">
+            <summary>
+            Clase de la capa de datos para la entidad de Menus
+            </summary>
+        </member>
+        <member name="T:Datos.Modelo.mParametrosGenerales">
+            <summary>
+            Clase de la capa de datos para la entidad de los parametros generales
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mParametrosGenerales.idParametro">
+            <summary>
+            Gets or sets the identifier parametro.
+            </summary>
+            <value>
+            The identifier parametro.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mParametrosGenerales.Parametro">
+            <summary>
+            Gets or sets the parametro.
+            </summary>
+            <value>
+            The parametro.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mParametrosGenerales.flEstado">
+            <summary>
+            Gets or sets the fl estado.
+            </summary>
+            <value>
+            The fl estado.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mParametrosGenerales.idTipoParametro">
+            <summary>
+            Gets or sets the identifier tipo parametro.
+            </summary>
+            <value>
+            The identifier tipo parametro.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mParametrosGenerales.Descripcion">
+            <summary>
+            Gets or sets the descripcion.
+            </summary>
+            <value>
+            The descripcion.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.mMenu">
+            <summary>
+            Clase de la capa de datos para la entidad de Menus
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mMenu.idMenu">
+            <summary>
+            Gets or sets the identifier menu.
+            </summary>
+            <value>
+            The identifier menu.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mMenu.Nombre">
+            <summary>
+            Gets or sets the nombre.
+            </summary>
+            <value>
+            The nombre.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mMenu.Image">
+            <summary>
+            Gets or sets the image.
+            </summary>
+            <value>
+            The image.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mMenu.rutaMenu">
+            <summary>
+            Gets or sets the ruta menu.
+            </summary>
+            <value>
+            The ruta menu.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mMenu.idPadre">
+            <summary>
+            Gets or sets the identifier padre.
+            </summary>
+            <value>
+            The identifier padre.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.mMenu.Activo">
+            <summary>
+            Gets or sets the activo.
+            </summary>
+            <value>
+            The activo.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.UsuariosModel">
+            <summary>
+            Clase de la capa de datos para la entidad de Usuarios
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+            <value>
+            The identifier.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.Email">
+            <summary>
+            Gets or sets the email.
+            </summary>
+            <value>
+            The email.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.EmailConfirmed">
+            <summary>
+            Gets or sets the email confirmed.
+            </summary>
+            <value>
+            The email confirmed.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.PasswordHash">
+            <summary>
+            Gets or sets the password hash.
+            </summary>
+            <value>
+            The password hash.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.SecurityStamp">
+            <summary>
+            Gets or sets the security stamp.
+            </summary>
+            <value>
+            The security stamp.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.PhoneNumber">
+            <summary>
+            Gets or sets the phone number.
+            </summary>
+            <value>
+            The phone number.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.PhoneNumberConfirmed">
+            <summary>
+            Gets or sets the phone number confirmed.
+            </summary>
+            <value>
+            The phone number confirmed.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.TwoFactorEnabled">
+            <summary>
+            Gets or sets the two factor enabled.
+            </summary>
+            <value>
+            The two factor enabled.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.LockoutEndDateUtc">
+            <summary>
+            Gets or sets the lockout end date UTC.
+            </summary>
+            <value>
+            The lockout end date UTC.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.LockoutEnabled">
+            <summary>
+            Gets or sets the lockout enabled.
+            </summary>
+            <value>
+            The lockout enabled.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.AccessFailedCount">
+            <summary>
+            Gets or sets the access failed count.
+            </summary>
+            <value>
+            The access failed count.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.UserName">
+            <summary>
+            Gets or sets the name of the user.
+            </summary>
+            <value>
+            The name of the user.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.first_name">
+            <summary>
+            Gets or sets the first name.
+            </summary>
+            <value>
+            The first name.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.last_name">
+            <summary>
+            Gets or sets the last name.
+            </summary>
+            <value>
+            The last name.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.Nombre">
+            <summary>
+            Gets or sets the nombre.
+            </summary>
+            <value>
+            The nombre.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.created_date">
+            <summary>
+            Gets or sets the created date.
+            </summary>
+            <value>
+            The created date.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.last_activity">
+            <summary>
+            Gets or sets the last activity.
+            </summary>
+            <value>
+            The last activity.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.UsuariosModel.time_stamp">
+            <summary>
+            Gets or sets the time stamp.
+            </summary>
+            <value>
+            The time stamp.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.MembershipModel">
+            <summary>
+            Clase de la capa de datos para el esquema de seguridad (Membership)
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_Id">
+            <summary>
+            Gets or sets the user identifier.
+            </summary>
+            <value>
+            The user identifier.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_NickName">
+            <summary>
+            Gets or sets the name of the user nick.
+            </summary>
+            <value>
+            The name of the user nick.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_Name">
+            <summary>
+            Gets or sets the name of the user.
+            </summary>
+            <value>
+            The name of the user.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_LastName">
+            <summary>
+            Gets or sets the last name of the user.
+            </summary>
+            <value>
+            The last name of the user.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_Mail">
+            <summary>
+            Gets or sets the user mail.
+            </summary>
+            <value>
+            The user mail.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_Role">
+            <summary>
+            Gets or sets the user role.
+            </summary>
+            <value>
+            The user role.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.MembershipModel.User_Enable">
+            <summary>
+            Gets or sets the user enable.
+            </summary>
+            <value>
+            The user enable.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.RoleModel">
+            <summary>
+            Clase de la capa de datos para la entidad de Roles (Membership)
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.RoleModel.Role_Name">
+            <summary>
+            Gets or sets the name of the role.
+            </summary>
+            <value>
+            The name of the role.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.RoleModel.Role_Id">
+            <summary>
+            Gets or sets the role identifier.
+            </summary>
+            <value>
+            The role identifier.
+            </value>
+        </member>
+        <member name="T:Datos.Modelo.PermissionModel">
+            <summary>
+            Clase de la capa de datos para la entidad de Permisos (Membership)
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.PermissionModel.Id">
+            <summary>
+            Gets or sets the identifier.
+            </summary>
+            <value>
+            The identifier.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.PermissionModel.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.PermissionModel.Opciones">
+            <summary>
+            Gets or sets the opciones.
+            </summary>
+            <value>
+            The opciones.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.PermissionModel.Permisos">
+            <summary>
+            Gets or sets the permisos.
+            </summary>
+            <value>
+            The permisos.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.PermissionModel.Enable">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Datos.Modelo.PermissionModel"/> is enable.
+            </summary>
+            <value>
+              <c>true</c> if enable; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Datos.Modelo.PermissionModel.Orden">
+            <summary>
+            Gets or sets the orden.
+            </summary>
+            <value>
+            The orden.
+            </value>
+        </member>
+    </members>
+</doc>

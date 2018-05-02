@@ -1,0 +1,2466 @@
+﻿@model Datos.Modelo.mResena
+@{
+    ViewBag.Title = "Consulta Detalle";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <a href="javascript:void(0);" onclick="volver();" class="btn btn-default"><i class="fa fa-arrow-left"></i>Volver</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-header">@ViewBag.Title</h3>
+    </div>
+</div>
+
+<br>
+
+<div id="Proceso">
+    <center>
+        <label class="control-label" id="LblNumRadicado" style="border:groove; border-radius:4px 4px;">Número Radicado</label>
+        <label class="control-label" id="NumRadicado" style="border:groove; border-radius:4px 4px;">T- @ViewBag.NumRadicado</label><br>
+        <label class="control-label" id="LblNumProrceso" style="border:groove; border-radius:4px 4px;">Número Proceso</label>
+        <label class="control-label" id="NumProceso" style="border:groove; border-radius:4px 4px;">@ViewBag.NumProceso</label>
+     
+        <input type="hidden" id="HdnRol" , value="@ViewBag.Rol" />
+        <br />
+        <br />
+        <input id="PartesPcesales" type="button" class="btn btn-default" value="Partes Procesales" onclick="AbrirModal(1);">&nbsp;&nbsp;
+        <input id="ArchivosActuacion" type="button" class="btn btn-default" value="Archivos Actuación" onclick="AbrirModal(2);">&nbsp;&nbsp;
+        <input id="ArchivosProceso" type="button" class="btn btn-default" value="Archivos Proceso" onclick="AbrirModal(3);">
+        <input id="EscritoCiudadano" style="display:none" type="button" class="btn btn-default" value="Escrito Ciudadano" onclick="InstenciaEscrito.AbrirForEscrito(1);">
+        <input id="Insistencia" style="display:none" type="button" class="btn btn-default" value="Insistencia" onclick="InstenciaEscrito.AbrirForInsistencia(1);">
+        <input id="Archivos" style="display:none" type="button" class="btn btn-default" value="Archivos" onclick="InstenciaEscrito.AbrirArchivos(1);">
+
+        @*<a onclick="abrirOpcionesSecretario(1)" class="btn btn-default">Escritos Ciudadanos</a>*@       
+    </center>
+</div>
+<br />
+<br />
+<div id="ConsultasPP">
+    <div id="ModalPartesProcesales" style="display:none; width:100%">
+        <img src="~/Content/Images/pin-out.png" id="PinOutPP" onclick="Pin(1, 'ModalPartesProcesales');" />
+        <img src="~/Content/Images/pin-in.png" id="PinInPP" onclick="Pin(2, 'ModalPartesProcesales');" style="display:none" />
+        <br />
+        <br />
+        <h4 id="titlePP" style="display:none">Partes Procesales</h4>
+        <br />
+        @*<table name="t_ptesprocesales" id="t_ptesprocesales" width="80%">*@
+        <table name="t_ptesprocesales" id="t_ptesprocesales">
+            <thead>
+                <tr>
+                    <th>Número Identificación</th>
+                    <th>Tipo Identificación</th>
+                    <th>Tipo Sujeto</th>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Primer Apellido</th>
+                    <th>Segundo Apellido</th>
+                    <th>Entidad</th>
+                    <th>Departamento Contacto</th>
+                    <th>Ciudad Contacto</th>
+                    <th>E-mail</th>
+                    <th>Teléfono</th>
+                    <th>Celular</th>
+                </tr>
+            </thead>
+        </table>
+        <input id="cancelPP" type="button" class="btn btn-default" value="Cancelar" onclick="Cancelar('ModalPartesProcesales');">
+    </div>
+</div>
+<div id="ConsultasAA">
+    <div id="ModalArchivosActuacion" style="display:none">
+        <img src="~/Content/Images/pin-out.png" id="PinOutAA" onclick="Pin(1, 'ModalArchivosActuacion');" />
+        <img src="~/Content/Images/pin-in.png" id="PinInAA" onclick="Pin(2, 'ModalArchivosActuacion');" style="display:none" />
+        <br />
+        <br />
+        <h4 id="titleAA" style="display:none">Archivos Actuaciones</h4>
+        <br />
+        <table name="t_archivosactuaciones" id="t_archivosactuaciones" width="100%">
+        @*<table name="t_archivosactuaciones" id="t_archivosactuaciones">*@
+            <thead>
+                <tr>
+                    <th>Id Proceso</th>
+                    <th>Nombre Actuación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+        <input id="cancelAA" type="button" class="btn btn-default" value="Cancelar" onclick="Cancelar('ModalArchivosActuacion');">
+    </div>
+</div>
+<div id="ConsultasAP">
+    <div id="ModalArchivosProceso" style="display:none">
+        <img src="~/Content/Images/pin-out.png" id="PinOutAP" onclick="Pin(1, 'ModalArchivosProceso');" />
+        <img src="~/Content/Images/pin-in.png" id="PinInAP" onclick="Pin(2, 'ModalArchivosProceso');" style="display:none" />
+        <br />
+        <br />
+        <h4 id="titleAP" style="display:none">Archivos Proceso</h4>
+        <br />
+        <table name="t_archivosproceso" id="t_archivosproceso" width="100%">
+        @*<table name="t_archivosproceso" id="t_archivosproceso">*@
+            <thead>
+                <tr>
+                    <th>Id Proceso</th>
+                    <th>Nombre Archivo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+        <input id="cancelAP" type="button" class="btn btn-default" value="Cancelar" onclick="Cancelar('ModalArchivosProceso');">
+    </div>
+</div>
+
+<div id="Fichas">
+    <div id="FichaResena">
+        <h4 id="TFichaResena" class="Ficha">Primera ficha de la reseña esquematica</h4>
+        <br />
+        <div class="form-horizontal" id="FormResena" style="display:none">
+            <div class="form-group">
+                @Html.Label("Fecha Radicado", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.Hidden("IdRadicado")
+                    @Html.TextBox("FechaRadicado", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Expediente T-", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("Expediente", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Demandante, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBoxFor(m => m.Demandante, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Orientación sexual", new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-10" id="Orientacion" data-toggle="buttons">
+                    <label class="btn btn-primary" id="Loption1">
+                        <input type="radio" name="orientacionSex" id="option1" value="F" autocomplete="off">F
+                    </label>
+                    <label class="btn btn-primary" id="Loption2">
+                        <input type="radio" name="orientacionSex" id="option2" value="M" autocomplete="off">M
+                    </label>                                  
+                    <label class="btn btn-primary" id="Loption3">
+                        <input type="radio" name="orientacionSex" id="option3" value="LGBTI" autocomplete="off">LGBTI
+                    </label>
+                     <label class="btn btn-primary" id="Loption4">
+                        <input type="radio" name="orientacionSex" id="option4" value="OTROS" autocomplete="off">OTROS
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Legitimacion, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    <select id="DdlLegitimacion" class="form-control">
+                        <option value="">Seleccione ...</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Apoderado">Apoderado</option>
+                        <option value="Agente Oficioso">Agente Oficioso</option>
+                        <option value="Defensor / Personero">Defensor / Personero</option>
+                        <option value="Rep. Legal">Rep. Legal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Demandado, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBoxFor(m => m.Demandado, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Despacho1raInstancia, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBoxFor(m => m.Despacho1raInstancia, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Despacho2daInstancia, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBoxFor(m => m.Despacho2daInstancia, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.DerechosVulnerados, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBoxFor(m => m.DerechosVulnerados, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Pretensiones, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBoxFor(m => m.Pretensiones, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Hechos, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextAreaFor(m => m.Hechos, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.PrimeraInstancia, new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-3" data-toggle="buttons">
+                    <label class="btn btn-primary" id="L1Instancia1">
+                        <input type="radio" name="1eraInstancia" id="1Instancia1" value="Concede" autocomplete="off">Concede
+                    </label>
+                    <label class="btn btn-primary" id="L1Instancia2">
+                        <input type="radio" name="1eraInstancia" id="1Instancia2" value="Concede Parcial" autocomplete="off">Improcedente
+                    </label>
+                    <label class="btn btn-primary" id="L1Instancia3">
+                        <input type="radio" name="1eraInstancia" id="1Instancia3" value="Niega" autocomplete="off">Niega
+                    </label>
+                </div>
+                <div class="col-xs-7">
+                    @Html.TextAreaFor(m => m.Observaciones1raInstancia, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Impugnacion, new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-3" data-toggle="buttons">
+                    <label class="btn btn-primary" id="LImpug1">
+                        <input type="radio" name="Impugnacion" id="Impug1" value="Demandante" autocomplete="off">Demandante
+                    </label>
+                    <label class="btn btn-primary" id="LImpug2">
+                        <input type="radio" name="Impugnacion" id="Impug2" value="Demandado / Otro" autocomplete="off">Demandado / Otro
+                    </label>
+                </div>
+                <div class="col-xs-7">
+                    @Html.TextBoxFor(m => m.ObservacionesImpugnacion, null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SegundaInstancia, new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-5" data-toggle="buttons">
+                    <label class="btn btn-primary" id="L2Instancia1">
+                        <input type="radio" name="2daInstancia" id="2Instancia1" value="Confirma" autocomplete="off">Confirma
+                    </label>
+                    <label class="btn btn-primary" id="L2Instancia2">
+                        <input type="radio" name="2daInstancia" id="2Instancia2" value="Revoca" autocomplete="off">Revoca
+                    </label>
+                    <label class="btn btn-primary" id="L2Instancia3">
+                        <input type="radio" name="2daInstancia" id="2Instancia3" value="Revoca Parcial" autocomplete="off">Revoca Parcial
+                    </label>
+                    <label class="btn btn-primary" id="L2Instancia4">
+                        <input type="radio" name="2daInstancia" id="2Instancia4" value="Confirma y Adic." autocomplete="off">Confirma y Adic.
+                    </label>
+                </div>
+                <div class="col-xs-5">
+                    @Html.TextAreaFor(m => m.Observaciones2daInstancia, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div id="FichaSEP">
+        <h4 id="TFichaSEP" class="Ficha">¿Es sujeto de especial protección?</h4>
+        <br />
+        <div class="form-horizontal" id="FormSEP" style="display:none">
+            <div class="form-group">
+                <div class="btn-group col-xs-12" data-toggle="buttons">
+                    <label class="btn btn-primary" id="LradioSujeto1">
+                        <input type="radio" name="SEP" id="radioSujeto1" value="Si" autocomplete="off">Si
+                    </label>
+                    <label class="btn btn-primary" id="LradioSujeto2">
+                        <input type="radio" name="SEP" id="radioSujeto2" value="No" autocomplete="off">No
+                    </label>
+                </div>
+            </div>
+            <div id="DivSujEspProt" style="display:none">
+                <div class="form-group">
+                    <div class="btn-group col-xs-12" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LradioEdad1">
+                            <input type="radio" name="Edad" id="radioEdad1" value="Niño(a) / Adolescente" autocomplete="off">Niño(a) / Adolescente
+                        </label>
+                        <label class="btn btn-primary" id="LradioEdad2">
+                            <input type="radio" name="Edad" id="radioEdad2" value="Adulto Mayor" autocomplete="off">Adulto Mayor
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OrigenSujeto, new { @class = "col-xs-2 control-label" })
+                    <div class="col-xs-10">
+                        <select id="DdlOrigenSujeto" class="form-control">
+                            <option value="">Seleccione ...</option>
+                            <option value="Afro">Afro</option>
+                            <option value="Indigena">Indigena</option>
+                            <option value="Raizal">Raizal</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ExtranjeroSujeto, new { @class = "col-xs-2 control-label" })
+                    <div class="btn-group col-xs-10" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LradioExtSi">
+                            <input type="radio" name="Extranjero" value="Si" id="radioExtSi" autocomplete="off">Si
+                        </label>
+                        <label class="btn btn-primary" id="LradioEdad2">
+                            <input type="radio" name="Extranjero" value="No" id="radioExtNo" autocomplete="off">No
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CondicionPersonalSujeto, new { @class = "col-xs-2 control-label" })
+                    <div class="btn-group col-xs-10" id="CondicionesPersonales" data-toggle="buttons">
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Embarazada" id="CPSEmbarazada">Embarazada
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Madre/Padre cabeza de hogar" id="CPSCabezaHogar">Madre/Padre cabeza de hogar
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CondicionDiscapacidadSujeto, new { @class = "col-xs-2 control-label" })
+                    <div class="btn-group col-xs-10" id="Discapacidades" data-toggle="buttons">
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Fisica" id="CDSFisica">Fisica
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Mental" id="CDSMental">Mental
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Sensorial" id="CDSSensorial">Sensorial
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CondicionSocialSujeto, new { @class = "col-xs-2 control-label" })
+                    <div class="btn-group col-xs-10" id="CondicionesSociales" data-toggle="buttons">
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Desplazado(a)" id="CSSDeplazado">Desplazado(a)
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Líder Amenazado(a)" id="CSSLiderAmenazado">Líder Amenazado(a)
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Recluso(a)" id="CSSRecluso">Recluso(a)
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Victima Violencia" id="CSSViolencia">Victima Violencia
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Violencia Sexual" id="CSSViolenciaSexual">Violencia Sexual
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Pobreza Extrema" id="CSSPobreza">Pobreza Extrema
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Desastre Natural" id="CSSDesastre">Desastre Natural
+                        </label>
+                        <label class="btn btn-default btn-checkbox">
+                            <input type="checkbox" value="Enfermedad Grave" id="CSSEnfermedad">Enfermedad Grave
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.RestitucionDeTierrasSujeto, new { @class = "col-xs-2 control-label" })
+                    <div class="btn-group col-xs-10" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LradioRest1">
+                            <input type="radio" name="RestTierras" value="Si" id="radioRest1" autocomplete="off">Si
+                        </label>
+                        <label class="btn btn-primary" id="LradioRest2">
+                            <input type="radio" name="RestTierras" value="No" id="radioRest2" autocomplete="off">No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div id="FichaCOS">
+        <h4 id="TFichaCOS" class="Ficha">Criterios orientadores de selección</h4>
+        <br />
+        <div class="form-horizontal" id="FormCOS" style="display:none">
+            <div class="form-group">
+                @Html.LabelFor(m => m.CriteriosObjetivos, new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-10" data-toggle="buttons">
+                    <label class="btn btn-primary" id="LradioCritObj1">
+                        <input type="radio" name="CritObj" value="Asunto Novedoso" id="radioCritObj1" autocomplete="off">Asunto Novedoso
+                    </label>
+                    <label class="btn btn-primary" id="LradioCritObj2">
+                        <input type="radio" name="CritObj" value="Linea Jurisprudencial" id="radioCritObj2" autocomplete="off">Linea Jurisprudencial
+                    </label>
+                    <label class="btn btn-primary" id="LradioCritObj3">
+                        <input type="radio" name="CritObj" value="Unificación Jurisprudencial" id="radioCritObj3" autocomplete="off">Unificación Jurisprudencial
+                    </label>
+                    <label class="btn btn-primary" id="LradioCritObj4">
+                        <input type="radio" name="CritObj" value="Desconocimiento Precedente Jurisprudencial" id="radioCritObj4" autocomplete="off">Desconocimiento Precedente Jurisprudencial
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CriteriosSubjetivos, new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-10" data-toggle="buttons">
+                    <label class="btn btn-primary" id="LradioCritSubj1">
+                        <input type="radio" name="CritSubj" value="Protección Urgente" id="radioCritSubj1" autocomplete="off" checked>Protección Urgente
+                    </label>
+                    <label class="btn btn-primary" id="LradioCritSubj2">
+                        <input type="radio" name="CritSubj" value="Enfoque Diferencial" id="radioCritSubj2" autocomplete="off">Enfoque Diferencial
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CriteriosComplementarios, new { @class = "col-xs-2 control-label" })
+                <div class="btn-group col-xs-10" data-toggle="buttons">
+                    <label class="btn btn-primary" id="LradioCritCompl1">
+                        <input type="radio" name="CritCompl" value="Lucha contra la corrupción" id="radioCritCompl1" autocomplete="off" checked>Lucha contra la corrupción
+                    </label>
+                    <label class="btn btn-primary" id="LradioCritCompl2">
+                        <input type="radio" name="CritCompl" value="Instancia internacional judicial y/o cuasi-judicial" id="radioCritCompl2" autocomplete="off">Instancia internacional judicial y/o cuasi-judicial
+                    </label>
+                    <label class="btn btn-primary" id="LradioCritCompl3">
+                        <input type="radio" name="CritCompl" value="Preservacion interese general y/o afectación patrimonio publico" id="radioCritCompl3" autocomplete="off">Preservacion interese general y/o afectación patrimonio publico
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CriteriosAdicionales, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextAreaFor(m => m.CriteriosAdicionales, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div id="FichaOFJ">
+        <h4 id="TFichaOFJ" class="Ficha">Observaciones y/o fundamentos jurídicos para elaboración de reseña</h4>
+        <br />
+        <div id="FormOFJ" class="form-horizontal" style="display:none">
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProblemaJuridico, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextAreaFor(m => m.ProblemaJuridico, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ObservacionesProblemaJuridico, new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextAreaFor(m => m.ObservacionesProblemaJuridico, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+
+    <div id="FichaCheck">
+        <h4 id="TFichaCheck" class="Ficha">Check list manual</h4>
+        <br />
+        <div class="form-horizontal" id="FormCheck" style="display:none">
+
+            <!--------------------------
+            --- Check list radicador ---
+            -------------------------->
+
+            <div id="CheckRadicador" style="display:none">
+                <div class="form-group">
+                    <div class="btn-group col-xs-12" id="ChksDivRad">
+                        <center>
+                            <label class="btn btn-primary" id="LradioCheckL1">
+                                <input type="checkbox" name="CheckListAllRad" id="radioCheckL1"> Todos
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL2">
+                                <input type="checkbox" name="CheckList" id="radioCheckL2"> Fecha Actuaciones
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL3">
+                                <input type="checkbox" name="CheckList" id="radioCheckL3"> Archivos Actuaciones
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL4">
+                                <input type="checkbox" name="CheckList" id="radioCheckL4"> Sujetos Procesales
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL5">
+                                <input type="checkbox" name="CheckList" id="radioCheckL5"> Escrito Tutela
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL6">
+                                <input type="checkbox" name="CheckList" id="radioCheckL6"> Auto Que Admite
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL7">
+                                <input type="checkbox" name="CheckList" id="radioCheckL7"> Comunicaciones Autos
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL8">
+                                <input type="checkbox" name="CheckList" id="radioCheckL8"> Contestación de la Demanda
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL9">
+                                <input type="checkbox" name="CheckList" id="radioCheckL9"> Escrito De Apelación
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL10">
+                                <input type="checkbox" name="CheckList" id="radioCheckL10"> Oficio Y O Comunicaciones
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL11">
+                                <input type="checkbox" name="CheckList" id="radioCheckL11"> Auto Admitida
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL12">
+                                <input type="checkbox" name="CheckList" id="radioCheckL12"> Fallo
+                            </label>
+                        </center>
+
+                        </br>
+                </br>
+                </br>
+
+
+                    </div>
+                </div>
+                                  <div class="form-group text-center">
+                    <input id="Evaluar" type="button" class="btn btn-default" value="Evaluar check list" onclick="EvaluarCHKLRad();">
+                </div>
+                <div class="form-group text-center">
+                    <input id="BtnRadicar" type="button" class="btn btn-default" style="display:none" value="Radicar" onclick="GestionRadicador(2);">
+                </div>
+                <div id="DivDevolverRad" style="display:none" class="col-xs-12">
+                    <div class="form-group text-center">
+
+
+                
+                
+                </br>
+                </br>
+                </br>
+                 <!-- 
+                <div class="col-xs-10">
+                    <select id="DdlMotivodel" class="form-control">
+                        <option value="">Seleccione ...</option>
+                        <option value="0">EXPEDIENTE SIN FALLO(S)</option>
+                        <option value="1">FALLO INCOMPLETO Y/O SIN FIRMA</option>
+                        <option value="2">IMPUGNACIÓN SIN RESOLVER</option>
+                        <option value="3">DEMANDA DE TUTELA</option>
+                        <option value="4">NULIDAD SIN TRÁMITE</option>
+                        <option value="5">INCONGRUENCIA DE PARTES</option>
+                        <option value="6">DESISTIMIENTO Y/O DESACATO</option>
+                        <option value="7">PROCESOS DIVERSOS</option>
+                    </select>
+                </div>
+               -->
+               
+                    <!--   <textarea id="TxtAMotivo" rows="4" cols="5" readonly class="form-control"></textarea>     -->
+
+               <div class="form-group">
+                    <div class="btn-group col-xs-12" id="radioCheckDe">* Seleccione uno o varios motivos de la devolución
+                      <br>
+                        <center>                 
+                            <label class="btn btn-primary" id="LradioCheckDe00">
+                                <input type="checkbox" name="ri0" id="radioCheckDe00"> EXPEDIENTE SIN FALLO(S)
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckDe01">
+                                <input type="checkbox" name="ri1" id="radioCheckDe01"> FALLO INCOMPLETO Y/O SIN FIRMA
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckDe02">
+                                <input type="checkbox" name="ri2" id="radioCheckDe02"> IMPUGNACIÓN SIN RESOLVER
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckDe03">
+                                <input type="checkbox" name="ri3" id="radioCheckDe03"> DEMANDA DE TUTELA
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckDe04">
+                                <input type="checkbox" name="ri4" id="radioCheckDe04"> NULIDAD SIN TRÁMITE
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckDe05">
+                                <input type="checkbox" name="ri5" id="radioCheckDe05"> INCONGRUENCIA DE PARTES
+                            </label>
+                              <label class="btn btn-primary" id="LradioCheckDe05">
+                                <input type="checkbox" name="ri5" id="radioCheckDe06"> DESISTIMIENTO Y/O DESACATO
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckDe06">
+                                <input type="checkbox" name="ri6" id="radioCheckDe07"> PROCESOS DIVERSOS
+                            </label>
+                          
+                        </center>
+                    </div>
+                </div>
+
+
+               </div>                   
+                     <div class="form-group text-center">
+                        <input id="BtnDevolver" type="button" class="btn btn-default" value="Devolver" onclick="GestionRadicador(1);">
+                    </div>
+                </div>
+
+            </div>                
+
+                
+
+
+            </div>
+
+            <!------------------------------
+            --- Fin check list radicador ---
+            ------------------------------>
+
+            <!--------------------------
+            --- Check list adhonorem ---
+            -------------------------->
+
+            <div id="CheckAdhonorem" style="display:none">
+                <div class="form-group">
+                    <div class="btn-group col-xs-12" id="ChksDivAdh">
+                        <center>                           
+                           <label>
+                               * Seleccione causal de devolución
+                            </label><br>
+                            <label class="btn btn-primary" id="LradioCheckL2">
+                                <input type="checkbox" name="CheckList" id="radioCheckL2"> Expediente sin Fallo(s)
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL3">
+                                <input type="checkbox" name="CheckList" id="radioCheckL3"> Fallo Incompleto y/o sin Firma
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL4">
+                                <input type="checkbox" name="CheckList" id="radioCheckL4"> Impugnacion Sin Resolver
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL5">
+                                <input type="checkbox" name="CheckList" id="radioCheckL5"> Demanda De Tutela
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL6">
+                                <input type="checkbox" name="CheckList" id="radioCheckL6"> Nulidad Sin Tramite
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL7">
+                                <input type="checkbox" name="CheckList" id="radioCheckL7"> Incongruencia De Partes
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL8">
+                                <input type="checkbox" name="CheckList" id="radioCheckL8"> Desistimiento y/o Desacato
+                            </label>
+                            <label class="btn btn-primary" id="LradioCheckL9">
+                                <input type="checkbox" name="CheckList" id="radioCheckL9"> Procesos Diversos
+                            </label>
+                        </center>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <input id="EvaluarAdh" type="button" class="btn btn-default" value="Evaluar check list" onclick="EvaluarCHKLAdh();">
+                </div>
+                <div id="BlankCheck" style="display:none">
+                    <div class="form-group text-center">
+                        <input id="BtnPrePreSeleccion" type="button" class="btn btn-default" value="Continuar Con El Coordinador (Pre-PreSelección)" onclick="GestionAdhonorem(1, 'El proceso ha sido pre-pre seleccionado correctamente');">&nbsp;&nbsp;
+                        <input id="BtnPrePreNoSeleccion" type="button" class="btn btn-default" value="No Seleccionar (Pre-PreNoSelección)" onclick="GestionAdhonorem(2);">
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <input id="BtnDevolverAdh" type="button" class="btn btn-default" value="Devolver a secretaria" style="display:none" onclick="GestionAdhonorem(3);">
+                </div>
+            </div>
+
+            <!------------------------------
+            --- Fin check list adhonorem ---
+            ------------------------------>
+
+            <br />
+        </div>
+    </div>
+    <div id="TutorButtons">
+        <div class="form-group text-center">
+            <input id="BtnPreSeleccion" type="button" class="btn btn-default" value="PreSelección" onclick="GestionTutor(1);">
+            <input id="BtnPreNoSeleccion" type="button" class="btn btn-default" value="No Seleccionar" onclick="GestionTutor(2);">
+        </div>
+    </div>
+
+    <!-------------------------------------
+    --- Informe expediente por despacho ---
+    -------------------------------------->
+
+    <div id="FichaEPD">
+        <h4 id="TFichaEPD" class="Ficha">Informe expediente por despacho</h4>
+        <br />
+        <div id="FormEPD" class="form-horizontal" style="display:none">
+            <h5 class="Ficha">Datos Generales</h5>
+            <div class="form-group">
+                @Html.Label("Tipo", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDTipo", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Expediente No:", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDExpediente", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Demandante:", new { disabled = true, @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDDemandante", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Demandado:", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDDemandado", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Solicitante:", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDSolicitante", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Despacho Ficha:", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDDespachoFicha", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Responsable:", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDResponsable", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Impedimento:", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDImpedimento", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Tema General: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDTemaGeneral", htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <h5 class="Ficha">Criterio de Selección</h5>
+
+            <div class="form-group">
+                @Html.Label("Objetivo: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDObjetivo", htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Subjetivo: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDSubjetivo", htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Complementario: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDComplementario", htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Título: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDTitulo", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Derechos Invocados: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDDerechosInvocados", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Hechos y pruebas: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextBox("EPDHechosPruebas", null, htmlAttributes: new { disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Juez y Resumen Primera Instancia: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDJuezResumenPrimeraI", htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Juez y Resumen Segunda Instancia: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDJuezResumenSegundaI", htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Argumentos de la Insistencia: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDArgumentosInsistencia", htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+             <div class="form-group">
+                @Html.Label("Observaciones Reseña Esquematica: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("ObservacionTutor", htmlAttributes: new {  disabled = true, @class = "form-control" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.Label("Observaciones sala de selección: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDobservaciones", htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>                                    
+            
+
+            <div class="form-group">
+                @Html.Label("¿Caso de Alto Riesgo? ", new { @class = "col-xs-5 control-label" })
+                <div class="col-xs-7">
+                    <div class="btn-group col-xs-10" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LCasoAltoRiesgo1">
+                            <input type="radio" name="casoAltoRiesgo" id="iCasoAltoRiesgo1" autocomplete="off" value=true >Si
+                        </label>
+                        <label class="btn btn-primary" id="LCasoAltoRiesgo2">
+                            <input type="radio" name="casoAltoRiesgo" id="iCasoAltoRiesgo2" autocomplete="off" value=false >No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("¿Existe en principio razones para considerar procedente el amparo? ", new { @class = "col-xs-5 control-label" })
+                <div class="col-xs-7">
+                    <div class="btn-group col-xs-10" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LRazonesAmparo1">
+                            <input type="radio" name="razonesAmparo" id="iRazonesAmparo1" autocomplete="off" value=true>Si
+                        </label>
+                        <label class="btn btn-primary" id="LRazonesAmparo2">
+                            <input type="radio" name="razonesAmparo" id="iRazonesAmparo2" autocomplete="off" value=false>No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("¿Existe en principio razones para considerar un perjuicio irremediable?", new { @class = "col-xs-5 control-label" })
+                <div class="col-xs-7">
+                    <div class="btn-group col-xs-10" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LRazonesIrremediable1">
+                            <input type="radio" name="razonesIrremediable" id="iRazonesIrremediable1" autocomplete="off" value=true>Si
+                        </label>
+                        <label class="btn btn-primary" id="LRazonesIrremediable2">
+                            <input type="radio" name="razonesIrremediable" id="iRazonesIrremediable2" autocomplete="off" value=false>No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("¿Existe en principio pruebas que permitan determinar si se violó un derecho? ", new { @class = "col-xs-5 control-label" })
+                <div class="btn-group col-xs-7" data-toggle="buttons">
+                    <div class="btn-group col-xs-10" data-toggle="buttons">
+                        <label class="btn btn-primary" id="LVioloDerecho1">
+                            <input type="radio" name="violoDerecho" id="iVioloDerecho1" autocomplete="off" value=true >Si
+                        </label>
+                        <label class="btn btn-primary" id="LVioloDerecho2">
+                            <input type="radio" name="violoDerecho" id="iVioloDerecho2" autocomplete="off" value=false>No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Derecho Vulnerado: ", new { @class = "col-xs-2 control-label" })
+                <div class="col-xs-10">
+                    @Html.TextArea("EPDderechoViolentado", htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <input type="button" class="btn btn-default btn-guardar-epd" value="Seleccionado" />
+                    <input type="button" class="btn btn-default btn-guardar-epd" value="No seleccionado" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-----------------------------------------
+    --- Fin Informe expediente por despacho ---
+    ------------------------------------------>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+</div>
+
+
+   <!--Popup Crear Editar-->
+<div id="dialog-Insistencia" title="Create new user">
+    <div class="user-register container">
+        <form id="formulario-referencista">
+            <div class="row col-md-12">
+                <div class="form-group">                        
+                        <div class="col-md-6">                            
+                        <label id="message-numeroIdentificacion" >Seleccione el Archivo que desea subir</label>
+                        </div>  
+                </div>                                                                                            
+                 <div class="form-group">                    
+                     <div class="col-md-12">
+                            <label class="control-label col-md-4" id="PeticionarioEs"></label>
+                     </div>
+                        <div class="col-md-6">
+                            @Html.Editor("peticionarioInsistencia", new { htmlAttributes = new { @class = "form-control" } })                           
+                            Peticionario
+                        </div>
+                          <br>
+                        
+                </div>
+                <div class="form-group">                    
+                    <div class="col-md-12">
+                        <input type="file" name="uploadFoto" id="uploadFoto" />
+                    </div>                    
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="dialog-Escrito" title="Create new user">
+    <div class="user-register container">
+        <form id="formulario-referencista">
+            <div class="row col-md-12">                             
+                 <div class="form-group">                        
+                        <div class="col-md-6">                            
+                            <label id="message-numeroIdentificacion">Seleccione el Archivo que desea subir</label>
+                        </div>
+                 </div>               
+                  <div class="form-group">                    
+                     <div class="col-md-12">
+                            <label class="control-label col-md-4" id="PeticionarioEs"></label>
+                     </div>
+                     <br>
+                        <div class="col-md-6">
+                            @Html.Editor("PeticionarioEscrito", new { htmlAttributes = new { @class = "form-control" } })  
+                            Peticionario      
+                                                
+                        </div>
+                        <br>
+                        
+                </div>
+                <div class="form-group">                    
+                    <div class="col-md-12">
+                        <input type="file" name="uploadFotoEscrito" id="uploadFotoEscrito" />
+                    </div>
+               </div>
+            </div>              
+        </form>
+    </div>
+</div>
+
+<div id="dialog-Archivo" title="Archivos Adjuntos">
+    <div class="user-register container">
+        <form id="formulario-archivos">
+            <div class="form-horizontal">              
+            <table name="t_archivos" id="t_archivos" width="100%">
+        @*<table name="t_archivosproceso" id="t_archivosproceso">*@
+            <thead>
+                <tr>
+                    <th>Archivos Adjuntos</th>
+                    <th>Numero radicado</th>                    
+                </tr>
+            </thead>
+        </table>                                                                 
+        </form>
+    </div>
+</div>
+
+
+
+<div id="dialog-agregarObservaciones" title="Agregar más observaciones">
+    <div class="user-register container">
+        <form id="formulario-agregarObservaciones">
+            <div class="form-horizontal">              
+                  <label class="control-label" id="LblNumRadicado" style="/* border:groove; */FONT-SIZE: 124%;/* border-radius:4px 4px; */MARGIN-LEFT: 24%;">¿Desea agregar otra observación?</label>
+                 <BR>
+                 <BR> 
+          </div>   
+                <div class="form-group" style="margin-left:36%;">
+                     <input id="BtnSiObser" type="button" class="btn btn-default" value="SI" onclick="">                
+                
+                     <input id="BtnNoObser" type="button" class="btn btn-default" value="NO" onclick="">
+                </div>
+           </div>                                                 
+        </form>
+    </div>
+</div>
+
+<!--Fin PopUp Crear Editar-->
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+
+    <script type="text/javascript">
+        var dtablepp = "";
+        var dtableaa = "";
+        var dtableap = "";
+
+        $(document).ready(function () {
+
+            PopUpInsistencia = $("#dialog-Insistencia");
+            PopUpInsistencia.dialog({ autoOpen: false });            
+            PopUpEscrito = $("#dialog-Escrito");
+            PopUpEscrito.dialog({ autoOpen: false });
+            PopUpArchivos = $("#dialog-Archivo");
+            PopUpArchivos.dialog({ autoOpen: false });      
+            PopUpObservaciones = $("#dialog-agregarObservaciones");
+            PopUpObservaciones.dialog({ autoOpen: false });      
+
+            $('#FechaRadicado').datepicker({
+                format: "mm/dd/yyyy HH:MM"
+            });
+
+            debugger;
+            if ($('#HdnRol').val() != "Adhonorem") {
+                if ($('#HdnRol').val() != "Coordinador Despacho") {
+                    if ($('#HdnRol').val() != "Tutor") {
+                        $('#FichaResena, #FichaSEP, #FichaCOS, #FichaOFJ').hide();
+                    }
+                }
+            }
+
+
+            switch ($('#HdnRol').val()) {
+                case "Radicador":
+                    $('#CheckRadicador').show();
+                    $('#CheckAdhonorem').hide();
+                    $('#TutorButtons').hide();
+                    $('#FichaEPD').hide();
+                    $("#LblNumRadicado").hide();
+                    $("#NumRadicado").hide();
+                    $("#ChksDivAdh").hide();
+                    $("#EvaluarAdh").hide();
+                                        
+                    break;
+                case "Adhonorem":
+                    CargarDatosResena('@ViewBag.NumProceso');
+                    $('#Demandado').val('');
+                    $('#Demandante').val('');
+                    $('#CheckRadicador').hide();
+                    $('#CheckAdhonorem').hide();
+                    $('#TutorButtons').hide();
+                    $('#FichaEPD').hide();
+                    $("#Archivos").show();
+                    break;
+                case "Coordinador Despacho":
+                    CargarDatosResena('@ViewBag.NumProceso');
+                    $('#FichaCheck').hide();
+                    $('#TutorButtons').show();
+                    $('#FichaEPD').hide();
+                   
+                    break;
+                case "Tutor":
+                    CargarDatosResena('@ViewBag.NumProceso');
+                    $('#FichaCheck').hide();
+                    $('#TutorButtons').show();
+                    $('#FichaEPD').hide();
+                    $("#Archivos").show();
+                    break;
+                case "Coordinador Seleccion":
+                    $('#FichaCheck').hide();
+                    $('#CheckRadicador').hide();
+                    $('#CheckAdhonorem').hide();
+                    $('#TutorButtons').hide();
+                    break
+                case "Secretario":
+                debugger                
+                 CargarDatosResena('@ViewBag.NumProceso');
+                    let estadoSecretaria = sessionStorage["estadoSecretaria"]
+                 
+
+                    $('#FichaCheck').hide();
+                    $('#TutorButtons').show();
+                    $('#FichaEPD').hide();
+                    $('#EscritoCiudadano').show();
+                    $('#Insistencia').show();
+                    $('#BtnPreSeleccion').hide();
+                    $('#BtnPreNoSeleccion').hide();
+                    $('#Archivos').show();
+                       if(estadoSecretaria == 2)
+                    {                                                
+                         $('#Archivos').hide();
+                         $('#Insistencia').hide();
+                    }
+
+                      if(estadoSecretaria == 9)
+                    {                                            
+                         $('#Archivos').hide();
+                         $('#EscritoCiudadano').hide();
+                    }
+
+                    break;
+                     case "Magistrado Auxiliar":
+                     case "Profesional grado 33": 
+                     case "Profesional grado 21":
+                     case "Abogado sustanciador":
+                     case "Auxiliar judicial grado 1":
+                     case "Auxiliar judicial grado 2":
+                     case "Judicantes":                                           
+
+                debugger                
+                 CargarDatosResena('@ViewBag.NumProceso');
+                    $('#TFichaCheck').hide();
+                    $('#TutorButtons').hide();
+                    $("#Archivos").show();
+                    break;
+            }
+
+            $('#Expediente').val('@ViewBag.NumRadicado');
+
+            dtablepp = $('#t_ptesprocesales').DataTable({
+                
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("GetPartesProcesales", "Consultas")?NumProceso=' + $('#NumProceso').text(),
+                "dom": 'lfrtip',
+                "autoWidth": true,
+                "bInfo": true,
+                "scrollX": true,
+                "aoColumns": [
+                        { "mData": "Numero_Identificacion" },
+                        { "mData": "Tipo_Identificacion" },
+                        { "mData": "Tipo_Sujeto" },
+                        { "mData": "Primer_Nombre" },
+                        { "mData": "Segundo_Nombre" },
+                        { "mData": "Primer_Apellido" },
+                        { "mData": "Segundo_Apellido" },
+                        { "mData": "Entidad" },
+                        { "mData": "Departamento_Contacto" },
+                        { "mData": "Ciudad_Contacto" },
+                        { "mData": "Correo_Electronico_Contacto" },
+                        { "mData": "Telefono_Contacto" },
+                        { "mData": "Celular_Contacto" }
+                ],
+                "fnDrawCallback": function (oSettings) {
+                    $("#t_ptesprocesales_next").attr("title", "Ir a la siguiente página");
+                    $("#t_ptesprocesales_previous").attr("title", "Ir a la página anterior");
+                },
+                "fnServerData": function (sSource, aoData, fnCallback, oSettings) {
+                    oSettings.jqXHR = $.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": aoData,
+                        "success": function (json) {
+
+                            IEPD.obtenerDatosDeTabla(json);
+
+                            debugger;
+
+
+                            $.each(json.data, function (index, item) {
+
+                                if ($('#HdnRol').val() == "Adhonorem") {
+
+                                    if (item.Tipo_Sujeto.indexOf("Demandado") != -1) {
+
+                                        var PersonaNatural = (item.Primer_Nombre + " " + item.Segundo_Nombre + " " + item.Primer_Apellido + " " + item.Segundo_Apellido).trim();
+                                        var PersonaJuridica = (item.Entidad).trim();
+
+                                        if ($('#Demandado').val().trim() != "") {
+                                            if (PersonaNatural != "")
+                                            {
+                                                var Demndado = ($('#Demandado').val() + " , " + PersonaNatural).trim();
+                                            }
+                                            else
+                                            {
+                                                var Demndado = ($('#Demandado').val() + " , " + PersonaJuridica).trim();
+                                            }
+
+                                            if (Demndado.substr(Demndado.length - 1, Demndado.length) == ",") {
+                                                $('#Demandado').val(Demndado.substr(0, Demndado.length - 2));
+                                            }
+                                            else {
+                                                $('#Demandado').val(Demndado);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (PersonaNatural != "")
+                                            {
+                                                $('#Demandado').val(PersonaNatural);
+                                            }
+                                            else
+                                            {
+                                                $('#Demandado').val(PersonaJuridica);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    if (item.Tipo_Sujeto.indexOf("Demandante") != -1) {
+
+                                        var PersonaNatural = (item.Primer_Nombre + " " + item.Segundo_Nombre + " " + item.Primer_Apellido + " " + item.Segundo_Apellido).trim();
+                                        var PersonaJuridica = (item.Entidad).trim();
+
+                                        if ($('#Demandante').val().trim() != "")
+                                        {
+                                            if (PersonaNatural != "")
+                                            {
+                                                var Demandte = ($('#Demandante').val() + " , " + PersonaNatural).trim();
+                                            }
+                                            else
+                                            {
+                                                var Demandte = ($('#Demandante').val() + " , " + PersonaJuridica).trim();
+                                            }
+
+                                            if (Demandte.substr(Demandte.length - 1, Demandte.length) == ",")
+                                            {
+                                                $('#Demandante').val(Demandte.substr(0, Demandte.length - 2));
+                                            }
+                                            else
+                                            {
+                                                $('#Demandante').val(Demandte);
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (PersonaNatural != "") {
+                                                $('#Demandante').val(PersonaNatural);
+                                            }
+                                            else {
+                                                $('#Demandante').val(PersonaJuridica);
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                            })
+
+                            fnCallback(json);
+                            $('html').unblock();
+                        }
+                    });
+                }
+            });
+
+            dtableaa = $('#t_archivosactuaciones').DataTable({
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("GetArchivosActuaciones", "Consultas")?NumProceso=' + $('#NumProceso').text(),
+                "dom": 'lfrtip',
+                "bInfo": true,
+                "scrollX": true,
+                "aoColumns": [
+                        { "mData": "idproceso" },
+                        { "mData": "Nombreactuacion" },
+                        { "mData": "idproceso", "bSortable": false }
+                ],
+                "columnDefs":
+                 [
+                    {
+                        "render": function (data, type, row) {
+
+                            var html = '';
+
+                            html += '<span>' +
+                                    '   <a target="_blank" href="@Url.Action("VerPdf", "Consultas", null)?FileName=' + eval("row.NombreArchivo") + '&Tipo=Actuacion">' +
+                                    '       <img src="../Content/Images/pdf.png" target="_blank" title="' + eval("row.NombreArchivo") + '"/>' +
+                                    '   </a>' +
+                                    '</span>';
+
+                            return html;
+
+                        },
+                        "targets": 2
+                    }
+                 ],
+                "fnDrawCallback": function (oSettings) {
+                    $("#t_archivosactuaciones_next").attr("title", "Ir a la siguiente página");
+                    $("#t_archivosactuaciones_previous").attr("title", "Ir a la página anterior");
+                }
+            });
+
+            /*Aqui carga el pdf vverificar*/
+            dtableap = $('#t_archivosproceso').DataTable({
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("GetArchivosProceso", "Consultas")?NumProceso=' + $('#NumProceso').text(),
+                "dom": 'lfrtip',
+                "bInfo": true,
+                "scrollX": true,
+                "aoColumns": [
+                        { "mData": "id" },
+                        { "mData": "NombreArchivo" },
+                        { "mData": "id", "bSortable": false }
+                ],
+                "columnDefs":
+                 [
+                    {
+                        "render": function (data, type, row) {
+
+                            var html = '';
+                            debugger;
+
+                            html += '<span>' +
+                                    '   <a target="_blank" href="@Url.Action("VerPdf", "Consultas", null)?FileName=' + eval("row.NombreArchivo") + '&Tipo=Proceso">' +
+                                    '       <img src="../Content/Images/pdf.png" target="_blank" title="' + eval("row.NombreArchivo") + '"/>' +
+                                    '   </a>' +
+                                    '</span>';
+
+                            return html;
+
+                        },
+                        "targets": 2
+                    }
+                 ],
+                "fnDrawCallback": function (oSettings) {
+                    $("#t_archivosproceso_next").attr("title", "Ir a la siguiente página");
+                    $("#t_archivosproceso_previous").attr("title", "Ir a la página anterior");
+                }
+            });
+
+        });
+
+        function AbrirModal(num) {
+            if (num == 1) {
+                $('#titlePP').hide();
+                $("#ModalPartesProcesales").dialog(dtablepp.ajax.reload(), {
+                    modal: true, resizable: false, closeText: "", width: 400, title: "Partes Procesales"
+                });
+            }
+            if (num == 2) {
+                $('#titleAA').hide();
+                $("#ModalArchivosActuacion").dialog(dtableaa.ajax.reload(), {
+                    modal: true, resizable: false, closeText: "", width: 400, title: "Archivos Actuación"
+                });
+
+            }
+            if (num == 3) {
+                $('#titleAP').hide();
+                $("#ModalArchivosProceso").dialog(dtableap.ajax.reload(), {
+                    modal: true, resizable: false, closeText: "", width: 400, title: "Archivos Proceso"
+                });
+            }
+        }
+
+        function Cancelar(Modal) {
+            $("#" + Modal).dialog("close");
+        }
+
+        function AbrirPdf(bytes) {
+            var pdfAsDataUri = "data:application/pdf;base64," + bytes;
+            window.open(pdfAsDataUri);
+        }
+
+        function volver() {
+            window.history.back();
+        }
+
+        $('#TFichaResena').click(function () {
+
+            $('#FormResena').toggle("slow");
+
+        });
+
+        $('#TFichaSEP').click(function () {
+
+            $('#FormSEP').toggle("slow");
+
+        });
+
+        $('#TFichaCOS').click(function () {
+
+            $('#FormCOS').toggle("slow");
+
+        });
+
+        $('#TFichaOFJ').click(function () {
+
+            $('#FormOFJ').toggle("slow");
+
+        });
+
+        $('#TFichaCheck').click(function () {
+
+            $('#FormCheck').toggle("slow");
+
+        });
+        $('#TFichaCheck').click(function () {
+
+            $('#CheckAdhonorem').toggle("slow");
+
+        });
+
+        $('#TFichaEPD').click(function () {
+
+            $('#FormEPD').toggle("slow");
+
+        });
+
+        function Pin(num, Modal) {
+            if (num == 1) {
+
+                if (Modal == 'ModalPartesProcesales') {
+                    $('#' + Modal).dialog("destroy");
+                    $('#PartesPcesales').hide();
+                    $('#PinInPP').show();
+                    $('#PinOutPP').hide();
+                    $('#cancelPP').hide();
+                    $('#titlePP').show();
+                    $('#' + Modal).show();
+                    dtablepp.ajax.reload();
+                }
+
+                if (Modal == 'ModalArchivosActuacion') {
+                    $('#' + Modal).dialog("destroy");
+                    $('#ArchivosActuacion').hide();
+                    $('#PinInAA').show();
+                    $('#PinOutAA').hide();
+                    $('#cancelAA').hide();
+                    $('#titleAA').show();
+                    $('#' + Modal).show();
+                    dtableaa.ajax.reload();
+                }
+
+                if (Modal == 'ModalArchivosProceso') {
+                    $('#' + Modal).dialog("destroy");
+                    $('#ArchivosProceso').hide();
+                    $('#PinInAP').show();
+                    $('#PinOutAP').hide();
+                    $('#cancelAP').hide();
+                    $('#titleAP').show();
+                    $('#' + Modal).show();
+                    dtableap.ajax.reload();
+                }
+
+
+            }
+            if (num == 2) {
+                if (Modal == 'ModalPartesProcesales') {
+                    $('#' + Modal).hide();
+                    $('#cancelPP').show();
+                    AbrirModal(1);
+                    $('#PartesPcesales').show();
+                    $('#PinInPP').hide();
+                    $('#PinOutPP').show();
+                }
+
+                if (Modal == 'ModalArchivosActuacion') {
+                    $('#' + Modal).hide();
+                    $('#cancelAA').show();
+                    AbrirModal(2);
+                    $('#ArchivosActuacion').show();
+                    $('#PinInAA').hide();
+                    $('#PinOutAA').show();
+                }
+
+                if (Modal == 'ModalArchivosProceso') {
+                    $('#' + Modal).hide();
+                    $('#cancelAP').show();
+                    AbrirModal(3);
+                    $('#ArchivosProceso').show();
+                    $('#PinInAP').hide();
+                    $('#PinOutAP').show();
+                }
+
+            }
+        }
+
+        $('#ChksDivRad #radioCheckL1').click
+        (
+            function () {
+                if ($("#ChksDivRad #radioCheckL1").is(':checked')) {
+                    $('#ChksDivRad input[type=checkbox]').each(function () {
+                        $(this).prop("checked", true);
+                    });
+                }
+                else {
+                    $('#ChksDivRad input[type=checkbox]').each(function () {
+                        $(this).prop("checked", false);
+                    });
+                }
+            }
+        );
+
+        function EvaluarCHKLRad() {
+            $('#DivDevolverRad').hide();
+            $('#BtnRadicar').hide();
+
+            var Nocheck = 0;
+
+            $('#ChksDivRad input[type=checkbox]').each(function () {
+                if ($(this).is(':checked') == false) {
+                    Nocheck = Nocheck + 1;
+                }
+            });
+
+            if (Nocheck > 0) {
+                $('#DivDevolverRad').show();
+            }
+            else {
+                $('#BtnRadicar').show();
+            }
+
+        }
+
+        $('#ChksDivRad input[name=CheckList]').click
+        (
+            function () {
+                if ($(this).is(':checked') == false) {
+                    if ($('#BtnRadicar').is(":visible")) {
+                        $('#BtnRadicar').hide();
+                    }
+                }
+                else {
+                    if ($('#DivDevolverRad').is(":visible")) {
+                        $('#TxtAMotivo').val('');
+                        $('#DivDevolverRad').hide();
+                    }
+                }
+            }
+        );
+
+        function GestionRadicador(estado) {
+
+                debugger
+            let CheckDe00 = ""; let CheckDe01  =""; let  CheckDe02 =""; let CheckDe03 = ""; let CheckDe04 = ""; 
+            let CheckDe05 = ""; let CheckDe06 = "";let CheckDe07 =""; 
+
+             if( $('#radioCheckDe00').prop('checked'))
+              {
+                  CheckDe00 = "EXPEDIENTE SIN FALLO(S). Se ordena devolución para anexar decisión de primera y/o segunda instancia faltante(s)."
+              }
+            if( $('#radioCheckDe01').prop('checked'))
+              {
+                   CheckDe01 = "FALLO INCOMPLETO Y/O SIN FIRMA. Se ordena devolución para completar actuación judicial."
+              }
+            if( $('#radioCheckDe02').prop('checked'))
+                {
+                    CheckDe02 = "IMPUGNACIÓN SIN RESOLVER. Se ordena devolución para tramitar impugnación NO resuelta."
+                }
+
+            if( $('#radioCheckDe03').prop('checked'))
+                {
+                    CheckDe03 = "DEMANDA DE TUTELA. Se ordena devolución para anexar demanda de tutela y sus anexos."
+                }
+
+            if( $('#radioCheckDe04').prop('checked'))
+                {
+                    CheckDe04 = "NULIDAD SIN TRÁMITE. Se ordena devolución para rehacer trámite judicial ordena. NO existe(n) fallo(s) para revisión."
+                }
+
+       
+            if( $('#radioCheckDe05').prop('checked'))
+                {
+                    CheckDe05 = "INCONGRUENCIA DE PARTES. Se ordena devolución para correcta identificación de partes(s) en proceso de tutela."
+                }
+
+            if( $('#radioCheckDe06').prop('checked'))
+                {
+                    CheckDe06 = "DESISTIMIENTO Y/O DESACATO. Se ordena devolución por no corresponder a actuaciones de competencia de la Corte Constitucional"
+                }
+
+              if( $('#radioCheckDe07').prop('checked'))
+                {
+                    CheckDe07 = "PROCESOS DIVERSOS. Se ordena devolución de expediente por no corresponder a trámite de acción de tutela"
+                }               
+
+
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Radicar", "Consultas")',
+                data: "{NumProceso:'" + $('#NumProceso').text() + "', IdEstado:'" + estado + "', Observaciones:'" + CheckDe00 + CheckDe01 +CheckDe02 + CheckDe03 +CheckDe04 +CheckDe05 +CheckDe06 +CheckDe07 + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    if (data == false) {
+                        AbrirMensajeModal('error', 'Ha ocurrido un error al realizar la radicación');
+                    }
+                    else {
+                        AbrirMensajeModal('info', 'La radicación/devolución se ha efectuado satisfactoriamente', function () { window.location.replace("../Consultas/Consulta"); });
+                    }
+                }
+            });
+
+        }     
+
+
+        $('#LradioSujeto2').click(function () {
+            $('#DivSujEspProt').hide(800);
+        });
+
+        $('#LradioSujeto1').click(function () {
+            $('#DivSujEspProt').show(800);
+        });
+
+        function EvaluarCHKLAdh() {
+            $('#BlankCheck').hide();
+            $('#BtnDevolverAdh').hide();
+
+            var Check = 0;
+
+            $('#ChksDivAdh input[type=checkbox]').each(function () {
+                if ($(this).is(':checked') == true) {
+                    Check = Check + 1;
+                }
+            });
+
+            if (Check > 0) {
+                $('#BtnDevolverAdh').show();
+            }
+            else {
+                $('#BlankCheck').show();
+            }
+
+        }
+
+        $('#ChksDivAdh input[name=CheckList]').click(function () {
+
+            if ($(this).is(':checked') == false) {
+                if ($('#BtnDevolverAdh').is(":visible")) {
+                    $('#BtnDevolverAdh').hide();
+                }
+            }
+            else {
+                if ($('#BlankCheck').is(":visible")) {
+                    $('#BlankCheck').hide();
+                }
+            }
+        });
+
+        function GestionAdhonorem(num, mensaje) {
+
+            if (num == 1) {
+                var valid = ValidarAdhonorem();
+                if (valid != "") {
+                    AbrirMensajeModal('error', valid);
+                }
+                else {
+                    debugger
+                    let objFichasAdhonorem =
+                    {
+                        IdRadicado: $('#IdRadicado').val(),
+                        FechaRadicado: $('#FechaRadicado').val(),
+                        Expediente: "T-" + $('#Expediente').val(),
+                        Demandante: $('#Demandante').val().trim(),
+                        OrientacionSexual: $("input[type='radio'][name='orientacionSex']:checked").val(),
+                        Legitimacion: $('#DdlLegitimacion').val(),
+                        Demandado: $('#Demandado').val().trim(),
+                        Despacho1raInstancia: $('#Despacho1raInstancia').val().trim(),
+                        Despacho2daInstancia: $('#Despacho2daInstancia').val().trim(),
+                        DerechosVulnerados: $('#DerechosVulnerados').val().trim(),
+                        Pretensiones: $('#Pretensiones').val().trim(),
+                        Hechos: $('#Hechos').val().trim(),
+                        PrimeraInstancia: $("input[type='radio'][name='1eraInstancia']:checked").val(),
+                        Observaciones1raInstancia: $('#Observaciones1raInstancia').val().trim(),
+                        Impugnacion: $("input[type='radio'][name='Impugnacion']:checked").val(),
+                        ObservacionesImpugnacion: $('#ObservacionesImpugnacion').val().trim(),
+                        SegundaInstancia: $("input[type='radio'][name='2daInstancia']:checked").val(),
+                        Observaciones2daInstancia: $('#Observaciones2daInstancia').val().trim(),
+                        Especialproteccion: $("input[type='radio'][name='SEP']:checked").val(),
+                        TipoSujetoEspecialproteccion: $("input[type='radio'][name='Edad']:checked").val(),
+                        OrigenSujeto: $('#DdlOrigenSujeto').val(),
+                        ExtranjeroSujeto: $("input[type='radio'][name='Extranjero']:checked").val(),
+                        CondicionPersonalSujeto: $("#CondicionesPersonales input:checkbox:checked").map(function () {
+                            return $(this).val();
+                        }).get().toString(),
+                        CondicionDiscapacidadSujeto: $("#Discapacidades input:checkbox:checked").map(function () {
+                            return $(this).val();
+                        }).get().toString(),
+                        CondicionSocialSujeto: $("#CondicionesSociales input:checkbox:checked").map(function () {
+                            return $(this).val();
+                        }).get().toString(),
+                        RestitucionDeTierrasSujeto: $("input[type='radio'][name='RestTierras']:checked").val(),
+                        CriteriosObjetivos: $("input[type='radio'][name='CritObj']:checked").val(),
+                        CriteriosSubjetivos: $("input[type='radio'][name='CritSubj']:checked").val(),
+                        CriteriosComplementarios: $("input[type='radio'][name='CritCompl']:checked").val(),
+                        CriteriosAdicionales: $('#CriteriosAdicionales').val(),
+                        ProblemaJuridico: $('#ProblemaJuridico').val(),
+                        ObservacionesProblemaJuridico: $('#ObservacionesProblemaJuridico').val(),
+
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GuardarResena", "Consultas")',
+                        data: objFichasAdhonorem,
+                        success: function (data) {
+                            if (data.result == false) {
+                                AbrirMensajeModal('error', data.msgError);
+                            }
+                            else {
+                                AbrirMensajeModal('info', mensaje, function () { window.location.replace("../Consultas/Consulta"); });
+                            }
+                        }
+                    });
+
+                }
+            }
+            if (num == 2) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CambiarEstadoProceso", "Consultas")',
+                    data: "{NumProceso:'" + $('#NumProceso').text() + "', IdEstado:'" + 5 + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.result == false) {
+                            AbrirMensajeModal('error', data.msgError);
+                        }
+                        else {
+                            AbrirMensajeModal('info', 'El proceso ha sido pre-pre-no seleccionado correctamente', function () { window.location.replace("../Consultas/Consulta"); });
+                        }
+                    }
+                });
+            }
+
+            if (num == 3) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CambiarEstadoProceso", "Consultas")',
+                    data: "{NumProceso:'" + $('#NumProceso').text() + "', IdEstado:'" + 3 + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.result == false) {
+                            AbrirMensajeModal('error', data.msgError);
+                        }
+                        else {
+                            AbrirMensajeModal('info', 'El proceso ha sido devuelto correctamente', function () { window.location.replace("../Consultas/Consulta"); });
+                        }
+                    }
+                });
+
+            }
+
+        }
+
+        function ValidarAdhonorem() {
+            var Mensaje = "";
+            if ($('#radioSujeto1').is(":checked")) {
+
+                var Nino = $('#radioEdad1').is(":checked");
+                var Adulto = $('#radioEdad2').is(":checked");
+                var OrigenSujeto = $('#DdlOrigenSujeto').val();
+                var CondicionesPersonales = $("#CondicionesPersonales input:checkbox:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                var CondicionesSociales = $("#CondicionesSociales input:checkbox:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                var Discapacidades = $("#Discapacidades input:checkbox:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                var RestTierrasSi = $('#radioRest1').is(":checked");
+                var RestTierrasNo = $('#radioRest2').is(":checked");
+
+                if (Nino == false && Adulto == false) {
+                    if (Mensaje == "") {
+                        Mensaje = "Debe selecciónar la clasificación de edad del sujeto de protección especial<br/>";
+                    }
+                    else {
+                        Mensaje += "Debe selecciónar la clasificación de edad del sujeto de protección especial<br/>";
+                    }
+                }
+
+                if (OrigenSujeto == "") {
+                    if (Mensaje == "") {
+                        Mensaje = "Debe selecciónar el origen del sujeto de protección especial<br/>";
+                    }
+                    else {
+                        Mensaje += "Debe selecciónar el origen del sujeto de protección especial<br/>";
+                    }
+                }
+
+                if (CondicionesPersonales.toString().trim() == "") {
+                    if (Mensaje == "") {
+                        Mensaje = "Debe selecciónar la condición personal del sujeto<br/>";
+                    }
+                    else {
+                        Mensaje += "Debe selecciónar la condición personal del sujeto<br/>";
+                    }
+                }
+
+                if (Discapacidades.toString().trim() == "") {
+                    if (Mensaje == "") {
+                        Mensaje = "Debe selecciónar la condición de discapacidad del sujeto<br/>";
+                    }
+                    else {
+                        Mensaje += "Debe selecciónar la condición de discapacidad del sujeto<br/>";
+                    }
+                }
+
+                if (CondicionesSociales.toString().trim() == "") {
+                    if (Mensaje == "") {
+                        Mensaje = "Debe selecciónar la condición social del sujeto<br/>";
+                    }
+                    else {
+                        Mensaje += "Debe selecciónar la condición social del sujeto<br/>";
+                    }
+                }
+
+                if (RestTierrasSi == false && RestTierrasNo == false) {
+                    if (Mensaje == "") {
+                        Mensaje = "Debe selecciónar si el sujeto hace parte del programa de restitución de tierras o no<br/>";
+                    }
+                    else {
+                        Mensaje += "Debe selecciónar si el sujeto hace parte del programa de restitución de tierras o no<br/>";
+                    }
+                }
+
+            }
+
+            return Mensaje;
+
+        }
+
+        function GestionTutor(num) {
+
+            if (num == 1)
+            {
+                GestionAdhonorem(1, 'El proceso ha sido pre seleccionado correctamente');
+            }
+            if (num == 2) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CambiarEstadoProceso", "Consultas")',
+                    data: "{NumProceso:'" + $('#NumProceso').text() + "', IdEstado:'" + 7 + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "html",
+                    success: function (data) {
+                        if (data.result == false) {
+                            AbrirMensajeModal('error', data.msgError);
+                        }
+                        else {
+                            AbrirMensajeModal('info', 'El proceso ha sido pre no seleccionado correctamente', function () { window.location.replace("../Consultas/Consulta"); });
+                        }
+                    }
+                });
+                
+            }
+
+        }
+
+           /*funcionc que signa el valor del ddl  el textbox de devolucion */        
+
+
+       
+        
+
+
+
+
+        function pendientePorUtilizar()
+        {
+
+                var valorCapturado = ""; 
+             $('select').on('change', function() {
+             valorCapturado = this.value
+
+              switch (valorCapturado)
+              {
+                  case "0" :                  
+                    debugger
+                    PopUpObservaciones.dialog("open"); 
+
+                    if($("#TxtAMotivo").val().length > 0)
+                    {
+                        $("#BtnNoObser").click(function(){                            
+                             PopUpObservaciones.dialog("close");  
+                    })                  
+                    
+                    $("#BtnSiObser").click(function(){                            
+                            alert($("#TxtAMotivo").val());
+                            $("#TxtAMotivo").val() +  $("#TxtAMotivo").val("EXPEDIENTE SIN FALLO(S). Se ordena devolución para anexar decisión de primera y/o segunda instancia faltante(s).");                                                      
+                             alert($("#TxtAMotivo").val());
+                             PopUpObservaciones.dialog("close");  
+
+                    })                      
+
+
+                    }                                                                                                  
+
+
+                  break;    
+                  case "1" :
+                    $("#TxtAMotivo").val("FALLO INCOMPLETO Y/O SIN FIRMA. Se ordena devolución para completar actuación judicial.");
+                  break;    
+                  case "2" :
+                    $("#TxtAMotivo").val("IMPUGNACIÓN SIN RESOLVER. Se ordena devolución para tramitar impugnación NO resuelta.");
+                  break;    
+                  case "3" :
+                    $("#TxtAMotivo").val("DEMANDA DE TUTELA. Se ordena devolución para anexar demanda de tutela y sus anexos.");
+                  break;    
+                  case "4" :
+                    $("#TxtAMotivo").val("NULIDAD SIN TRÁMITE. Se ordena devolución para rehacer trámite judicial ordena. NO existe(n) fallo(s) para revisión.");
+                  break;    
+                  case "5" :
+                    $("#TxtAMotivo").val("INCONGRUENCIA DE PARTES. Se ordena devolución para correcta identificación de partes(s) en proceso de tutela.");
+                  break;    
+                  case "6" :
+                    $("#TxtAMotivo").val("DESISTIMIENTO Y/O DESACATO. Se ordena devolución por no corresponder a actuaciones de competencia de la Corte Constitucional");
+                  break;      
+                  case "7" :
+                    $("#TxtAMotivo").val("PROCESOS DIVERSOS. Se ordena devolución de expediente por no corresponder a trámite de acción de tutela");
+                  break;      
+              }
+                })
+
+
+        }
+        
+        /*-----------------------------Cierre----------------------------------- */
+
+        function CargarDatosResena(NumProceso)
+        {
+            debugger
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetResenaByNumProceso", "Consultas")',
+                data: { numProceso: NumProceso },
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    debugger;
+                    
+                    $('#EPDJuezResumenSegundaI').val(data.SegundaInstancia);
+                    $('#EPDJuezResumenPrimeraI').val(data.PrimeraInstancia);
+                    $('#ObservacionTutor').val(data.ObservacionesProblemaJuridico);
+                    $('#IdRadicado').val(data.IdRadicado);
+                    $('#FechaRadicado').val(data.FechaRadicado);
+                    $('#Expediente').val(data.Expediente);
+                    $('#Demandante').val(data.Demandante);
+                    if (data.OrientacionSexual != null)
+                    {
+                        $("input[name=orientacionSex][value='" + data.OrientacionSexual + "']").parent("label").addClass("active");
+                        $("input[name=orientacionSex][value='" + data.OrientacionSexual + "']").attr('checked', '');
+                    }
+                    $("#DdlLegitimacion option[value='" + data.Legitimacion + "']").prop('selected', true);
+                    $('#Demandado').val(data.Demandado);
+                    $('#Despacho1raInstancia').val(data.Despacho1raInstancia);
+                    $('#Despacho2daInstancia').val(data.Despacho2daInstancia);
+                    $('#DerechosVulnerados').val(data.DerechosVulnerados);
+                    $('#Pretensiones').val(data.Pretensiones);
+                    $('#Hechos').val(data.Hechos);
+                    if (data.PrimeraInstancia != null)
+                    {
+                        $("input[name=1eraInstancia][value='" + data.PrimeraInstancia + "']").parent("label").addClass("active");
+                        $("input[name=1eraInstancia][value='" + data.PrimeraInstancia + "']").attr('checked', '');
+                    }
+                    $('#Observaciones1raInstancia').val(data.Observaciones1raInstancia);
+                    if (data.Impugnacion != null)
+                    {
+                        $("input[name=Impugnacion][value='" + data.Impugnacion + "']").parent("label").addClass("active");
+                        $("input[name=Impugnacion][value='" + data.Impugnacion + "']").attr('checked', '');
+                    }
+                    $('#ObservacionesImpugnacion').val(data.ObservacionesImpugnacion);
+                    if (data.SegundaInstancia != null)
+                    {
+                        $("input[name=2daInstancia][value='" + data.SegundaInstancia + "']").parent("label").addClass("active");
+                        $("input[name=2daInstancia][value='" + data.SegundaInstancia + "']").attr('checked', '');
+                    }
+                    $('#Observaciones2daInstancia').val(data.Observaciones2daInstancia);
+                    if (data.Especialproteccion != null)
+                    {
+                        $("input[name=SEP][value=" + data.Especialproteccion + "]").parent("label").addClass("active");
+                        $("input[name=SEP][value=" + data.Especialproteccion + "]").attr('checked', '');
+
+                        if (data.Especialproteccion == "Si") {
+                            $('#DivSujEspProt').show();
+                        }
+                    }
+                    if (data.TipoSujetoEspecialproteccion != null)
+                    {
+                        $("input[name=Edad][value='" + data.TipoSujetoEspecialproteccion + "']").parent("label").addClass("active");
+                        $("input[name=Edad][value='" + data.TipoSujetoEspecialproteccion + "']").attr('checked', '');
+
+                    }
+                    $("#DdlOrigenSujeto option[value=" + data.OrigenSujeto + "]").prop('selected', true);
+                    if (data.ExtranjeroSujeto != null)
+                    {
+                        $("input[name=Extranjero][value=" + data.ExtranjeroSujeto + "]").parent("label").addClass("active");
+                        $("input[name=Extranjero][value=" + data.ExtranjeroSujeto + "]").attr('checked', '');
+                    }
+                    if (data.CondicionPersonalSujeto != null)
+                    {
+                        var PersonalSplit = data.CondicionPersonalSujeto.toString().split(',');
+                        $.each(PersonalSplit, function (index, item)
+                        {
+                            $("#CondicionesPersonales input[type=checkbox][value='" + item + "']").parent("label").addClass("active");
+                            $("#CondicionesPersonales input[type=checkbox][value='" + item + "']").attr('checked', '');
+                        });
+                    }
+                    if (data.CondicionDiscapacidadSujeto != null)
+                    {
+                        var DiscapacidadSplit = data.CondicionDiscapacidadSujeto.toString().split(',');
+                        $.each(DiscapacidadSplit, function (index, item)
+                        {
+                            $("#Discapacidades input[type=checkbox][value='" + item + "']").parent("label").addClass("active");
+                            $("#Discapacidades input[type=checkbox][value='" + item + "']").attr('checked', '');
+                        });
+                    }
+                    if (data.CondicionSocialSujeto != null)
+                    {
+                        var SocialSplit = data.CondicionSocialSujeto.toString().split(',');
+                        $.each(SocialSplit, function (index, item)
+                        {
+                            $("#CondicionesSociales input[type=checkbox][value='" + item + "']").parent("label").addClass("active");
+                            $("#CondicionesSociales input[type=checkbox][value='" + item + "']").attr('checked', '');
+                        });
+                    }
+                    if (data.RestitucionDeTierrasSujeto != null)
+                    {
+                        $("input[name=RestTierras][value=" + data.RestitucionDeTierrasSujeto + "]").parent("label").addClass("active");
+                        $("input[name=RestTierras][value=" + data.RestitucionDeTierrasSujeto + "]").attr('checked', '');
+                    }
+                    if (data.CriteriosObjetivos != null)
+                    {
+                        $("input[name=CritObj][value='" + data.CriteriosObjetivos + "']").parent("label").addClass("active");
+                        $("input[name=CritObj][value='" + data.CriteriosObjetivos + "']").attr('checked', '');
+                    }
+                    if (data.CriteriosSubjetivos != null)
+                    {
+                        $("input[name=CritSubj][value='" + data.CriteriosSubjetivos + "']").parent("label").addClass("active");
+                        $("input[name=CritSubj][value='" + data.CriteriosSubjetivos + "']").attr('checked', '');
+                    }
+                    if (data.CriteriosComplementarios != null)
+                    {
+                        $("input[name=CritCompl][value='" + data.CriteriosComplementarios + "']").parent("label").addClass("active");
+                        $("input[name=CritCompl][value='" + data.CriteriosComplementarios + "']").attr('checked', '');
+                    }
+                    $('#CriteriosAdicionales').val(data.CriteriosAdicionales);
+                    $('#ProblemaJuridico').val(data.ProblemaJuridico);
+                    $('#ObservacionesProblemaJuridico').val(data.ObservacionesProblemaJuridico);
+
+                }
+            });
+        }
+
+        /*-------------------------------------
+        --- Informe expediente por despacho ---
+        -------------------------------------*/
+        
+        // Patron modulo revelador
+        var IEPD = (function(){
+            
+            let infoFormulario = {};
+
+            function obtenerDatosDeTabla(data) {
+                
+                // Obtiene el demandante
+
+                let ObjDemandante = data.data.find(item => {
+                    return item.Tipo_Sujeto == 'Demandante/accionante'
+                });
+
+                let Demandante;
+
+                if(ObjDemandante.Entidad != undefined && ObjDemandante.Entidad != '')
+                    Demandante = ObjDemandante.Entidad
+                else
+                    Demandante = ObjDemandante.Primer_Nombre + ' ' + ObjDemandante.Primer_Apellido;
+
+                // Obtiene el o los demandados
+
+                let Demandados = data.data.map(item => {
+
+                    if (item.Tipo_Sujeto == 'Demandado/indiciado/causante') {
+
+                        if (item.Entidad != undefined && item.Entidad != '')
+                            return item.Entidad;
+                        else
+                            return item.Primer_Nombre + ' ' + item.Primer_Apellido;
+                    }
+                }).join();
+
+                $('input#EPDDemandante').val(Demandante);
+                $('input#EPDDemandado').val(Demandados.substring(0, Demandados.length - 1));
+            };
+
+            function obtenerNumeroExpediente() {
+                $('#EPDExpediente').val(new URL(window.location.href).searchParams.get('NumRadicado'));
+            };
+
+            function obtenerInfoResena() {
+
+                let numProceso = new URL(window.location.href).searchParams.get('NumProceso');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetResenaByNumProceso", "Consultas")',
+                    data: { numProceso: numProceso },
+                    contentType: "application/json; charset=utf-8"
+                })
+                .done(data => {
+                    
+                    infoFormulario.IdRadicado = data.IdRadicado; 
+
+                    $('textarea#EPDObjetivo').val(data.CriteriosObjetivos);
+                    $('textarea#EPDSubjetivo').val(data.CriteriosSubjetivos);
+                    $('textarea#EPDComplementario').val(data.CriteriosComplementarios);
+                    $('input#EPDDerechosInvocados').val(data.Pretensiones);
+                    $('input#EPDHechosPruebas').val(data.Hechos);
+                    $('textarea#EPDderechoViolentado').val(data.Pretensiones);
+                });
+            };
+
+            function obtenerEstadoRadicado() {
+
+                let numProceso = new URL(window.location.href).searchParams.get('NumProceso');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetEstadoByNumProceso", "Consultas")',
+                    data: { numProceso: numProceso },
+                    contentType: "application/json; charset=utf-8"
+                })
+                .done(data => {
+
+                    infoFormulario.IdEstado = data.Id;
+
+                    $('input#EPDTipo').val(data.Nombre);
+                    $('input#EPDSolicitante').val(data.Nombre);
+                });
+            };
+
+            function obtenerInfoUsuario() {
+
+                $('input#EPDResponsable').val('@Session["nombreUsuario"]');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetDespachoById", "Consultas")',
+                    data: { id: '@Session["UserDespacho"]' },
+                    contentType: "application/json; charset=utf-8"
+                })
+                .done(data => {
+                    
+                    infoFormulario.IdUsuario = '@Session["UserId"]'
+                    infoFormulario.IdDespacho = data.Id;
+
+                    $('input#EPDDespachoFicha').val(data.NombreDespacho);
+                });
+            };
+
+            function cargarDatosFormulario() {
+
+                obtenerNumeroExpediente();
+                obtenerInfoResena();
+                obtenerEstadoRadicado();
+                obtenerInfoUsuario();
+            };
+
+            function obtenerValFormulario() {
+
+                infoFormulario.Impedimento = $('#EPDImpedimento').val();
+                infoFormulario.TemaGeneral = $('#EPDTemaGeneral').val();
+                infoFormulario.Titulo = $('#EPDTitulo').val();
+                infoFormulario.JuezPrimeraInstancia = $('#EPDJuezResumenPrimeraI').val();
+                infoFormulario.JuezSegundaInstancia = $('#EPDJuezResumenSegundaI').val();
+                infoFormulario.ArgumentosInsistencia = $('#EPDArgumentosInsistencia').val();
+                infoFormulario.Observaciones = $('#EPDobservaciones').val();
+                infoFormulario.AltoRiesgo = $('input[name=casoAltoRiesgo]:checked').val();
+                infoFormulario.ProcedenteAmparo = $('input[name=razonesAmparo]:checked').val();
+                infoFormulario.PerjuicioIrremediable = $('input[name=razonesIrremediable]:checked').val();
+                infoFormulario.VioloUnDerecho = $('input[name=violoDerecho]:checked').val();
+            };
+
+            function guardarFormulario(seleccionado) {
+                debugger
+                obtenerValFormulario();
+                infoFormulario.Seleccionado = seleccionado
+
+                $.ajax({
+                    url: '/Consultas/GuardarFormularioEDP',
+                    type: "POST",
+                    dataType: "json",
+                    data: infoFormulario                
+                })
+                .done(function (data) {
+
+                    if (data.data != '')
+                        AbrirMensajeModal('error', data);
+                    else {
+
+                        AbrirMensajeModal('info', 'El formulario se guardo correctamente', function() {
+                            document.location.href =  document.location.origin + '/Consultas/Consulta';
+                        });
+                    }
+                });
+            };
+
+            $('.btn-guardar-epd').click(function(event) {
+                
+                guardarFormulario($(this).val());
+            });
+
+            cargarDatosFormulario();
+
+            return {
+                obtenerDatosDeTabla: obtenerDatosDeTabla
+            }
+        })();
+        
+        /*-----------------------------------------
+        --- Fin Informe expediente por despacho ---
+        -----------------------------------------*/
+
+
+       var InstenciaEscrito = (function(){
+
+        function  consultarArchivo() {
+
+        $("#t_Archivos").dataTable().fnDestroy();
+        dtableAr = $('#t_archivos').DataTable({
+            "bServerSide": true,
+            "sAjaxSource": '@Url.Action("GetAllFiles", "Consultas")',
+            "dom": 'lfrtip',
+            "autoWidth": true,
+            "bInfo": true,
+            "scrollX": true,
+            "aoColumns": [
+                    { "mData": "NumeroProceso" },
+                    { "mData": "NumeroRadicadoUnico" },
+                                                                            
+            ],
+
+                "columnDefs":
+                
+                                [
+                                    
+                                    {
+                                        
+                                        "render": function (data, type, row) {
+                                            debugger
+                                            var html = '';
+
+                                            if(row.Insistencia != null)
+                                            {
+                                                html += '<span>' +                                                    
+                                                    '  <a href=" ' + row.Insistencia + '"> <img src="../Content/Images/RadicadoInsistencia.png" />' +
+                                                    '   </a>' +
+                                                    '</span>';    
+
+                                            }
+                                            if(row.EscritoCiudadano != null)
+                                            {
+                                                html += '<span>' +                                                    
+                                                    '  <a href=" ' + row.EscritoCiudadano + '"> <img src="../Content/Images/Escrito.png" />' +
+                                                    '   </a>' +
+                                                    '</span>';
+                                            }
+                                            
+                                            
+
+                                            return html;
+
+                                        },
+                                        "targets": 0
+                                    }
+                                ],
+
+                    "fnDrawCallback": function (oSettings) {
+                    $("#t_ptesprocesales_next").attr("title", "Ir a la siguiente página");
+                    $("#t_ptesprocesales_previous").attr("title", "Ir a la página anterior");
+                },                             
+            });       
+        };
+
+         function crearInsitencia() {
+
+            let data  = new FormData();
+            let files = $("#uploadFoto").get(0).files;
+            let peticionario = $('#peticionarioInsistencia').val()
+
+            if(files.length > 0){
+            let file = files[0];
+
+            data.append("uploadFoto",file);     
+            data.append("peticionario",JSON.stringify(peticionario));     
+                  
+            }
+            //let data = new FormData($('#dialog-Insistencia')[0]);
+            debugger
+            $.ajax({
+                method: "POST",
+                url: window.location.origin + '/Consultas/UploadFile',
+                data: data,
+                contentType: false,
+                processData: false,             
+                success: function (data,dato) {                   
+                if(data.dato =="No")
+                {                    
+                    AbrirMensajeModal('error', 'No es un formato permitido');
+                    $("#uploadFoto").val("")  
+                }
+                if(data.data)
+                {
+                    AbrirMensajeModal('info', 'Archivo guardado con exito');
+                    PopUpInsistencia.dialog("close");
+                    $('#uploadFoto').val("") 
+                }
+                
+                }
+
+            })               
+               
+        };
+
+          function crearEscrito() {
+
+                    let data  = new FormData();
+                    let files = $("#uploadFotoEscrito").get(0).files;
+                    let peticionario = $('#PeticionarioEscrito').val()
+                   
+                    if(files.length > 0){
+                    let file = files[0];
+                    data.append("uploadFoto",file);   
+                    data.append("peticionario",JSON.stringify(peticionario));  
+                    
+                    }
+
+                    //let data = new FormData($('#dialog-Insistencia')[0]);
+                    debugger
+                    $.ajax({
+                        method: "POST",
+                        url: window.location.origin + '/Consultas/UploadFileEscrito',
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (data,dato) {                   
+                        if(data.dato =="No")
+                        {                    
+                            AbrirMensajeModal('error', 'No es un formato permitido');
+                            $("#uploadFotoEscrito").val("")  
+                        }
+                        if(data.data == "Ok")
+                        {
+                            AbrirMensajeModal('info', 'Archivo guardado con exito');
+                             PopUpEscrito.dialog("close");
+                             $('#uploadFotoEscrito').val("") 
+                        }
+                        }
+                    })
+                    
+                    
+                };                                    
+    
+         function AbrirForEscrito(valorBoton) {
+
+                    if (valorBoton == 1) {
+                debugger
+                
+                        PopUpEscrito.dialog({
+                            modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Escritos Ciudadanos",
+                            buttons: {
+                                "Crear": InstenciaEscrito.crearEscrito,
+                                "Cancelar": function () {
+                                    PopUpEscrito.dialog("close");
+                                }
+                            }
+                        });
+
+                        PopUpEscrito.dialog("open");
+
+                    } else if (valorBoton == 2) {
+
+                        if (dialogos.dialog("close")) {
+
+                        }
+
+                        PopUpEscrito.dialog({
+                            modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Insistencias",
+                        });
+                        PopUpEscrito.dialog("open");
+                    }
+                };
+
+
+
+        function AbrirArchivos(valorBoton) {
+                 
+            if (valorBoton == 1) 
+            {
+           debugger
+           $("#t_archivos").dataTable().fnDestroy();
+             PopUpArchivos.dialog(InstenciaEscrito.consultarArchivo());
+             PopUpArchivos.dialog("open");
+             PopUpArchivos.dialog({
+                    modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Insistencias",
+                     buttons: {                   
+                        "Cancelar": function () {
+                            PopUpArchivos.dialog("close");
+                        }
+                    }
+
+                });            
+                             
+            } else if (valorBoton == 2) {
+
+                if (dialogos.dialog("close")) {
+
+                }
+
+                PopUpEscritos.dialog({
+                    modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Insistencias",
+                });
+                PopUpEscritos.dialog("open");
+            }
+        };
+
+            
+
+         function AbrirForInsistencia(valorBoton) {
+
+            if (valorBoton == 1) {
+           debugger
+                PopUpInsistencia.dialog({
+                    modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Insistencia",
+                    buttons: {
+                        "Crear": InstenciaEscrito.crearInsitencia,
+                        "Cancelar": function () {
+                            PopUpInsistencia.dialog("close");
+                        }
+                    }
+                });
+
+                PopUpInsistencia.dialog("open");
+
+            } else if (valorBoton == 2) {
+
+                if (dialogos.dialog("close")) {
+
+                }
+
+                PopUpInsistencia.dialog({
+                    modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Insistencias",
+                });
+                PopUpInsistencia.dialog("open");
+            }
+        };
+
+        return {
+
+           consultarArchivo : consultarArchivo,
+           crearInsitencia : crearInsitencia,
+           crearEscrito : crearEscrito,
+           AbrirForEscrito : AbrirForEscrito,
+           AbrirArchivos : AbrirArchivos,
+           AbrirForInsistencia : AbrirForInsistencia,
+        }
+
+    })();                                             
+
+  
+        
+        
+    </script>
+
+}

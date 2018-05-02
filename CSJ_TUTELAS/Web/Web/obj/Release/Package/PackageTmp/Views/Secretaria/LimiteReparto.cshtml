@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "Limitar Reparto";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h3 id="PageTitle" class="page-header">Limitar reparto</h3>
+    </div>
+</div>
+
+
+<br>
+<br>
+
+<div id="Proceso">
+    <center>
+             <label  readonly class="control-label" id="NumRadicadoActual">Cantidad de Procesos Actual</label>
+             <input type="number"  readonly min="0" max="5000" id="LblNumRadicadoActual" style="MARGIN-LEFT: 26PX;" />             
+             <label  readonly class="control-label" id="NumRadicadoActual">Fecha de la ultima actualización</label>
+             <input type="text" readonly  id="LblFechaLimite" />
+             <br />
+             <br />
+             <br />
+             <label class="control-label" id="LblNumRadicado">Ingrese la cantidad de Procesos</label>
+        
+
+        <input type="number" min="0" max="5000" id="CantidadProcesos" />
+        <br />
+        <br />
+      
+        <input id="GuardarLimite" type="button" class="btn btn-default"  onclick="GuardaLimite()" value="Guardar">
+   </center>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")    
+
+    <script type="text/javascript"> 
+
+    
+    $(document).ready(function(){        
+
+
+        CargarLimite();
+      
+        
+    })
+
+   
+    function GuardaLimite()
+
+    {
+    
+        let datas= $("#CantidadProcesos").val();    
+
+            debugger
+            $.ajax({
+                
+                url:'@Url.Action("GuardarLimiteReparto","Secretaria")',
+                type:"POST",
+                data: ({ data: datas }),         
+                dataType: "json",   
+                success:function(data)
+                {                
+                    AbrirMensajeModal("info","Límite de Procesos establecido con éxito.")
+                    CargarLimite();
+                    $("#CantidadProcesos").val(0);
+                }   
+
+            });
+    }   
+
+
+      function CargarLimite()
+        {
+              $.ajax({
+
+                    url:'@Url.Action("ConsultarLimiteReparto","Secretaria")',
+                    type:"GET",      
+                    dataType: "json",         
+
+                    success:function(data){
+                            $("#LblNumRadicadoActual").val(data.data[0].CantidadLimite);
+                            $("#LblFechaLimite").val(data.data[0].FechaModificacion);   
+
+                        }
+
+                }) 
+        }
+   
+    
+    </script>
+}

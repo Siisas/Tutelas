@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "Asignar Permisos A Rol";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Asignar Permisos a Rol</h2>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+
+    <div class="userscontent">
+        <div class="panel-body">
+
+            <div>
+                @Html.DropDownList("DdlPermisions", null, htmlAttributes: new { @class = "form-control chosen-select", required = "true" })
+            </div>
+
+        </div>
+
+        <table name="t-menu" id="t-menu" style="width:100%;">
+            <thead>
+                <tr>
+                    <th> Orden </th>
+                    <th> Menú </th>
+                    <th> Opciones </th>
+                </tr>
+            </thead>
+        </table>
+
+        <input id="save" type="button" class="btn btn-default" value="Guardar" onclick="CambiarPermisos();">
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/datatables")
+
+    <script type="text/javascript">
+        var dtable = null;
+        $(document).ready(function () {
+            Permisos();
+
+            if (consultar)
+            {
+                get_permisos();
+                $('#DdlPermisions').show();
+            }
+            else
+            {
+                $('#DdlPermisions').hide();
+            }
+           
+
+            if ($('#DdlPermisions').val() == "0") {
+                $('#save').attr("disabled", true);
+            }
+
+            $('#DdlPermisions').change(function () {
+                dtable.ajax.url("@Url.Content("~/Account/get_permissions_by_role")?idRol=" + $('#DdlPermisions').val() + "&idMenu=0").load();
+
+                if ($('#DdlPermisions').val() != "0") {
+
+                    $('#save').removeAttr("disabled");
+                }
+            });
+        });
+
+        function get_permisos() {
+            var idRol = $('#DdlPermisions').val();
+
+            dtable = $('#t-menu').DataTable({
+                "bServerSide": true,
+                "sAjaxSource": "@Url.Content("~/Account/get_permissions_by_role")?idRol=" + idRol + "&idMenu=0",
+                "bInfo": true,
+                "scrollX": true,
+                "order": [0, "asc"],
+                "start": 0,
+                "lengthMenu": [[60, 90, 120], [60, 90, 120]],
+                "aoColumns": [
+                                { "mData": "Orden" },
+                                { "mData": "Name" },
+                                { "mData": "Opciones" }
+                                ],
+                "columnDefs": [
+                    {
+                        "targets": [0], "visible": false
+                    },
+                    {
+                        "targets": [1], "render": function (data, type, row) {
+                            return "<input  id='idMenu_" + row.Id + "' type='hidden' value=" + row.Id + " />" + data;
+                        }
+                    },
+                    {
+                        "targets": [2], "render": function (data, type, row) {
+                            check = "";
+                            if (row.Opciones != "") {
+                                $.each(row.Opciones.split(','), function (j, elem) {
+                                    var data = elem.split('-');
+                                    var idPermiso = data[0];
+                                    var NombrePermiso = data[1];
+
+                                    if (elem != "") {
+
+                                        var tienePermiso = false;
+                                        var idRolesPermisos = 0;
+
+                                        if (row.Permisos != "") {
+                                            $.each(row.Permisos.split(','), function (k, per) {
+                                                if (per == idPermiso) {
+                                                    tienePermiso = true;
+                                                    return false;
+                                                }
+                                            });
+                                        }
+
+                                        check += "<span class=\"check-item\"><input id=\"check_" + row.Id + '_' + idPermiso + "\" type=\"checkbox\"" + (tienePermiso ? " checked=\"checked\"" : "") + " value=\"" + idPermiso + "\" /> <label for=\"check_" + row.Id + '_' + idPermiso + "\">" + NombrePermiso + "</label></span>&nbsp;";
+                                    }
+                                });
+                            }
+                            return check;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function CambiarPermisos() {
+            var Rol = $('#DdlPermisions option[value=' + $('#DdlPermisions').val() + ']').text();
+            AbrirMensajeModal("confir", "¿Está seguro que quiere cambiar los permisos del rol <b>" + Rol + "</b>?", function () { GuardarPermisos(); });
+        }
+
+        function GuardarPermisos() {
+            var idRol = $('#DdlPermisions').val();
+
+            var strPermisos = '';
+
+            $.each($("input[id*='idMenu_']"), function (i, item) {
+                var menuper = '';
+                var con = 0;
+
+                $.each($("input[id*='check_" + item.value + "_']"), function (j, chk) {
+                    if ($(chk).is(":checked")){
+                        con++;
+                        menuper += chk.value + ',';
+                    }
+                });
+
+                if (con > 0) {
+                    if (menuper.length > 0)
+                        menuper = menuper.substring(0, menuper.length - 1);
+
+                    strPermisos += item.value + ';' + menuper + '|';
+                }
+                else {
+                    strPermisos += item.value + '|';
+                }
+                    
+            });
+
+            if (strPermisos.length > 0)
+                strPermisos = strPermisos.substring(0, strPermisos.length - 1);
+
+            if (strPermisos != "") {
+                $.ajax({
+                    url: "@Url.Action("add_permissions_by_role", "Account")",
+                    type: "POST",
+                    data: { idRol: idRol, Permisos: strPermisos },
+                    success: function (data) {
+                        if (data) {
+                            AbrirMensajeModal("info", "Los permisos se han guardado satisfactoriamente", function () { document.location.reload(); });
+                                                        
+                        }
+                        else {
+                            AbrirMensajeModal("error", "Ocurrió un error al guardar los permisos.");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+}

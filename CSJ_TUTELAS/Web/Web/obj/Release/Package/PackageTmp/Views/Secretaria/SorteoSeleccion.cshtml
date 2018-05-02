@@ -1,0 +1,257 @@
+﻿
+@{
+    ViewBag.Title = "Sorteo selección";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 id="PageTitle" class="page-header">Sorteo</h3>
+    </div>
+</div>
+
+
+<button id="regitrarSorteo" class="btn btn-default">Registrar sorteo manual</button>
+<br>
+<br>
+
+
+<div id="dialog-sorteo">
+    <form class="form-horizontal" id="registrarSorteo">
+
+        <div>
+            <label>Año: </label> <span id="año"></span>
+        </div>
+        <div>
+            <label>Mes: </label> <span id="mes"></span>
+        </div>
+        <div>
+            <label>Diá: </label> <span id="dia"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Despacho-1</label>
+            <div class="col-sm-10">
+                <select id="despacho-1">
+                    <option value="0">Seleccione...</option>
+                </select>
+                <label id="message-despacho-1" class="text-danger"></label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Despacho-2</label>
+            <div class="col-sm-10">
+                <select id="despacho-2">
+                    <option value="0">Seleccione...</option>
+                </select>
+                <label id="message-despacho-2" class="text-danger"></label>
+            </div>
+        </div>
+        <!--   
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Despacho-3</label>
+            <div class="col-sm-10">
+                <select id="despacho-3">
+                    <option value="0">Seleccione...</option>
+                </select>
+            </div>
+            <label id="message-despacho-3" class="text-danger"></label>
+        </div>
+        -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button id="guardarSorteo" type="button" class="btn btn-default">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="row">
+    <div>
+        <table name="t_sorteos" id="t_sorteos" width="100%">
+            <thead>
+                <tr>
+                    <th>Año</th>
+                    <th>Mes</th>
+                    <th>Diá</th>
+                    <th>Despacho 1</th>
+                    <th>Despacho 2</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <button id="nuevoSorteo" class="btn btn-default">Registrar sorteo Aleatorio</button>
+</div>
+
+<script>
+    let valCampos = null;
+    let despachos = null;
+    $(document).ready(function() {
+
+
+           $('#regitrarSorteo').click(event => {
+            abrirModal();
+        });
+
+
+            $('#guardarSorteo').click(evene => {
+            registrarNuevoSorteo();
+        });
+
+
+         function abrirModal() {
+            var nombreMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                              "Julio", "Agosto", "Septiempbre", "Octubre", "Noviembre", "Diciembre"];
+
+
+            let date = new Date();
+            $('#año').html(date.getFullYear());
+            $('#mes').html(nombreMeses[date.getMonth()]);
+            $('#dia').html(date.getDate());
+
+            //valCampos.limpiarMensajes();
+            $('#registrarSorteo')[0].reset();
+
+            dialogSorteo.dialog({
+                modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Registrar sorteo",
+                buttons: {}
+            });
+
+            dialogSorteo.dialog("open")
+        }
+
+         function inciarModals() {
+
+            dialogSorteo = $("#dialog-sorteo");
+            dialogSorteo.dialog({ autoOpen: false });
+        };
+
+          inciarModals();
+           obtenerDespachos();
+
+        function cargarTabla() {
+
+            let columns = [
+                            { 'mData': 'Ano' },
+                            { 'mData': 'MesString' },
+                            { 'mData': 'Dia' },
+                            { 'mData': 'Despacho1' },
+                            { 'mData': 'Despacho2' },
+            ];
+
+            table = CargarDataTable("t_sorteos", '@Url.Action("GetSorteosSeleccion", "Secretaria")', columns);
+        };
+
+           function obtenerDespachos() {
+
+            $.ajax({
+                url: "@Url.Action("GetAllDespachos", "Despacho")",
+                method: "GET",
+                dataType: "Json"
+            })
+            .done(data => {
+
+                //despachos = data.data;
+                data.data.forEach(item => {
+                    let option = $('<option>');
+                    option.val(item.Id);
+                    option.html(item.NombreDespacho);
+
+                    $('select#despacho-1').append(option);
+                    $('select#despacho-2').append(option.clone());
+                    $('select#despacho-3').append(option.clone());
+                });
+            });
+        };
+
+
+        // Aqui debo modificar para ingresar los datos desde los ddl y asi utilizar el nuevo sp
+
+            function registrarNuevoSorteo() {
+                debugger
+            let data = {
+                despacho_1: $('#despacho-1').val(),
+                despacho_2: $('#despacho-2').val(),
+                despacho_3: $('#despacho-3').val()
+            };
+
+        debugger
+
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("RegistrarSorteoSeleccionManual", "Secretaria")",
+                    data: data,
+                    dataType: "Json"
+                })
+                .done(data => {
+
+                    if (data.data != '')
+                        AbrirMensajeModal('error', data.data);
+                    else
+                        AbrirMensajeModal('info', 'El sorteo se registro correctamente');
+
+                    dialogSorteo.dialog("close");
+                    table.ajax.reload();
+                });
+            
+        };
+
+          function validarCampos() {
+              debugger
+
+            let campos = [
+                    {
+                        elemento: $('#despacho-1'),
+                        requiredValue: 0,
+                        output: $('#message-despacho-1')
+                    },
+                    {
+                        elemento: $('#despacho-2'),
+                        requiredValue: 0,
+                        output: $('#message-despacho-2')
+                    },
+                    {
+                        elemento: $('#despacho-3'),
+                        requiredValue: 0,
+                        output: $('#message-despacho-3')
+                    }
+            ];
+
+            valCampos = agregarValidacion(campos);
+        };
+
+
+
+
+
+        function GenerarNuevoSorteo() {
+
+            $.ajax({
+                url: "@Url.Action("GenerarNuevoSorteoSeleccion", "Secretaria")",
+                type: "GET"
+            })
+            .done(data => {
+
+                if(data.data != '')
+                    AbrirMensajeModal('error', data.data);
+                else
+                    AbrirMensajeModal('info', 'El sorteo se genero correctamente');
+
+                table.ajax.reload();
+            });
+        };
+
+        $('#nuevoSorteo').click(function() {
+
+            GenerarNuevoSorteo();
+        });
+
+        cargarTabla();
+    });
+</script>
+

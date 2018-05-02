@@ -1,0 +1,215 @@
+﻿@model Datos.Modelo.MembershipModel
+@{
+    ViewBag.Title = "Editar usuario";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <a href="javascript:void(0);" onclick="volver();" class="btn btn-default"> <i class="fa fa-arrow-left"></i> Volver</a>
+    </div>
+    <div class="col-lg-12">
+        <h3 class="page-header">@ViewBag.Title</h3>
+    </div>
+</div>
+<br>
+    <div class="adminmanage">
+    @using (Html.BeginForm("EditUser", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("idusuario", Model.User_Id)
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <label id="error"></label>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.User_NickName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.User_NickName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.User_Name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.User_Name, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.User_LastName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.User_LastName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.User_Mail, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.User_Mail, new { @class = "form-control" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.Label("Seccional Usuario", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UserSeccional, null, htmlAttributes: new { @class = "form-control", @style = "width:180px" })
+            </div>
+        </div>*@
+        @*<div class="form-group">
+            <label class="col-md-2 control-label">Contraseña actual</label>
+            <div class="col-md-10">
+                @Html.Password("PastPassword","", new { @class = "form-control" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            @Html.Label("Password", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.Password("Password","", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Confirmar Password", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.Password("ConfirmPassword","", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Despacho Usuario", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UserDespacho, null, htmlAttributes: new { @class = "form-control", @style = "width:180px" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.User_Role, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.User_Role, null, htmlAttributes: new { @class = "form-control", @style = "width:180px" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Guardar" onclick="return checkForm($('form')); AbrirMensajeModal('confir', '¿ Está seguro que quiere editar los datos del usuario <b>'+ $('#User_NickName').val() +'</b>?', function () { $('form').submit(); }, function () { CerrarMensajeModal(); }); return false;" />
+            </div>
+        </div>
+    }
+</div>
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+    <script type="text/javascript">
+
+        function volver() {
+            window.history.back();
+        }
+
+        function checkPassword(str) {
+            mensaje = '';
+            var validlength = false;
+            var validnumero = false;
+            var validspecial = false;
+            var validlower = false;
+            var validupper = false;
+            //var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+            //return re.test(str);
+
+            //<!-- Configuración de Contraseña-->
+            //<!--Obtiene o establece la longitud mínima requerida de la contraseña.-->
+            if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequiredLength"]' != '') {
+                if (str.length >= parseInt('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequiredLength"]'))
+                    validlength = true;
+                else
+                    mensaje += '<br/>- Debe tener mínimo @System.Configuration.ConfigurationManager.AppSettings["PasswordRequiredLength"] caracteres.'
+
+            }
+            else
+                validlength = true;
+
+            //<!--Obtiene o establece si la contraseña requiere un dígito numérico ( '0' - '9').-->
+            if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireDigit"]' == 'true') {
+                var regex = /^(?=.*[0-9]).+$/;
+
+                if (regex.test(str))
+                    validnumero = true;
+                else
+                    mensaje += '<br/>- Debe tener un número.';
+            }
+            else
+                validnumero = true;
+
+            //<!--Obtiene o establece si la contraseña requiere o no un carácter no letra o dígitos.-->
+            if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireNonLetterOrDigit"]' == 'true') {
+                var regex = /^(?=.*[\W]).+$/;
+
+                if (regex.test(str))
+                    validspecial = true;
+                else
+                    mensaje += '<br/>- Debe tener un carácter especial.';
+            }
+            else
+                validspecial = true;
+
+            //<!--Obtiene o establece si la contraseña requiere una letra minúscula ( 'a' - 'z').-->
+            if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireLowercase"]' == 'true') {
+                var regex = /^(?=.*[a-z]).+$/;
+
+                if (regex.test(str))
+                    validlower = true;
+                else
+                    mensaje += '<br/>- Debe tener una letra minúscula.';
+            }
+            else
+                validlower = true;
+
+            //<!--Obtiene o establece si la contraseña requiere una letra mayúscula ( 'A' - 'Z').-->
+            if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireUppercase"]' == 'true') {
+                var regex = /^(?=.*[A-Z]).+$/;
+
+                if (regex.test(str))
+                    validupper = true;
+                else
+                    mensaje += '<br/>- Debe tener una letra mayúscula.';
+            }
+            else
+                validupper = true;
+
+            return (validlength && validnumero && validspecial && validlower && validupper);
+        }
+
+        function checkForm(form) {
+            var pass1 = $('#Password');
+            var pass2 = $('#ConfirmPassword');
+            var goodColor = "#66cc66";
+            var badColor = "#ff6666";
+            $(".text-danger").html('');
+
+            if (pass1.val() == pass2.val())
+            {
+                pass2.css("background-color", goodColor);
+                if (!checkPassword(pass1.val()))
+                {
+                    pass1.css("background-color", badColor);
+                    $(".text-danger").html('');
+                    $(".text-danger").html("La contraseña no es válida: " + mensaje);
+                    pass1.focus();
+                    return false;
+                }
+            }
+            else
+            {
+                $(".text-danger").html("Las contraseñas no conciden");
+                pass1.css("background-color", goodColor);
+                pass2.css("background-color", badColor);
+                pass2.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+    </script>

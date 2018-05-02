@@ -1,0 +1,1741 @@
+﻿@{
+    ViewBag.Title = "Consulta";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Consulta</h2>
+    </div>
+</div>
+
+<hr />
+
+<div class="row" style="display:none;" id="botonesCor">
+    <div class="col-md-2" id="AdHonorem">
+        <a onclick="repartoAdTuSel.abrirModal(1)" class="btn btn-default">Ad Honorem</a>
+    </div>
+    <div class="col-md-2" id="Tutores">
+        <a onclick="repartoAdTuSel.abrirModal(2)" id="btTutores" class="btn btn-default">Tutores</a>
+    </div>
+    <div class="col-md-2" id="BtnSeleccion" style="display:none" >
+        <a onclick="repartoAdTuSel.abrirModal(3)" class="btn btn-default">Selección</a>
+    </div>
+    <div class="col-md-2" id="BtnRevision" style="display:none">
+        <a onclick="modalProcesoRevision.abrirModal()" class="btn btn-default">Revisión</a>
+    </div>
+    <div class="col-md-2" id="Votacion" style="margin-top: -11px;" >
+        <a onclick="modalVotacionSeleccionados.abrirModalRadSelec()" class="btn btn-default">Votación procesos seleccionados</a>
+    </div>
+   
+</div>
+<div class="row" style="display:none;" id="LLenarDDls">   
+    <div class="col-md-2">
+        <select name="LlenarDDl" id="LlenarDDl" class="form-control">
+                <option value="0">Seleccione...</option>
+        </select>
+    </div>
+</div>
+<br>
+<div class="row" style="display:none;" id="BtnVerificarEsIns">   
+    <div class="col-md-2">
+        <a  onclick="initTablaConsulta()" class="btn btn-default">Consultar Procesos por estado</a>
+    </div>
+     <div btn btn-default class="col-md-2 btn btn-default" id="Reporte" style="margin-top: 0px;display:none;margin-left: 58px;  " >
+        <!-- <a onclick="modalVotacionSeleccionados.abrirModalRadSelec()" class="btn btn-default">Generar Reporte</a> -->
+                     @Html.ActionLink("Generar Reporte", "AutoSalaSeleccion", "Consultas", new { target = "_blank" })
+    </div>
+</div>
+
+
+<hr />
+<div class="userscontent">
+    <table name="t_consulta" id="t_consulta" width="100%">
+        <thead>
+            <tr>
+                <th class="NumRadicado">Número Radicado</th>
+                <th class="FechaRadicacion">Fecha Radicación</th>
+                <th class="NumProceso">Número Proceso</th>
+                <th class="Estado">Estado</th>
+                 <th class="Accion">Acción</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+<div class="userscontent">
+    <table name="t_consultaSecretaria" id="t_consultaSecretaria" width="100%">
+        <thead>
+            <tr id="tablaSecretario" style="display:none;" >
+               <th class="NumRadicado">Número Radicado</th>
+                <th class="Estado">Estado</th>
+                <th class="NumProceso">Número Proceso</th>
+                <th class="Estado" >Estado</th>                
+                <th class="Accion">Accion</th> 
+                <th class="Estado">Adjunto</th>    
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<!--------------------------------
+--- Modal Reporarto AdHonorems ---
+-------------------------------->
+
+
+<div id="dialog-Adhonorem">
+    <div class="user-register container">
+        <form id="formulario-Adhonorem" class="form-horizontal">
+            <div class="">
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-4">
+                    <input type="button"  class="btn btn-default" onclick="repartoAdTuSel.guardarFormAdTu(1)" value="Guardar" />
+                </div>
+                
+                  <div class="form-group col-md-4">
+                    <div style="font-size:15px;">
+                       @Html.Editor("Total", new { htmlAttributes = new { @class = "col-md-3" }  })%               
+                     </div>
+                  </div>
+            </div>  
+        </form>
+    </div>
+</div>
+<!------------------------------
+--- Fin Reporarto AdHonorems ---
+------------------------------->
+
+<!-----------------------
+--- Reporarto Tutores ---
+------------------------>
+
+<div id="dialog-Tutores">
+    <div class="user-register container">
+        <form id="formulario-Tutores" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" class="btn btn-default" onclick="repartoAdTuSel.guardarFormAdTutor(2)" value="Guardar" />
+                </div>
+            </div>  
+        </form>
+    </div>
+</div>
+
+<!---------------------------
+--- Fin Reporarto Tutores ---
+---------------------------->
+
+<!-------------------------
+--- Escritos Ciudadanos ---
+-------------------------->
+<div id="dialogoEscrito-escritoCiudadano">    
+        <form id="CreateAndEdit">
+            <div class="row">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <hr />
+                        <input id="id" name="id" type="text" style="display:none" />
+                        <div class="form-group">
+                            <label class="control-label col-md-4" id=""></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" class="btn btn-default" onclick="CrearPorcentaje(1)" value="Guardar" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>    
+</div>
+
+<!-----------------------------
+--- Fin Escritos Ciudadanos ---
+------------------------------>
+
+<!-----------------------
+--- Reparto Selección ---
+------------------------>
+
+<div id="dialog-Seleccion">
+    <div class="userscontent">
+        <table name="t_consultaSeleccion" id="t_consultaSeleccion" width="100%">
+            <thead>
+                <tr>
+                    <th>Número Proceso</th>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+        </table>
+        <input type="button" class="btn btn-default" onclick="saveReparto();" value="Guardar" />
+    </div>
+</div>
+
+<!--------------------------
+---Fin Reparto Selección ---
+--------------------------->
+
+<!----------------------------------
+--- Modal votacion seleccionados ---
+---------------------------------->
+
+<div id="dialog-votacion">
+    <div class="container">
+        <div class="row">
+            <table name="t_votacion" id="t_votacion" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Número Radicado</th>
+                        <th>Fecha Radicación</th>
+                        <th>Número Proceso</th>
+                        <th>Voto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <!-- <a onclick="modalVotacionSeleccionados.generarPdf()" class="btn btn-default">Generar reporte</a> -->
+                <!-- <a href=@Url.Action("AutoSalaSeleccion", "Consultas", new { target = "_blank" }) class="btn btn-default">Generar reporte</a> -->
+                <!-- @Html.ActionLink("Generar Reporte", "AutoSalaSeleccion", "Consultas", new { target = "_blank" }) -->
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------------------------
+--- Fin modal votacion seleccionados ---
+-------------------------------------->
+
+<!-----------------------------------------------
+--- Modal Consultar Procesos para insistencia ---
+------------------------------------------------>
+
+<div id="dialog-consultaInsEsc">
+    <div class="container">
+        <div class="row">
+            <table name="t_consultaInsEsc" id="t_consultaInsEsc" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Número Radicado</th>                        
+                        <th>Estado</th>   
+                        <th>Número Proceso</th>                        
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!---------------------------------------------------
+--- Fin Modal Consultar Procesos para insistencia ---
+---------------------------------------------------->
+
+<!-----------------------------------------------
+--- Modal Consultar Procesos para revicion ---
+------------------------------------------------>
+
+<div id="dialog-proceso-revision">
+    <div class="container">
+        <div class="row">
+            <table name="t_proceso-revision" id="t_proceso-revision" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Número Radicado</th>   
+                        <th>Fecha Radicado</th>                     
+                        <th>Número Proceso</th>                        
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------
+--- Fin Modal Consultar Procesos para revicion ---
+------------------------------------------------>
+
+<!----------------------------
+--- Auto sala de selección ---
+---------------------------->
+
+<button onclick="pritnAutoSeleccion()" style="display:none">Descargar</button>
+<div id="autoSalaSeleccion" style="display:none">
+    <div class="container">
+        <div class="col-md-3 col-md-offset-8 text-right ">www.corteconstitucional.gov.co</div>
+        <div class="col-md-12 text-center print-auto-titulos print-auto-titulo">REPÚBLICA DE COLOMBIA</div>
+        <div class="col-md-12 text-center"><img src="/Content/Images/EscudoColombia.jpeg" width="100" height="120" alt=""></div>
+        <div class="col-md-12 text-center print-auto-titulos print-auto-sub-1">CORTE CONSTITUCIONAL</div>
+        <div class="col-md-12 text-center print-auto-titulos print-auto-sub-2">SALA DE SELECCIÓN NÚMERO DOS</div>
+        <div class="col-md-10 col-md-offset-1 text-justify print-auto-parrafos"><p>Bogotá D.C., veintisiete(27) de febrerode dos mil dieciocho (2018)</p></div>
+        <div class="col-md-10 col-md-offset-1 text-justify print-auto-parrafos"><p><strong>Ref.</strong> Selección  y  reparto de  los  expedientes  de  tutela  cuyos  fallos  pasan  a revisión de la Corte Constitucional.</p></div>
+        <div class="col-md-10 col-md-offset-1 text-justify print-auto-parrafos"><p>La Sala de Selección Número Dos, integrada por los Magistrados designados por la Sala Plena de la Corte Constitucional para conformarla, en ejercicio de sus competencias constitucionales y legales, en especial de las consagradas en los artículos 86 y 241-9 de la Carta Política, 33 del Decreto 2591 de 1991 y 51, 52,  53  y  55  del  Reglamento  de  la  Corporación1,  luego  de  estudiar  los expedientes de tutela incluidos en el rango comprendido entre los radicados:</p></div>
+        <div class="col-md-10 col-md-offset-1 text-justify print-auto-parrafos">
+            <p>SÉPTIMO.-SELECCIONARpara  revisión,  conforme  a  lo  previsto  en  los artículos  52  y  55  del  Reglamento  de  la  Corporación,  los  fallos  de  tutela correspondientes a los siguientes expedientes: </p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <table>
+                    <tr>
+                        <thead>
+                            <th>No</th>
+                            <th>Expediente</th>
+                            <th>Accionante</th>
+                            <th>Accionado</th>
+                            <th>Criterio de selección</th>
+                        </thead>
+                        <tbody>
+                            <td>1</td>
+                            <td>T-6.544.419 </td>
+                            <td>Droguería Electra Ltda, en Restructuración </td>
+                            <td>Consejo de Estado, Sección Tercera, Subsección B</td>
+                            <td>Objetivo: necesidad de pronunciarse sobre una determinada línea jurisprudencial</td>
+                        </tbody>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!----------------------------
+--- Fin auto sala de selección ---
+---------------------------->
+
+@Scripts.Render("~/bundles/datatables")
+<script type="text/javascript">
+    var dtable = ''; 
+    
+    /** Tabla consulta **/
+
+    var tablaConsulta = (function (){
+
+        let role = '';
+        let rolRadicador = "bc600e11-ba76-4729-bc36-35eab571fee2";
+        let rolAdHonorem = "4b365b55-eb91-4437-af19-5f00dd9bf55b";
+        let rolCoodinadorDespacho = "9e42ad3f-f449-4582-9b37-37343dfa5596";
+        let rolTutor = "b76d800c-f34d-43a2-a583-549317968a4e";
+        let rolCoodinadorSeleccion = "cb06f9d4-13d6-4341-8b69-7ec6199c85ac";
+        let rolCoordinadorRevision = "8cbd9e16-5dcf-4ebd-a2b4-7011fac4ed25";
+        let rolSecretario = "dc9a678b-f9c8-4567-b4bc-a6ef71f59483";
+        let rolAbogado = "d823b9a8-9b38-417d-bf6a-dda0f4aceb8f";
+        let rolAbogadoSustanciador = "69902d61-4df4-4a41-abf1-e6cfb1251ed0";
+        let rolAuxiliarJudicialGrado1 = "012da970-b31f-43f3-8b36-c89874aeb9fa";
+        let rolAuxiliarJudicialGrado2 = "5be41259-98db-4fad-95e3-73dfac106432";
+        let rolJudicantes = "9359a6ef-454c-44b9-b307-69f8e5504d37";
+        let rolMajistrado = "ebb6c4d1-d080-4822-8bc1-a5523a5f0fe1";
+        let rolMajistradoAuxiliar = "477bb66e-f523-487e-b6e5-08c80a4eb7da";
+        let rolProfesionalGrado21= "eb581596-9767-4ad8-97b0-de7fffb6771a";
+        let rolProfesionalGrado33 ="6f8a9674-18ed-4d8b-9718-bdc53dc1b3fb";
+        
+        function consultarRol(){
+            debugger
+            $.ajax({
+                method: "POST",
+                dataType: "JSON",
+                url: window.location.origin + '/Consultas/RolUsuario'
+            })
+            .done(function (data) {              
+                sessionStorage["ROl"] = data;                
+                role = data;
+                Permisos();
+                IniciarPopups()
+
+                if (consultar) {
+                    //Rol Radicador
+                    if (role == rolRadicador) {
+                        getTablaRadicador()                    
+                    }
+                    //Rol Adhonorem
+                    if (role == rolAdHonorem) {
+                        getTablaAdHonorem()
+                    }
+                    //ROl Coodinador Despacho 9e42ad3f-f449-4582-9b37-37343dfa5596
+                    if (role == rolCoodinadorDespacho) {
+                        getTablaCoodinadorDespacho();
+                         $("#Votacion").hide();
+                    }
+
+                    //ROl Tutor  b76d800c-f34d-43a2-a583-549317968a4e
+                    if (role == rolTutor) {
+                        getTablaTutor()
+                    }
+
+                    //ROl Coordinador Seleccion   cb06f9d4-13d6-4341-8b69-7ec6199c85ac
+                    if (role == rolCoodinadorSeleccion) {                        
+                        /* getTablaCoodinadorSeleccion()*/                       
+                        $("#BtnSeleccion").show();
+                        $("#botonesCor").show();
+                         $("#Tutores").hide();                        
+                        $("#AdHonorem").hide();
+                    }
+
+                    //ROl Coordinador Revision 8cbd9e16-5dcf-4ebd-a2b4-7011fac4ed25
+                    if (role == rolCoordinadorRevision) {                      
+                        /*getTablaCoordinadorRevision() */
+                        $("#BtnRevision").show();
+                        $("#botonesCor").show();
+                        $("#Tutores").hide();
+                        $("#Votacion").hide();
+                        $("#AdHonorem").hide();
+                    }
+
+                    //ROl Secretario  dc9a678b-f9c8-4567-b4bc-a6ef71f59483
+                    if (role == rolSecretario) {    
+                        $("#BtnVerificarEsIns").show();
+                        $('th.Accion').remove()                         
+                        $("#LLenarDDls").show();
+                        cargaEstadoProceso();                          
+                        $("#tablaSecretario").show();
+                        $("#tablaConsulta").hide();
+                        $("#t_consulta").hide();   
+                        $("#Reporte").show();
+                        
+                    }      
+
+                    //ROl Magistrado Auxiliar Profesional grado 33,Profesional grado 21,
+                    //Abogado sustanciador,Auxiliar judicial grado 1,Auxiliar judicial grado 2
+                    if (role == rolMajistradoAuxiliar ||role == rolProfesionalGrado21 ||role == rolProfesionalGrado33 ||role == rolAbogadoSustanciador ||role == rolAuxiliarJudicialGrado1 ||role == rolAuxiliarJudicialGrado2 || role == rolJudicantes) {                      
+                        getTablaVariosPerfiles()
+                    }     
+                }
+            })
+        };
+
+        function getTablaSecretario() {
+            $('#botonesSecretaria').show();
+            var columns = [
+                    { "mData": "numeroRadicado", "bVisible": false },
+                    { "mData": "fechaRadicacion", "bVisible": false },
+                        { "mData": "ProcesoRadicado", "bSortable ": false },
+                        { "mData": "Nombre", "bSortable ": false },
+                    {
+                        "mData": "ProcesoRadicado",
+                        "bSearchable": false,
+                        "bSortable ": false,
+                        "render": function (data, type, row) {
+                            var IdEstado = row.Id;
+                            var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                            $('th.NumRadicado').remove()
+                            $('th.FechaRadicacion').remove()
+                            return html;
+                        },
+                    }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+        };
+        
+        function getTablaCoordinadorRevision() {
+                var columns = [
+                                { "mData": "numeroRadicado", "bVisible": false },
+                                { "mData": "fechaRadicacion", "bVisible": false },
+                                    { "mData": "ProcesoRadicado", "bSortable ": false },
+                                    { "mData": "Nombre", "bSortable ": false },
+                                {
+                                    "mData": "ProcesoRadicado",
+                                    "bSearchable": false,
+                                    "bSortable ": false,
+                                    "render": function (data, type, row) {
+                                        var IdEstado = row.Id;
+                                        var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                                        $('th.NumRadicado').remove()
+                                        $('th.FechaRadicacion').remove()
+                                        return html;
+                                    },
+                                }
+            ];
+                var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+
+        };
+
+        function getTablaCoodinadorSeleccion() {
+            var columns = [
+                            { "mData": "NumeroProceso", "bVisible": false },
+                            { "mData": "fechaRadicacion", "bVisible": false },
+                                { "mData": "NumeroProceso", "bSortable ": false },
+                                { "mData": "Nombre", "bSortable ": false },
+                            {
+                                "mData": "ProcesoRadicado",
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, row) {
+                                    var IdEstado = row.Id;
+                                    var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.NumeroProceso + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                                    $('th.NumRadicado').remove()
+                                    $('th.FechaRadicacion').remove()
+
+                                    return html;
+                                },
+                            }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+        };
+
+        function getTablaVariosPerfiles() {
+            var columns = [
+                            { "mData": "ProcesoRadicado", "bVisible": false },
+                            { "mData": "fechaRadicacion", "bVisible": false },
+                                { "mData": "ProcesoRadicado", "bSortable ": false },
+                                { "mData": "Nombre", "bSortable ": false },
+                            {
+                                "mData": "ProcesoRadicado",
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, row) {
+                                    var IdEstado = row.Id;
+                                    var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                                    $('th.NumRadicado').remove()
+                                    $('th.FechaRadicacion').remove()
+
+                                    return html;
+                                },
+                            }
+            ];
+            var arrayrender = ["ProcesoRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+        };
+
+        function    getTablaTutor() {
+                debugger
+            var columns = [
+                            { "mData": "numeroRadicado", "bVisible": false },
+                            { "mData": "fechaRadicacion", "bVisible": false },
+                                { "mData": "ProcesoRadicado", "bSortable ": false },
+                                { "mData": "Nombre", "bSortable ": false },
+                            {
+                                "mData": "ProcesoRadicado",
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, row) {
+                                    var IdEstado = row.Id;
+                                    var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                                    $('th.NumRadicado').remove()
+                                    $('th.FechaRadicacion').remove()
+
+                                    return html;
+                                },
+                            }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+
+        };
+
+        function getTablaCoodinadorDespacho() {
+            $('#botonesCor').show();
+            var columns = [
+                    { "mData": "numeroRadicado", "bVisible": false },
+                    { "mData": "fechaRadicacion", "bVisible": false },
+                        { "mData": "ProcesoRadicado", "bSortable ": false },
+                        { "mData": "Nombre", "bSortable ": false },
+                    {
+                        "mData": "ProcesoRadicado",
+                        "bSearchable": false,
+                        "bSortable ": false,
+                        "render": function (data, type, row) {
+                            var IdEstado = row.Id;
+                            var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                            $('th.NumRadicado').remove()
+                            $('th.FechaRadicacion').remove()
+                            return html;
+                        },
+                    }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+        };    
+
+        function getTablaRadicador() {
+            $('th.NumRadicado').remove()
+            $('th.Estado').remove()
+            var columns = [
+                        { "mData": "fechaRadicacion", "bVisible": false },
+                        { "mData": "ProcesoRadicado", "bSortable ": false },
+                        //Numero Proceso	Acción  Rol Wilson Radicador
+                        {
+                            "mData": "ProcesoRadicado",
+                            "bSearchable": false,
+                            "bSortable ": false,
+                            "render": function (data, type, row) {
+                                var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=\'' + row.ProcesoRadicado + '\'&Rol=' + role + '"><button class="btn btn-primary">Radicar</button></a>';                               
+                                return html;
+                            },
+                        }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+        };
+
+        function getTablaAdHonorem() {           
+            $('th.NumProceso').remove()     
+            $('th.Estado').remove()      
+            var columns = [
+                            //{ "mData": "NumeroRadicadoUnico", "bVisible": false },
+                            { "mData": "fechaRadicacion", "bVisible": false },
+                            { "mData": "ProcesoRadicado", "bSortable ": false },
+                            {
+                                "mData": "ProcesoRadicado",
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, row) {
+                                    var html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + role + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                                    return html;
+                                },
+                            }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("Consultar", "Consultas")', columns, 0, arrayrender);
+        };
+
+        return {
+            consultarRol: consultarRol
+        };
+    })();
+
+    /** Fin tabla consulta **/
+
+    /** Reparto adhonores, tutores, seleccion **/
+
+    var repartoAdTuSel = (function(){
+        debugger
+
+        function abrirModal(accion) {
+ 
+            if(accion == 1) {
+
+                consultarDisponibles(1);
+              
+                dialog.dialog({
+                    modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "AdHonorem",
+                    close: function( event, ui ) {
+                        $('#formulario-Adhonorem .control-slider').remove();
+                    }
+                });
+                //AdHonorem
+                
+                dialog.dialog("open");
+              
+                 
+            } else if (accion == 2) {
+
+                consultarDisponibles(2);
+                       
+                dialogos.dialog({
+                    
+                    modal: true, autoOpen: false, resizable: false, closeText: "", width: 400, title: "Tutor",
+                    close: function( event, ui ) {
+                        $('#formulario-Tutores .control-slider').remove();
+                       
+                    }
+                });
+                //Tutores
+                dialogos.dialog("open");                                               
+                
+
+            } else if (accion == 3) {
+
+                $("#dialog-Seleccion").dialog(dtable.ajax.reload(),{
+                    modal: true, resizable: false, closeText: "", width: 400, title: "Selección"
+                });
+                //Seleccion
+                $("#dialog-Seleccion").dialog("open");
+            }
+        };
+        		
+        function consultarDisponibles(valor) {
+            $.ajax({
+                method: "POST",
+                dataType: "JSON",
+                data: { data: valor },
+                url: window.location.origin + '/Consultas/GetAllAdhonoremTutorsByIdDespacho'
+            })
+            .done(function (data) {
+                
+                if(valor == 1)
+                {
+                
+                let campos = [];                        
+
+                
+
+
+                data.forEach(item => {
+
+                    let stringCampo = '<div style="font-size:15px;" class="form-group control-slider">';
+                    stringCampo += '<label class="col-md-2">' + item.first_name + '</label>';                    
+                    stringCampo += '';                     
+                    stringCampo += '<div class="col-md-2">';
+                    stringCampo += '<div data-user-id="'+ item.IdUsuario +'" class="slider" style="margin: 10px 0px;"></div>';                    
+                    stringCampo += '</div>';
+                    stringCampo += '<div class="col-md-1">';
+                    stringCampo += '<div class="slide-value"><input class="slide-value" type="text" readonly/><span>%</span></div>'
+                   
+
+                    let campo = $(stringCampo);                 
+
+                    campo.find('.slider')
+                    .slider({
+                        range: "min",
+                        animate: true,
+                        value: 1,
+                        min: 0,
+                        max: 100,
+                        step: 1
+                    });                 
+                    campo.find('.slider')
+                    .slider({
+                         slide: function (event, ui) {
+
+                            campo.find('.slide-value').val(ui.value);
+                        },
+                        change: function (event, ui) {
+                            
+                            
+                            let valor = $(this).slider('value');                          
+
+                            if(valor < 30)
+                            campo.find('.ui-slider-range').css({'background-color': '#FE2712'});
+                            else if(valor > 31 && valor < 70)
+                            campo.find('.ui-slider-range').css({'background-color': '#FEFE33'});
+                            else if(valor >= 70)
+                            campo.find('.ui-slider-range').css({'background-color': '#66B032'});
+
+                            //campo.find('.slide-value').val(ui.value);
+                        }
+
+                    });                    
+
+                    campos.push(campo);                   
+                
+                });                              
+                      if(valor == 1)
+                    $('#formulario-Adhonorem').prepend(campos);                                     
+                    $("#Total").attr("readonly");
+                }
+
+                else{
+
+                  
+                    
+                    // Campo Tutor seleccionar 
+                    
+                let camposTu = [];                        
+
+
+                data.dato.forEach(item => {
+
+                    let stringCampo = '<div style="font-size:15px;" class="form-group control-slider">';
+                    stringCampo += '<label class="col-md-2">' + item.first_name + '</label>';
+                    stringCampo += '<label class="col-md-2">Sel: Ad Honorem</label>';
+                    stringCampo += '';                     
+                    stringCampo += '<div class="col-md-2">';
+                    stringCampo += '<div data-user-id="'+ item.IdUsuario +'" class="slider" LlenarDDlAdHonorem" style="margin:0px 0px;"><select name="LlenarDDlAdHonorem" id="LlenarDDlAdHonorem"  class="col-md-12"> <option  value="0">Seleccione...</option>  </select></div>';                                      
+                    stringCampo += '</div>';
+                    stringCampo += '<div class="col-md-1">';
+                    stringCampo += '</div>'
+                   
+
+                    let campo = $(stringCampo);                 
+
+                    campo.find('.slider')
+                    .slider({
+                        range: "min",
+                        animate: true,
+                        value: 1,
+                        min: 0,
+                        max: 100,
+                        step: 1
+                    });                 
+                    campo.find('.slider')
+                    .slider({
+                         slide: function (event, ui) {
+
+                            campo.find('.slide-value').val(ui.value);
+                        },
+                        change: function (event, ui) {
+                            
+                            
+                            let valor = $(this).slider('value');
+
+
+                            if(valor < 30)
+                            campo.find('.ui-slider-range').css({'background-color': '#FE2712'});
+                            else if(valor > 31 && valor < 70)
+                            campo.find('.ui-slider-range').css({'background-color': '#FEFE33'});
+                            else if(valor >= 70)
+                            campo.find('.ui-slider-range').css({'background-color': '#66B032'});
+
+                            //campo.find('.slide-value').val(ui.value);
+                        }
+
+                    });                    
+
+                    camposTu.push(campo);                   
+                
+                    });                              
+
+                        if(valor == 1)
+                        $('#formulario-Adhonorem').prepend(campos);
+                    else if(valor == 2)
+                        $('#formulario-Tutores').prepend(camposTu);        
+                        $("span").removeClass("ui-slider-handle ui-corner-all ui-state-default LlenarDDlAdHonorem ui-slider ui-slider-horizontal ui-widget ui-widget-content");
+
+                        
+                            $.each(data.data, function(i,item){
+                            debugger
+                            let option = $('<option>');                                                                  
+                                    option.val(item.IdUsuario);                                                                
+                                    option.html(item.first_name);                                    
+                                        $('select#LlenarDDlAdHonorem').append(option);                                                                
+                    });              
+                }                                                     
+            
+            });
+        };
+
+        //Guardar Formulario con porcentaje de AdHonores y Tutores.
+        function guardarFormAdTu(IdFormulario) {
+
+            let data = [];
+            let dataAdo = [];
+            let campos = [];
+            let adHo = [];
+            debugger
+            if(IdFormulario == 1)
+            campos = $('#formulario-Adhonorem .slider');
+            else if(IdFormulario == 2)
+            campos = $('#formulario-Tutores .slider');
+            adHo = $('#formulario-Tutores .Ado');
+            let total = 0;
+            
+            for(let i = 0; i < campos.length; i++){ 
+                
+                
+
+
+                let value = {
+                    indice: $(campos[i]).attr('data-user-id'),
+                    valor:  $(campos[i]).slider('value'),                                                            
+                };
+
+                total = $(campos[i]).slider('value');
+                data.push(value);
+                
+            };
+
+
+             for(let i = 0; i < adHo.length; i++){ 
+                
+                let valueAdo = {
+                    Ado: $(adHo[i]).val()                                    
+                };                
+                data.push(valueAdo);                
+            };
+            
+            
+
+
+            
+            let dato;
+            let suma = 0;
+            $.each(data, function (i, item) {
+			 debugger;						
+              suma += Number(item.valor);
+              
+		 }); 	
+
+
+         
+            if (suma < 100)
+            {
+                $('#formulario-Tutores .control-slider').remove();
+                $('#formulario-Adhonorem .control-slider').remove();
+                dialogos.dialog('close');
+                dialog.dialog('close');
+                return AbrirMensajeModal("info","Debe seleccionar el 100%");
+            }
+
+            $.ajax({
+                method: "POST",
+                dataType: "JSON",
+                data: { stringifyJson: JSON.stringify(data), IdFormulario: IdFormulario },
+                url: window.location.origin + '/Consultas/RecibirPorcentajes'
+            })
+            .done(data => {
+                debugger
+                if(IdFormulario == 1) {
+
+                    dialog.dialog('close');
+                    $('#formulario-Adhonorem .control-slider').remove();
+                    AbrirMensajeModal("info","Reparto realizado con exito")
+
+                } else if(IdFormulario == 2) {
+
+                    dialogos.dialog('close');
+                    $('#formulario-Tutores .control-slider').remove();
+                    AbrirMensajeModal("info","Reparto realizado con exito")
+                }
+                
+            });
+        }
+
+        // Funcion Tutor
+
+          function guardarFormAdTutor(IdFormulario) {
+
+            let data = [];
+            let dataAdo = [];
+            let campos = [];
+            let adHo = [];
+            debugger
+            if(IdFormulario == 1)
+            campos = $('#formulario-Adhonorem .slider');
+            else if(IdFormulario == 2)
+            campos = $('#formulario-Tutores .slider');
+            adHo = $('#formulario-Tutores .Ado');
+            let total = 0;
+            
+            for(let i = 0; i < campos.length; i++){ 
+                
+              
+                var ricar = $(campos[i].firstChild)
+
+                let value = {
+                    adHonorem: $(campos[i]).attr('data-user-id'),
+                    tutor:  ricar.val(),                                                                           
+                };
+
+                total = $(campos[i]).slider('value');
+                data.push(value);
+                
+            };
+
+
+             for(let i = 0; i < adHo.length; i++){ 
+                
+                let valueAdo = {
+                    Ado: $(adHo[i]).val()                                    
+                };
+                
+                data.push(valueAdo);
+                
+            };
+
+
+
+            let dato;
+            let suma = 0;
+            $.each(data, function (i, item) {
+			 debugger;						
+              suma += Number(item.valor);
+              
+		 }); 	
+            if (suma < 100)
+            {
+                $('#formulario-Tutores .control-slider').remove();
+                $('#formulario-Adhonorem .control-slider').remove();
+                dialogos.dialog('close');
+                dialog.dialog('close');
+                return AbrirMensajeModal("info","Debe seleccionar el 100%");
+            }
+
+            $.ajax({
+                method: "POST",
+                dataType: "JSON",
+                data: { stringifyJson: JSON.stringify(data), IdFormulario: IdFormulario },
+                url: window.location.origin + '/Consultas/RecibirPorcentajes'
+            })
+            .done(data => {
+                debugger
+                if(IdFormulario == 1) {
+
+                    dialog.dialog('close');
+                    $('#formulario-Adhonorem .control-slider').remove();
+                    AbrirMensajeModal("info","Reparto realizado con exito")
+
+                } else if(IdFormulario == 2) {
+
+                    dialogos.dialog('close');
+                    $('#formulario-Tutores .control-slider').remove();
+                    AbrirMensajeModal("info","Reparto realizado con exito")
+                }
+                
+            });
+        }
+
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+        $("#formulario-Adhonorem").on("slidechange", ".slider", function( event, ui ) {
+            
+            let campos = $('#formulario-Adhonorem .slider');
+            let total = 0;
+
+            for(let i = 0; i < campos.length; i++){
+                
+                total += $(campos[i]).slider('value');
+            };
+
+            currentValue = $(this).slider('value');
+            totalValue = (100 - total) + currentValue;
+            $("#Total").val(total);
+            if(currentValue > totalValue){
+                $(this).slider('value', totalValue)
+                
+                let formulario = $(this).parents('.form-group')[0]
+                let input = $(formulario).find('.slide-value');
+                $(input).val(totalValue);
+            }
+        });
+
+        $("#formulario-Tutores").on("slidechange", ".slider", function( event, ui ) {
+            
+            let campos = $('#formulario-Tutores .slider');
+            let total = 0;
+
+            for(let i = 0; i < campos.length; i++){
+                
+                total += $(campos[i]).slider('value');
+            };
+
+            currentValue = $(this).slider('value');
+            totalValue = (100 - total) + currentValue;
+
+            if(currentValue > totalValue){
+                $(this).slider('value', totalValue)
+                
+                let formulario = $(this).parents('.form-group')[0]
+                let input = $(formulario).find('.slide-value');
+                $(input).val(totalValue);
+            }
+        });
+
+        return {
+            abrirModal:abrirModal,
+            guardarFormAdTu:guardarFormAdTu,
+            guardarFormAdTutor:guardarFormAdTutor
+        }  
+    })();
+
+    /** Fin reparto adhonores, tutores, seleccion **/
+
+    /** Modal votacion de procesos seleccionados **/
+
+    var modalConsultarEscritosEInsistencias = (function(){
+
+        let dtRadSelec = null;
+        let dialogEscIns = null;
+
+        function initModal(){
+
+            dialogEscIns = $("#dialog-consultaInsEsc")
+            .dialog({ modal: true, autoOpen: false, resizable: false, closeText: "",width:400, title: "Votación Procesos selección" });
+        };
+
+        function AbrirModal(){
+            dialogEscIns.dialog('open');
+            initTabla();
+        };
+
+        function initTabla(){
+
+            if(dtRadSelec == null) {
+                debugger
+                dtRadSelec = $('#t_consultaInsEsc').DataTable({
+                    "bServerSide": true,
+                    "sAjaxSource": '@Url.Action("GetProcesosParaInsistenciaYEscrito", "Consultas")',
+                    "dom": 'lfrtip',
+                    "autoWidth": true,
+                    "bInfo": true,
+                    "scrollX": true,
+                    "aoColumns": [
+                            { "mData": "NumeroRadicadoUnico" },
+                            { "mData": "Nombre" },
+                            { "mData": "ProcesoRadicado" },                           
+                            {
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, JsonResultRow, meta,row) {
+
+                                    let html = '';
+                                   
+                                   
+                                     html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + JsonResultRow.ProcesoRadicado + '&Rol=' + sessionStorage["ROl"] + '&NumRadicado=' + JsonResultRow.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';
+                                      
+                                   
+
+                                    return html;
+                                }
+                            }
+                    ],
+                    "fnDrawCallback": function (oSettings) {
+
+                        $("#t_ptesprocesales_next").attr("title", "Ir a la siguiente página");
+                        $("#t_ptesprocesales_previous").attr("title", "Ir a la página anterior");
+                    },
+                });
+
+            } else {
+                dtRadSelec.ajax.reload();
+            }
+        };
+
+        function CambiarVoto(idRadicado, votoActual) {
+            debugger
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ActulizarVotoProcesoSeleccion", "Consultas")',
+                data: { idRadicado: idRadicado},
+                dataType: 'json'
+            })
+            .done(data => { dtRadSelec.ajax.reload();});
+        };
+
+        initModal();
+
+        return {
+            AbrirModal: AbrirModal,
+        }
+
+    })();
+
+    /** Fin modal votacion de procesos seleccionados **/
+
+    /** Votacion seleccionados **/
+
+    var modalVotacionSeleccionados = (function(){
+
+        let dtRadSelec = null;
+        let dialogRecSelec = null;
+
+        function initModal(){
+
+            dialogRecSelec = $("#dialog-votacion")
+            .dialog({ modal: true, autoOpen: false, resizable: false, closeText: "",width:400, title: "Votación Procesos selección" });
+        };
+
+        function abrirModal(){
+            dialogRecSelec.dialog('open');
+            initTabla();
+        };
+
+        function initTabla(){
+            debugger
+            if(dtRadSelec == null) {
+
+                dtRadSelec = $('#t_votacion').DataTable({
+                    "bServerSide": true,
+                    "sAjaxSource": '@Url.Action("GetVotosProcesosSeleccion", "Consultas")',
+                    "dom": 'lfrtip',
+                    "autoWidth": true,
+                    "bInfo": true,
+                    "scrollX": true,
+                    "aoColumns": [
+                            { "mData": "NumeroRadicado" },
+                            { "mData": "FechaRadicado" },
+                            { "mData": "NumeroProceso" },
+                            {
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, JsonResultRow, meta) {
+                                    debugger
+                                    let html = '';
+
+                                    if(JsonResultRow.VotacionCompleta) {
+
+                                        let backgroundColor = JsonResultRow.VotacionUnanime ? '#E3F7D4' : '#F7D7D4';
+
+                                        html += '<table>';
+                                        html += '<tr style="background-color: ' + backgroundColor + '">';
+                                        html += '<td>' + JsonResultRow.Votos[0].Despacho + '</td>';
+                                        html += '<td>' + JsonResultRow.Votos[0].Voto + '</td>';
+                                        html += '</tr>';
+                                        html += '<tr style="background-color: ' + backgroundColor + '">';
+                                        html += '<td>' + JsonResultRow.Votos[1].Despacho + '</td>';
+                                        html += '<td>' + JsonResultRow.Votos[1].Voto  + '</td>';
+                                        html += '</tr>';
+                                        html += '</table>';
+
+                                    } else {
+
+                                        html += '<p class="text-center" style="background-color: #d3d3d3; padding: 5px 0px">';
+                                        html += 'No han votado todos los depachos</p>';
+                                    }
+
+                                    return html;
+                                }
+                            },
+                            {
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, JsonResultRow, meta) {
+
+                                    let html = '';
+
+                                    
+
+
+                                        html += '<input id="btn-cambiarVoto" type="button" value="Cambiar voto" ';
+                                        html += 'onclick="modalVotacionSeleccionados.cambiarVoto(' + JsonResultRow.IdRadicado + ',' + JsonResultRow.NumeroRadicado + ')">'; 
+                                    
+
+                                    return html;
+                                }
+                            }
+                    ],
+                    "fnDrawCallback": function (oSettings) {
+
+                        $("#t_ptesprocesales_next").attr("title", "Ir a la siguiente página");
+                        $("#t_ptesprocesales_previous").attr("title", "Ir a la página anterior");
+                    },
+                });
+
+            } else {
+                dtRadSelec.ajax.reload();
+            }
+        };
+
+        function cambiarVoto(idRadicado, votoActual,NumeroRadicado) {
+            debugger
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ActulizarVotoProcesoSeleccion", "Consultas")',
+                data: { idRadicado: idRadicado,NumProceso:votoActual},
+                dataType: 'json'
+            })
+            .done(data => { dtRadSelec.ajax.reload();});
+        };
+
+        function generarPdf(){
+
+            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetAutoSeleccion", "Consultas")',
+                dataType: 'json'
+            })
+            .done(data => { 
+                
+               
+                
+                /*let doc = new jsPDF();
+
+                console.info('Fonts:', doc.getFontList());
+
+                doc.setFont('Hevetica')
+                    .setFontSize(12);
+                    
+                doc.text('www.corteconstitucional.gov.co', 125, 20)
+
+                doc.setFontSize(14)
+                    .setFontStyle('bold')
+                    .text('REPÚBLICA DE COLOMBIA', 71, 35)
+                    
+                doc.addImage(imgData, 'JPEG', 93, 40, 25, 27)
+
+                doc.text('CORTE CONSTITUCIONAL', 73, 70)
+
+                doc.text('SALA DE SELECCIÓN NÚMERO DOS', 62, 80)
+
+                doc.setFontStyle('normal')
+                doc.text('Bogotá D.C., veintisiete(27) de febrerode dos mil dieciocho (2018)', 29, 100)
+
+                doc.text('Ref. Selección  y  reparto de  los  expedientes  de  tutela  cuyos  fallos  pasan  a ', 29, 110)
+                doc.text('revisión de la Corte Constitucional.', 29, 115)
+
+                doc.text('La Sala de Selección Número Dos, integrada por los Magistrados designados', 29, 125)
+                doc.text('por la Sala Plena de la Corte Constitucional para conformarla, en ejercicio de', 29, 130)
+                doc.text('sus competencias constitucionales y legales, en especial de las consagradas en', 29, 135)
+                doc.text('los artículos 86 y 241-9 de la Carta Política, 33 del Decreto 2591 de 1991 y 51,', 29, 140)
+                doc.text('52,  53  y  55  del  Reglamento  de  la  Corporación1,  luego  de  estudiar  los', 29, 145)
+                doc.text('expedientes de tutelas.', 29, 150)*/
+
+                
+
+                /*doc.addImage(imgData, 'JPEG', 85, 10, 40, 40)
+                
+                doc.setFillColor(140, 140, 140)
+                    .rect (21, 60, 168, 8, 'F') 
+                    .setFont('verdana')
+                    .setFontType('bold')
+                    .setFontSize(17)
+                    .setTextColor(255, 255, 255)
+                    .text('Auto sala de selección',75, 66)
+
+                doc.setTextColor(0, 0, 0)
+                    .setFontType('normal')
+                    .setFontSize(16)
+                    .text('No seleccionados:', 20, 80)
+                
+
+                doc.setFontSize(15);
+                let y = 80;
+                data.NoSeleccionados.forEach( rango => {
+                    y += 10;
+                    doc.text(rango, 20, y);
+                });
+                
+                doc.setFontType('normal')
+                    .setFontSize(16)
+                    .text('Seleccionados:', 20, 110)
+                
+                y = 110;
+                data.Seleccionado.forEach( seleccionado => {
+                    y += 10;
+                    doc.text(seleccionado.NumeroRadicadoUnico, 20, y)
+                       .text(seleccionado.NumeroProceso, 60, y)
+                });*/
+                
+                doc.save('AutoSeleccion.pdf');
+            
+            });
+        };
+
+        initModal();
+
+        return {
+            abrirModalRadSelec: abrirModal,
+            cambiarVoto: cambiarVoto,
+            generarPdf: generarPdf
+        }
+
+    })();
+
+    /** Fin votacion seleccionados **/
+
+    var modalProcesoRevision  = (function(){
+
+        let dtProcRevision = null;
+        let dialogProcRevision = null;
+
+        function initModal(){
+
+            dialogProcRevision = $("#dialog-proceso-revision")
+            .dialog({ modal: true, autoOpen: false, resizable: false, closeText: "",width:400, title: "Sala de revisión" });
+        };
+
+        function abrirModal(){
+            dialogProcRevision.dialog('open');
+            initTabla();
+        };
+
+        function initTabla(){
+
+            if(dtProcRevision == null) {
+
+                dtProcRevision = $('#t_proceso-revision').DataTable({
+                    "bServerSide": true,
+                    "sAjaxSource": '@Url.Action("ConsultarProcesosSeleccion", "Consultas")',
+                    "dom": 'lfrtip',
+                    "autoWidth": true,
+                    "bInfo": true,
+                    "scrollX": true,
+                    "aoColumns": [
+                            { "mData": "NumeroRadicado" },
+                            { "mData": "FechaRadicado" },
+                            { "mData": "NumeroProceso" },
+                            {
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, JsonResultRow, meta) {
+
+                                    let html = '<input type="file" id="archivoFallo">';
+                                    html += '<input type="button" onclick="modalProcesoRevision.subirFallo(\'' +  JsonResultRow.Id + '\')" value="Guardar fallo"/>';
+
+                                    return html;
+                                }
+                            }
+                    ],
+                    "fnDrawCallback": function (oSettings) {
+
+                        $("#t_ptesprocesales_next").attr("title", "Ir a la siguiente página");
+                        $("#t_ptesprocesales_previous").attr("title", "Ir a la página anterior");
+                    },
+                });
+
+            } else {
+                dtProcRevision.ajax.reload();
+            }
+        };
+
+        function subirFallo(idRadicado){
+            debugger
+            let data = new FormData();
+            let files = $('#archivoFallo').get(0).files; 
+
+            if(files.length > 0) {
+                
+                let file = files[0];
+
+                data.append("file", file);
+                data.append("idRadicado", idRadicado)
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SubirFalloRadicado", "Consultas")',
+                    contentType: false,
+                    processData: false,
+                    data: data
+                })
+                .done(data => { 
+
+                    if(data.result != ""){
+                        AbrirMensajeModal('error', data.result);
+                    } else {
+                        dialogProcRevision.dialog('close');
+                        AbrirMensajeModal('info', 'El archivo se guardo correctamente');
+                    }
+                });
+            }
+        }
+
+        initModal();
+
+        return {
+            abrirModal: abrirModal,
+            subirFallo: subirFallo
+        }
+    })();
+
+    /** Fin proceso de revicion **/
+    
+    var OptionsUser = '';
+
+    function IniciarPopups() {
+
+        dialog = $("#dialog-Adhonorem");
+        dialog.dialog({ autoOpen: false });
+
+        dialogos = $("#dialog-Tutores");
+        dialogos.dialog({ autoOpen: false });
+        
+        PopUpEscritos = $("#dialogoEscrito-escritoCiudadano");
+        PopUpEscritos.dialog({ autoOpen: false });
+
+         $("#dialog-Seleccion").dialog({ autoOpen: false });
+    };
+
+function cargaEstadoProceso()
+    {
+        debugger
+        $.ajax({
+                contentType: "application/json; charset=utf-8",
+                type:"GET",        
+                url: '@Url.Action("ConsultaDdl", "Consultas")',              
+                })       
+                .done(function (data) {	
+
+                $.each(data, function (i, item) {
+                    debugger;			
+                    let option = $('<option>');
+                                        option.val(item.Id);
+                                        option.html(item.Nombre);
+                                        $('select#LlenarDDl').append(option);
+                }); 			
+            })
+
+    }
+
+function cargarAdnoremDdl(tutor)
+    {   
+        debugger
+        $.ajax({
+        contentType: "application/json; charset=utf-8",
+        type:"GET",
+        url: '@Url.Action("GetAllAdhonoremTutorsByIdDespachoA","Consultas")',
+        data: tutor,
+
+          success: function (data)
+          
+        {
+            $.each(data, function(i,item){
+            debugger
+            let option = "('<option>')";
+                            option.val(item.Id);
+                            option.val(item.Nombre);
+                            $('select#LlenarDDlAdHonorem')
+        })                    
+
+        }
+       
+        })       
+
+    }
+
+
+/* function initTablaConsulta(){    
+    debugger
+    $("#t_consultaSecretaria").dataTable().fnDestroy();
+    
+    let IdUsuario = $('select#LlenarDDl').val();
+     $('th.Accion').remove()
+            var columns = [
+          
+                    { "mData": "NumeroRadicadoUnico" },
+                            { "mData": "Nombre" },
+                            { "mData": "ProcesoRadicado" },                           
+                            {
+                                "bSearchable": false,
+                                "bSortable ": false,
+                                "render": function (data, type, JsonResultRow, meta,row) {
+
+                                    let html = '';                                   
+                                   
+                                     html = '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + JsonResultRow.ProcesoRadicado + '&Rol=' + sessionStorage["ROl"] + '&NumRadicado=' + JsonResultRow.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';                                                                        
+
+                                    return html;
+                                }
+                            }
+            ];
+            var arrayrender = ["numeroRadicado", "fechaRadicacion", "NumeroProceso"];
+            table = CargarDataTable("t_consulta", '@Url.Action("ConsultarSecretario", "Consultas")?IdEstado='+ IdUsuario +  ' ', columns, 3, arrayrender);
+        };    
+
+*/
+    function initTablaConsulta(){   
+  
+  debugger
+
+  $("#t_consulta").hide();         
+  $("#t_consultaSecretaria").dataTable().fnDestroy();
+  $('th.Accion').remove()
+  $('th.Estado').show()
+    let IdUsuario = $('select#LlenarDDl').val();
+    let dato = "";
+     dtable = $('#t_consultaSecretaria').DataTable({
+                        "bServerSide": true,
+                        "sAjaxSource": '@Url.Action("ConsultarSecretario", "Consultas")?IdEstado='+ IdUsuario +  ' ',
+                        "dom": 'lfrtip',
+                        "bInfo": true,
+                        "scrollX": true,
+                        "aoColumns": [
+                            
+                            { "mData": "NumeroRadicadoUnico" },
+                            { "mData": "Nombre" },
+                            { "mData": "ProcesoRadicado" },   
+                            { "mData": "AdjuntoInsistencia" },                
+                        ],
+                        "columnDefs": [
+                            {                                
+                                "render": function (data, type, row) {
+                                    debugger
+                                    let html = '';                                                                                
+                                                                                
+                                    if(row.AdjuntoInsistencia == "True")
+                                        dato = "checked";
+                                    else
+                                        dato = "";
+
+                                    if(row.AdjuntoEscrito == "True")
+                                        escrito = "checked";
+                                    else
+                                        escrito = "";
+
+                                    html='<div class="checkInsistencia" style="display:none"><input  type="checkbox" disabled ' + dato + ' >Adjunto Insistencia<br></div>'             
+                                    html+='<div class="checkEscrito" style="display:none"><input  class="check" type="checkbox" disabled ' + escrito + ' >Adjunto Escrito<br></div>'             
+                                    html += '<a href="@Url.Action("ConsultaDetalle", "Consultas", null)?NumProceso=' + row.ProcesoRadicado + '&Rol=' + sessionStorage["ROl"] + '&NumRadicado=' + row.NumeroRadicadoUnico + '"><button class="btn btn-primary">Consultar</button></a>';                                                                                                
+
+                                     if( IdUsuario == 2)
+                                        {
+                                            $(".checkEscrito").show();
+                                        }
+                                    if( IdUsuario == 9 )
+                                        {
+                                            $(".checkInsistencia").show();
+                                        }
+
+                                    return html;   
+                                   
+                                },                             
+
+                                "targets": 4                                                         
+                            }                                                                                                                                                
+                        ],
+                        
+                        
+                        "fnDrawCallback": function (oSettings) {
+                            $("#t_consultaSeleccion_next").attr("title", "Ir a la siguiente página");
+                            $("#t_consultaSeleccion_previous").attr("title", "Ir a la página anterior");
+                        }
+                    });
+                    debugger
+                    if( IdUsuario == 2)
+                        {
+                            $(".checkEscrito").show();
+                        }
+                    if( IdUsuario == 9 )
+                        {
+                            $(".checkInsistencia").show();
+                        }
+
+                    sessionStorage["estadoSecretaria"] = $('select#LlenarDDl').val();  
+                   
+        };    
+
+
+
+
+    function saveReparto() {
+        debugger
+        for(var row=0; row <= dtable.rows().count()-1; row++) {
+            
+            var Proceso = dtable.cell(row,0).data()
+            var usuario = dtable.cell(row,1).nodes().to$().find('select option:selected').val();
+
+            if(usuario != "") {
+                
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GuardarReparto", "Consultas")',
+                    data: { Numproceso: Proceso, IdUsuario: usuario },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        debugger    
+                        if (data.result == true)
+                        debugger
+                        AbrirMensajeModal('info', "Reparto realizado con exito");
+                    }
+                });
+            }
+        }
+
+        $("#dialog-Seleccion").dialog("close");
+        AbrirMensajeModal('info', "El reparto ha sido ejecutado", function(){ dtable.ajax.reload(); $("#dialog-Seleccion").dialog("open");});
+    };
+
+    /*function pritnAutoSeleccion(){
+        var doc = new jsPDF();          
+        var elementHandler = {
+        '#ignorePDF': function (element, renderer) {
+            return true;
+            }
+        };
+        var source = window.document.getElementsByTagName("body")[0];
+        doc.fromHTML(
+            source,
+            15,
+            15,
+            {
+            'width': 180,'elementHandlers': elementHandler
+            });
+
+         doc.save("caravan.pdf");
+    }*/
+
+    $(document).ready(function () {
+
+          
+        /* $("#slider-value").val($(campos[0]).slider('value')) ;
+
+            let sumaTotal = $(campos[0]).slider('value'); */
+
+
+          $("#Total").attr("readonly",true);
+
+        tablaConsulta.consultarRol();
+
+        $(".ui-button").click(function() {
+            $("#Valor1").empty();
+        });      
+
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("validDespachoSeleccion", "Consultas")',
+            data: { idDespacho: @Session["UserDespacho"] },
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if(data == 0) {
+
+                    if($('#BtnSeleccion').is(":visible"))
+                    $('#BtnSeleccion').hide();
+                }
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("getUsuariosSeleccion", "Consultas")',
+            data: { idDespacho: @Session["UserDespacho"] },
+            contentType: "application/json; charset=utf-8",
+            success: function(data) {
+
+                $.each(data, function(index, item) {
+
+                    OptionsUser += "<option value='" + item.N_ID + "'>" + item.N_VALOR + "</option>";
+                });
+
+                var counter = 1;
+
+                if(OptionsUser != "") {
+
+                    dtable = $('#t_consultaSeleccion').DataTable({
+                        "bServerSide": true,
+                        "sAjaxSource": '@Url.Action("getProcesosPreSeleccionados", "Consultas")?IdDespacho=' + @Session["UserDespacho"],
+                        "dom": 'lfrtip',
+                        "bInfo": true,
+                        "scrollX": true,
+                        "aoColumns": [
+                            { "mData": "a", "bSortable": false },
+                            { "mData": "a", "bSortable": false }
+                        ],
+                        "columnDefs": [
+                            {
+                                "render": function (data, type, row) {
+
+                                    var html = '';
+                                    html += '<select class="form-control" size="1" id="row-'+ counter +'-office" name="row-'+ counter +'-office">'
+                                    html += '<option value="" selected>Seleccione...</option>' + OptionsUser
+                                    html += '</select>';
+
+                                    counter = counter + 1 ;
+                                    return html;
+                                },
+                                "targets": 1
+                            }
+                        ],
+                        "fnDrawCallback": function (oSettings) {
+                            $("#t_consultaSeleccion_next").attr("title", "Ir a la siguiente página");
+                            $("#t_consultaSeleccion_previous").attr("title", "Ir a la página anterior");
+                        }
+                    });
+                }
+            }
+        });   
+        
+                                    
+    });                       
+</script>

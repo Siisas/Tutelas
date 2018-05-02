@@ -1,0 +1,163 @@
+﻿@model Datos.Modelo.mAuditoria
+@{
+    ViewBag.Title = "Auditoria";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Auditoría</h2>
+    </div>
+</div>
+
+<div class="row">
+
+    <br />
+
+    <div class="userscontent">
+        <table name="t_auditoria" id="t_auditoria" style="width:100%"></table>
+    </div>
+
+    <div id="ModalEditAndNew" style="display:none;">
+        <fieldset>
+            <form id="CreateAndEdit">
+                <div class="row">
+                    <div class="panel-body">
+
+                        <div>
+                            <div class="row">
+                                @Html.Label("Tabla", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    <label id="Tabla" name="Tabla" class="col-md-2 control-label"></label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @Html.Label("Registro", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    <label id="IdRegistro" name="IdRegistro" class="col-md-2 control-label"></label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @Html.Label("Acción", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    <label id="Accion" name="Accion" class="col-md-2 control-label"></label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @Html.Label("Fecha", new { @class = "col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    <label id="FechaAccion" name="FechaAccion" class="col-md-2 control-label"></label>
+                                </div>
+                            </div>
+
+                            <div id="tabladetalle">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <input id="cancel" type="button" class="btn btn-default" value="Cancelar" onclick="Cancelar();">
+        </fieldset>
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            Permisos();
+
+            get_Auditoria();
+
+        });
+
+        function Cancelar() {
+            $("#ModalEditAndNew").dialog("close");
+        }
+
+        function get_Auditoria() {
+            var tbody = "<thead><tr><th>" + "Detalle" + "</th><th>" + "No. Registro" + "</th><th>" + "Tabla" + "</th><th>" + "Acción" + "</th><th>" + "Fecha" + "</th><th>" + "Usuario" + "</th></tr></thead>";
+            $.ajax({
+                url: "@Url.Action("ConectarAuditoria", "Auditoria")",
+                type: "POST",
+                data: {},
+                success: function (data) {
+                    tbody += "<tbody>";
+                    $.each(data, function (i, item) {
+                        tbody += "<tr><td><span onclick=\"VerDetalle(" + item.IdAuditoria + ");\"><a href=\"#\"><i title=\"Ver Detalle\" class=\"fa fa-2x fa-search\"></i></a></span></td><td>" + item.IdRegistro + "</td><td>" + item.Tabla + "</td><td>" + item.Accion + "</td><td>" + item.FechaAccion + "</td><td>" + item.IdUsuario + "</td></tr>";
+                    });
+                    tbody += "</tbody>";
+
+                    $('#t_auditoria').html(tbody);
+
+                    $('#t_auditoria').DataTable({
+                        "paging": true,
+                        "ordering": true,
+                        "info": true,
+                        "order": [1, "asc"]
+                    });
+                }
+            });
+
+
+
+        }
+
+        function VerDetalle(id) {
+            setTimeout(function () {
+                $.ajax({
+                    url: "@Url.Action("VerDetalleAuditoria", "Auditoria")",
+                    type: "POST",
+                    data: { id: id },
+                    success: function (data) {
+                        $('#Tabla').text(data.Tabla);
+                        $('#IdRegistro').text(data.IdRegistro);
+                        $('#Accion').text(data.Accion);
+                        $('#FechaAccion').text(data.FechaAccion);
+                    }
+                });
+            }, 500);
+
+
+            document.getElementById("CreateAndEdit").reset();
+
+            var idtabla = id + Math.round(new Date().getTime() / 1000);
+            var tbody = "<table name=\"t_auditoriad" + idtabla + "\" id=\"t_auditoriad" + idtabla + "\" style=\"width:100%\"><thead><tr><th>" + "Campo" + "</th><th>" + "Valor Anterior" + "</th><th>" + "Valor Nuevo" + "</th></tr></thead>";
+            setTimeout(function () {
+                $.ajax({
+                    url: "@Url.Action("ConectarAuditoriaById", "Auditoria")",
+                    type: "POST",
+                    data: { id: id },
+                    success: function (data) {
+                        $("#ModalEditAndNew").dialog({
+                            modal: true, resizable: false, closeText: "", width: 400, title: "Detalle Auditoría"
+                        });
+                        tbody += "<tbody>";
+                        $.each(data, function (i, item) {
+                            tbody += "<tr><td>" + item.Campo + "</td><td>" + item.ValorAnterior + "</td><td>" + item.ValorNuevo + "</td></tr>";
+                        });
+                        tbody += "</tbody></table>";
+
+                        $('#tabladetalle').html(tbody);
+
+                        $('#t_auditoriad' + idtabla).DataTable({
+                            "paging": true,
+                            "ordering": true,
+                            "info": true,
+                            "order": [1, "asc"]
+                        });
+                    }
+                });
+            }, 500);
+        }
+
+
+    </script>
+}

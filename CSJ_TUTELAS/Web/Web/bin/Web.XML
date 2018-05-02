@@ -1,0 +1,497 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Web</name>
+    </assembly>
+    <members>
+        <member name="T:Web.Clases.ReportViewerCredentials">
+            <summary>
+            Summary description for Credentials
+            </summary>
+        </member>
+        <member name="T:Web.Controllers.AccountController">
+            <summary>
+            Clase Controlador para el manejo de las cuentas
+            </summary>
+            <seealso cref="T:Web.BrowseController" />
+        </member>
+        <member name="M:Web.Controllers.AccountController.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Web.Controllers.AccountController"/> class.
+            </summary>
+        </member>
+        <member name="M:Web.Controllers.AccountController.#ctor(Web.ApplicationUserManager,Web.ApplicationSignInManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Web.Controllers.AccountController"/> class.
+            </summary>
+            <param name="userManager">The user manager.</param>
+            <param name="signInManager">The sign in manager.</param>
+        </member>
+        <member name="P:Web.Controllers.AccountController.SignInManager">
+            <summary>
+            Gets the sign in manager.
+            </summary>
+            <value>
+            The sign in manager.
+            </value>
+        </member>
+        <member name="P:Web.Controllers.AccountController.UserManager">
+            <summary>
+            Gets the user manager.
+            </summary>
+            <value>
+            The user manager.
+            </value>
+        </member>
+        <member name="M:Web.Controllers.AccountController.Login(System.String)">
+            <summary>
+            Logins the specified return URL.
+            </summary>
+            <param name="returnUrl">The return URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.Login(Web.Models.LoginViewModel,System.String)">
+            <summary>
+            Logins the specified model.
+            </summary>
+            <param name="model">The model.</param>
+            <param name="returnUrl">The return URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.VerifyCode(System.String,System.String,System.Boolean)">
+            <summary>
+            Verifies the code.
+            </summary>
+            <param name="provider">The provider.</param>
+            <param name="returnUrl">The return URL.</param>
+            <param name="rememberMe">if set to <c>true</c> [remember me].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.VerifyCode(Web.Models.VerifyCodeViewModel)">
+            <summary>
+            Verifies the code.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.Register">
+            <summary>
+            Registers this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.Register(Web.Models.RegisterViewModel)">
+            <summary>
+            Registers the specified model.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ConfirmEmail(System.String,System.String)">
+            <summary>
+            Confirms the email.
+            </summary>
+            <param name="userId">The user identifier.</param>
+            <param name="code">The code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ForgotPassword">
+            <summary>
+            Forgots the password.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ForgotPassword(Web.Models.ForgotPasswordViewModel)">
+            <summary>
+            Forgots the password.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ForgotPasswordConfirmation">
+            <summary>
+            Forgots the password confirmation.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ResetPassword(System.String)">
+            <summary>
+            Resets the password.
+            </summary>
+            <param name="code">The code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ResetPassword(Web.Models.ResetPasswordViewModel)">
+            <summary>
+            Resets the password.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ResetPasswordConfirmation">
+            <summary>
+            Resets the password confirmation.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ExternalLogin(System.String,System.String)">
+            <summary>
+            Externals the login.
+            </summary>
+            <param name="provider">The provider.</param>
+            <param name="returnUrl">The return URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.SendCode(System.String,System.Boolean)">
+            <summary>
+            Sends the code.
+            </summary>
+            <param name="returnUrl">The return URL.</param>
+            <param name="rememberMe">if set to <c>true</c> [remember me].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.SendCode(Web.Models.SendCodeViewModel)">
+            <summary>
+            Sends the code.
+            </summary>
+            <param name="model">The model.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ExternalLoginCallback(System.String)">
+            <summary>
+            Externals the login callback.
+            </summary>
+            <param name="returnUrl">The return URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ExternalLoginConfirmation(Web.Models.ExternalLoginConfirmationViewModel,System.String)">
+            <summary>
+            Externals the login confirmation.
+            </summary>
+            <param name="model">The model.</param>
+            <param name="returnUrl">The return URL.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.LogOff">
+            <summary>
+            Logs the off.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ExternalLoginFailure">
+            <summary>
+            Externals the login failure.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged resources and optionally releases managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ManageUsers">
+            <summary>
+            Manages the users.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ListUsers">
+            <summary>
+            Lists the users.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.EditUser(System.String)">
+            <summary>
+            Edits the user.
+            </summary>
+            <param name="uid">The uid.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.EditUser(Datos.Modelo.MembershipModel,System.Web.Mvc.FormCollection)">
+            <summary>
+            Edits the user.
+            </summary>
+            <param name="model">The model.</param>
+            <param name="form">The form.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.UpdateUserEnabled(System.String,System.String)">
+            <summary>
+            Updates the user enabled.
+            </summary>
+            <param name="UserId">The user identifier.</param>
+            <param name="est">The est.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.Roles">
+            <summary>
+            llama la vista Roles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.getRoles(Web.Models.jQueryDataTableParams)">
+            <summary>
+            Obtiene todas los Ciudades
+            </summary>
+            <param name="param">The parameter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.saveRoles(Microsoft.AspNet.Identity.EntityFramework.IdentityRole)">
+            <summary>
+            Saves the roles.
+            </summary>
+            <param name="rl">The rl.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.editRoles(System.String)">
+            <summary>
+            Edits the roles.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.updRoles(Microsoft.AspNet.Identity.EntityFramework.IdentityRole)">
+            <summary>
+            Upds the roles.
+            </summary>
+            <param name="rl">The rl.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.delRoles(System.String)">
+            <summary>
+            Deletes the roles.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.getMenu(System.String)">
+            <summary>
+            Obtiene todas las opciones de Menú
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.ManagePermissions">
+            <summary>
+            Manages the permissions.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.get_permissions_by_role(Web.Models.jQueryDataTableParams)">
+            <summary>
+            Gets the permissions by role.
+            </summary>
+            <param name="param">The parameter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AccountController.add_permissions_by_role(System.String,System.String)">
+            <summary>
+            Adds the permissions by role.
+            </summary>
+            <param name="idRol">The identifier rol.</param>
+            <param name="Permisos">The permisos.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Web.Controllers.AccountController.AuthenticationManager">
+            <summary>
+            Gets the authentication manager.
+            </summary>
+            <value>
+            The authentication manager.
+            </value>
+        </member>
+        <member name="M:Web.Controllers.AccountController.AddErrors(Microsoft.AspNet.Identity.IdentityResult)">
+            <summary>
+            Adds the errors.
+            </summary>
+            <param name="result">The result.</param>
+        </member>
+        <member name="M:Web.Controllers.AccountController.RedirectToLocal(System.String)">
+            <summary>
+            Redirects to local.
+            </summary>
+            <param name="returnUrl">The return URL.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Controllers.AccountController.ChallengeResult">
+            <summary>
+            Clase ChallengeResult
+            </summary>
+            <seealso cref="T:System.Web.Mvc.HttpUnauthorizedResult" />
+        </member>
+        <member name="T:Web.Controllers.AdministracionController">
+            <summary>
+            Clase controlador del modulo de Administración
+            </summary>
+            <seealso cref="T:Web.BrowseController" />
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.Index">
+            <summary>
+            Indexes this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.ParametrosGenerales">
+            <summary>
+            Parametroses the generales.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.getParametrosGenerales(Web.Models.jQueryDataTableParams)">
+            <summary>
+            Gets the parametros generales.
+            </summary>
+            <param name="param">The parameter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.saveParamGrales">
+            <summary>
+            Saves the parameter generales.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.delParamGrales(System.Int32)">
+            <summary>
+            Deletes the parameter generales.
+            </summary>
+            <param name="idParametro">The identifier parametro.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.getParametrosGeneralesByTipo(System.Int32)">
+            <summary>
+            Gets the parametros generales by tipo.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.getParametrosGeneralesById(System.Int32)">
+            <summary>
+            Gets the parametros generales by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.getDataDdl(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Gets the data DDL.
+            </summary>
+            <param name="tabla">The tabla.</param>
+            <param name="id">The identifier.</param>
+            <param name="valor">The valor.</param>
+            <param name="iddefault">The iddefault.</param>
+            <param name="valordefault">The valordefault.</param>
+            <param name="wherecolumn">The wherecolumn.</param>
+            <param name="wherevalue">The wherevalue.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.listaParametros">
+            <summary>
+            Listas the parametros.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AdministracionController.Reporte">
+            <summary>
+            Vista de Reportes.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AuditoriaController.Auditoria">
+            <summary>
+            Auditorias this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AuditoriaController.VerDetalleAuditoria(System.Int32)">
+            <summary>
+            Vers the detalle auditoria.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AuditoriaController.ConectarAuditoria">
+            <summary>
+            Conectars the auditoria.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Web.Controllers.AuditoriaController.ConectarAuditoriaById(System.Int32)">
+            <summary>
+            Conectars the auditoria by identifier.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Web.Models.jQueryDataTableParams">
+             <summary>  
+              Clase jQueryDataTableParams:
+             <Author> </Author>
+            Clase que encapsula los parámetros más comunes enviados por el complemento DataTables
+             </summary>  
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.sEcho">
+            <summary>  
+            Solicitar número de secuencia enviado por DataTable,
+            Mismo valor debe ser devuelto en respuesta
+            </summary>      
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.sSearch">
+            <summary>  
+            Texto utilizado para filtrar
+            </summary>  
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.iDisplayLength">
+            <summary>  
+            Número de registros que deben mostrarse en la tabla
+            </summary>  
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.iDisplayStart">
+            <summary>  
+            Primer registro que se debe mostrar (utilizado para la paginación)
+            </summary>  
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.iColumns">
+            <summary>  
+            Número de columnas de la tabla
+            </summary>  
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.iSortingCols">
+            <summary>  
+            Número de columnas que se utilizan en la busqueda  
+            </summary>  
+        </member>
+        <member name="P:Web.Models.jQueryDataTableParams.sColumns">
+            <summary>  
+            Lista de nombres de columnas separada por comas 
+            </summary>  
+        </member>
+        <member name="F:Web.Reportes.ListaUniversidades.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:Web.Reportes.ListaUniversidades.scriptM">
+            <summary>
+            scriptM control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:Web.Reportes.ListaUniversidades.rptViewer">
+            <summary>
+            rptViewer control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

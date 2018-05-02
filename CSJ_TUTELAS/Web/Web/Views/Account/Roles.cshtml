@@ -1,0 +1,226 @@
+﻿@{
+    ViewBag.Title = "Roles";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">Roles</h3>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="accionestabla">
+        <a href="javascript:void(0);" onclick="AbrirModal(1,'');">
+            <input type="button" class="btn btn-default" value="+ Nuevo rol" />
+        </a>
+    </div>
+
+    <div class="userscontent">
+        <table name="t_roles" id="t_roles" width="100%">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="ModalEditAndNew" style="display:none;">
+    <fieldset>
+        <form id="CreateAndEdit">
+            <div class="row">
+                <div class="panel-body">
+
+                    <div>
+                        <div id="code" class="row" style="display:none">
+
+                            @Html.Label("Código", new { @class = "col-md-3 control-label" })
+
+                            <div class="col-md-8">
+                                @Html.TextBox("Id", "", new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="col-md-1">
+                                <a title="Código del rol"><img src="~/Content/Images/Info.png" /></a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            @Html.Label("Nombre", new { @class = "col-md-3 control-label" })
+                            <div class="col-md-8">
+                                @Html.TextBox("Name", "", new { @class = "form-control", @MaxLength = "200" })
+                            </div>
+                            <div class="col-md-1">
+                                <a title="Nombre con el que quedará creado/modificado el rol"><img src="~/Content/Images/Info.png" /></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <input id="saveCreate" type="button" class="btn btn-default" value="Guardar" onclick="Guardar(1);">
+        <input id="saveEdit" type="button" class="btn btn-default" value="Guardar" onclick="Guardar(2);">
+        <input id="cancel" type="button" class="btn btn-default" value="Cancelar" onclick="Cancelar();">
+    </fieldset>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+
+    <script type="text/javascript">
+         var table = null;
+
+        $(document).ready(function () {
+            Permisos();
+
+            if (consultar) {
+                var columns = [
+                            { "mData": "Id" },
+                            { "mData": "Name" },
+                            { "mData": "Id", "bSortable": false }
+                ];
+                var arrayrender = ["Id", "Name"];
+
+                table = CargarDataTable("t_roles", '@Url.Action("getRoles", "Account")', columns, 2, arrayrender);
+            }
+
+            if (!editar && !eliminar) {
+                var Acciones = table.column(2);
+                Acciones.visible(false);
+            }
+            
+        });
+
+        /*Cancela la operación acual (Crear o editar nacionalidad)*/
+        function Cancelar() {
+            $("#ModalEditAndNew").dialog("close");
+        }
+
+        function ValidarCampos() {
+            var Mensaje = '';
+
+            var nombre = $('#Name').val();
+
+            if (nombre.trim() == '') {
+                Mensaje += (Mensaje == "" ? "" : "<br>") + "El nombre del rol no puede estar vacío";
+            }
+
+            return Mensaje;
+        }
+
+        /*Guardar el proceso actual (Crear o Editar)*/
+        function Guardar(numb) {
+
+            var valid = ValidarCampos();
+
+            if (valid != '') {
+                $("#ModalEditAndNew").dialog("close");
+                AbrirMensajeModal("adver", valid, function () { CerrarMensajeModal(); $("#ModalEditAndNew").dialog("open"); });
+            }
+            else {
+
+                /*Crear*/
+                if (numb == 1) {
+
+                    $.ajax({
+                        url: "@Url.Action("saveRoles", "Account")",
+                        type: "POST",
+                        data: $("#CreateAndEdit").serialize(),
+                        success: function (data) {
+                            if (data.data == false) {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", data.msgError, function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                            else {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", "El rol <b>" + $("#Name").val() + "</b> ha sido creado correctamente", function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                        }
+                    });
+                }
+                    /*Editar*/
+                else if (numb == 2) {
+
+                    $.ajax({
+                        url: "@Url.Action("updRoles", "Account")",
+                        type: "POST",
+                        data: $("#CreateAndEdit").serialize(),
+                        success: function (data) {
+                            if (data.data == false) {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", data.msgError, function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                            else {
+                                $("#ModalEditAndNew").dialog("close");
+                                AbrirMensajeModal("info", "El rol <b>" + $("#Name").val() + "</b> ha sido modificado correctamente", function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                        }
+                    });
+                }
+            }
+        }
+
+        /*Abrir pop-up de creación o modificación*/
+        function AbrirModal(param, id) {
+
+            document.getElementById("CreateAndEdit").reset();
+
+            /*Abrir pop-up de creación*/
+            if (param == 1) {
+                $("#code").hide();
+                $("#saveEdit").hide();
+                $("#saveCreate").show();
+
+                $("#ModalEditAndNew").dialog({
+                    modal: true, resizable: false, closeText: "", width: 400, title: "Nuevo rol"
+                });
+            }
+                /*Abrir pop-up de modificación*/
+            else if (param == 2) {
+
+                $("#code").show();
+                $("#saveCreate").hide();
+                $("#saveEdit").show();
+
+                CargarRegistro("@Url.Action("editRoles", "Account")", { id: id }, function (data) {
+                    $("#ModalEditAndNew").dialog({
+                        modal: true, resizable: false, closeText: "", width: 400, title: "Editar rol"
+                    });
+                });
+            }
+
+        }
+
+        /*Eliminar (actualizar estado en la bd) la ciudad*/
+        function del_Row(id, nombre) {
+            AbrirMensajeModal("confir", "¿Está seguro que quiere eliminar el rol <b>" + nombre + "</b>?", function () {
+                setTimeout(function () {
+                    $.ajax({
+                        url: "@Url.Action("delRoles", "Account")",
+                        type: "POST",
+                        data: { id: id },
+                        success: function (data) {
+                            if (data.data == false) {
+                                AbrirMensajeModal("error", data.msgError, function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                            else {
+                                AbrirMensajeModal("info", "El rol <b>" + nombre + "</b> se ha eliminado satisfactoriamente", function () { table.ajax.reload(); });
+                                $("#saveCreate").hide();
+                            }
+                        }
+                    });
+                }, 500);
+            });
+        }
+
+    </script>
+}
+

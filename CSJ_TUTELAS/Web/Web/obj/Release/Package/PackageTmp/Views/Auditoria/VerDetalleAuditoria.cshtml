@@ -1,0 +1,127 @@
+﻿@model Datos.Modelo.mAuditoria
+@{
+    ViewBag.Title = "VerDetalleAuditoria";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Detalle Auditoría</h2>
+    </div>
+</div>
+
+<div class="row">
+    <input id="save" type="button" class="btn btn-default" value="Volver" onclick="Cancelar();">
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        @Html.Label("Tabla", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Tabla, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.Label("Registro", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.IdRegistro, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.Label("Acción", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Accion, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row">
+        @Html.Label("Fecha", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.FechaAccion, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <table name="t_auditoria" id="t_auditoria" style="width:100%"></table>
+
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Permisos();
+
+            get_DetalleAuditoria();
+
+        });
+
+        function obtenerValorParametro(sParametroNombre) {
+            var sPaginaURL = window.location.search.substring(1);
+            var sURLVariables = sPaginaURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParametro = sURLVariables[i].split('=');
+                if (sParametro[0] == sParametroNombre) {
+                    return sParametro[1];
+                }
+            }
+            return null;
+        }
+
+        function Cancelar() {
+
+            window.location.href = "Auditoria";
+
+        }
+
+        function get_DetalleAuditoria() {
+            var id = obtenerValorParametro('id');
+            var tbody = "<thead><tr><th>" + "Campo" + "</th><th>" + "Valor Anterior" + "</th><th>" + "Valor Nuevo" + "</th></tr></thead>";
+            $.ajax({
+                url: "@Url.Action("ConectarAuditoriaById", "Auditoria")",
+                type: "POST",
+                data: { id: id},
+                success: function (data) {
+                    tbody += "<tbody>";
+                    $.each(data, function (i, item) {
+                        tbody += "<tr><td>" + item.Campo + "</td><td>" + item.ValorAnterior + "</td><td>" + item.ValorNuevo + "</td></tr>";
+                    });
+                    tbody += "</tbody>";
+
+                    $('#t_auditoria').html(tbody);
+
+                    $('#t_auditoria').DataTable({
+                        "paging": true,
+                        "ordering": true,
+                        "info": true,
+                        "order": [1, "asc"]
+                    });
+                }
+            });
+
+        }
+
+        function DEL_Dependencia(id) {
+
+            $.ajax({
+
+                url: "@Url.Action("DEL_Dependencia", "Administracion")",
+                type: "POST",
+                data: { id: id },
+                success: function (data) {
+
+                    if (data == 1) {
+                        alert("Dependencia eliminada satisfactoriamente");
+                        window.location.href = "Dependencias";
+                    }
+                }
+
+            });
+
+        }
+
+    </script>
+}

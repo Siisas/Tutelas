@@ -1,0 +1,209 @@
+﻿@model Web.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Nuevo usuario";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<div id="row">
+
+
+</div><br>
+
+<div class="row">
+    <div class="col-md-10">
+        <a href="javascript:void(0);" onclick="volver();" class="btn btn-default"> <i class="fa fa-arrow-left"></i> Volver</a>
+    </div>
+    <div class="col-lg-12">
+        <h3 class="page-header">@ViewBag.Title</h3>
+    </div>
+</div>
+
+<div class="adminmanage">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", onsubmit = "return checkForm(this);" }))
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <span id="errormsg" class="text-danger"></span>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.first_name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.first_name, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.last_name, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.last_name, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmedEmail, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.ConfirmedEmail, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Despacho Usuario", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UserDespacho, null, htmlAttributes: new { @class = "form-control", @style = "width:180px" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Rol Usuario", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.UserRoles, null, htmlAttributes: new { @class = "form-control", @style = "width:180px" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Registro" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    function volver() {
+        window.history.back();
+    }
+
+    var mensaje = '';
+
+    function checkPassword(str) {
+        mensaje = '';
+        var validlength = false;
+        var validnumero = false;
+        var validspecial = false;
+        var validlower = false;
+        var validupper = false;
+        //var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+        //return re.test(str);
+
+        //<!-- Configuración de Contraseña-->
+        //<!--Obtiene o establece la longitud mínima requerida de la contraseña.-->
+        if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequiredLength"]' != '') {
+            if (str.length >= parseInt('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequiredLength"]'))
+                validlength = true;
+            else
+                mensaje += '<br/>- Debe tener mínimo @System.Configuration.ConfigurationManager.AppSettings["PasswordRequiredLength"] caracteres.'
+
+        }
+        else
+            validlength = true;
+
+        //<!--Obtiene o establece si la contraseña requiere un dígito numérico ( '0' - '9').-->
+        if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireDigit"]' == 'true') {
+            var regex = /^(?=.*[0-9]).+$/;
+
+            if (regex.test(str))
+                validnumero = true;
+            else
+                mensaje += '<br/>- Debe tener un número.';
+        }
+        else
+            validnumero = true;
+
+        //<!--Obtiene o establece si la contraseña requiere o no un carácter no letra o dígitos.-->
+        if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireNonLetterOrDigit"]' == 'true') {
+            var regex = /^(?=.*[\W]).+$/;
+
+            if (regex.test(str))
+                validspecial = true;
+            else
+                mensaje += '<br/>- Debe tener un carácter especial.';
+        }
+        else
+            validspecial = true;
+
+        //<!--Obtiene o establece si la contraseña requiere una letra minúscula ( 'a' - 'z').-->
+        if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireLowercase"]' == 'true') {
+            var regex = /^(?=.*[a-z]).+$/;
+
+            if (regex.test(str))
+                validlower = true;
+            else
+                mensaje += '<br/>- Debe tener una letra minúscula.';
+        }
+        else
+            validlower = true;
+
+        //<!--Obtiene o establece si la contraseña requiere una letra mayúscula ( 'A' - 'Z').-->
+        if ('@System.Configuration.ConfigurationManager.AppSettings["PasswordRequireUppercase"]' == 'true') {
+            var regex = /^(?=.*[A-Z]).+$/;
+
+            if (regex.test(str))
+                validupper = true;
+            else
+                mensaje += '<br/>- Debe tener una letra mayúscula.';
+        }
+        else
+            validupper = true;
+
+        return (validlength && validnumero && validspecial && validlower && validupper);
+    }
+
+    function checkForm(form) {
+        var pass1 = document.getElementById('Password');
+        var pass2 = document.getElementById('ConfirmPassword');
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+        $("#errormsg").html('');
+
+        if (form.Password.value == form.ConfirmPassword.value) {
+            pass2.style.backgroundColor = goodColor;
+            if (!checkPassword(form.Password.value)) {
+                pass1.style.backgroundColor = badColor;
+                $(".validation-summary-errors").html('');
+                $("#errormsg").html("La contraseña no es válida: " + mensaje);
+                form.Password.focus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+</script>

@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Reporte";
+    Layout = "~/Views/Shared/_LayoutMenu.cshtml";
+}
+
+<h2>@ViewBag.reporte</h2>
+<br />
+<div id="autoUpdate" style="display: none; width:2000px" class="SlideContainer">
+    <table width="100%" height="100%">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr><td><iframe id="myReport" width="60%" height="614px"></iframe></td></tr>
+    </table>
+</div>
+
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            reporte();
+        });
+        
+        function reporte()
+        {
+            debugger;
+            var report = '@ViewBag.reporte';
+            report = report.replace(/ /g, "");
+            document.getElementById("myReport").src = "../Reportes/ReportViewer.aspx?reporte=" + report;
+            $("#autoUpdate").show();
+        }
+    </script>
+}
