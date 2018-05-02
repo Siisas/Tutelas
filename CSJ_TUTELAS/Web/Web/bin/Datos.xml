@@ -145,6 +145,13 @@
             <param name="idAuditoria">The identifier auditoria.</param>
             <returns></returns>
         </member>
+        <member name="M:Datos.DAL.getAllConsulta(System.String)">
+            <summary>
+            Metodo getAllConsulta
+            </summary>
+            <param name="IdRol"></param>
+            <returns></returns>
+        </member>
         <member name="T:Datos.Modelo.mAuditoria">
             <summary>
             Clase de la capa de datos para la entidad de las auditorias
@@ -228,6 +235,26 @@
             </value>
         </member>
         <member name="T:Datos.Modelo.mConsulta">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.numeroRadicado">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.fechaRadicacion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.NumeroProceso">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Datos.Modelo.mConsulta.Accion">
             <summary>
             
             </summary>
@@ -558,14 +585,6 @@
             </summary>
             <value>
             The user mail.
-            </value>
-        </member>
-        <member name="P:Datos.Modelo.MembershipModel.UserDespacho">
-            <summary>
-            Gets or sets the user seccional.
-            </summary>
-            <value>
-            The user seccional.
             </value>
         </member>
         <member name="P:Datos.Modelo.MembershipModel.User_Role">
